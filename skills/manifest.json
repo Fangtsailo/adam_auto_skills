@@ -1,0 +1,17 @@
+{
+    "version": "1.0.0",
+    "skills": [
+        {
+            "name": "angular-code-review",
+            "description": "Review Angular code for NGXS patterns, inject() usage, strict TypeScript, and team coding standards.",
+            "tags": ["angular", "code-review", "typescript"],
+            "version": "1.0.0"
+        },
+        {
+            "name": "git-commit-helper",
+            "description": "Generate descriptive git commit messages by analyzing staged changes and diffs.",
+            "tags": ["git", "commit", "workflow"],
+            "version": "1.0.0"
+        }
+    ]
+}

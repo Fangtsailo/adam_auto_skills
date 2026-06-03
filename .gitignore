@@ -1,0 +1,15 @@
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Secrets
+.env
+.env.*
+*.pem
+credentials.json
+
+# Temp
+tmp/
+*.tmp
