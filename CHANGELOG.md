@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-06-03
+
+### Added
+
+- GitHub Actions workflow: `.github/workflows/validate.yml`
+- Pre-commit hook: `scripts/hooks/pre-commit`
+- Hook installer: `./bin/skill hooks install`
+- Skill scaffold: `./bin/skill new <name>`
+- Manifest consistency validation in `validate --all`
+
 ## [1.1.0] - 2026-06-03
 
 ### Added

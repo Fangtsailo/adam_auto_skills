@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Pre-commit hook: validate changed skills before commit.
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+SCRIPT_DIR="${REPO_ROOT}/scripts"
+
+# shellcheck source=lib.sh
+source "${SCRIPT_DIR}/lib.sh"
+
+STAGED_FILES="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+if [[ -z "$STAGED_FILES" ]]; then
+    exit 0
+fi
+
+SKILL_NAMES=()
+MANIFEST_CHANGED=false
+SKILLS_DIR_TOUCHED=false
+
+while IFS= read -r file; do
+    [[ -n "$file" ]] || continue
+
+    if [[ "$file" == skills/manifest.json ]]; then
+        MANIFEST_CHANGED=true
+        SKILLS_DIR_TOUCHED=true
+        continue
+    fi
+
+    if [[ "$file" == skills/*/* ]]; then
+        SKILLS_DIR_TOUCHED=true
+        skill_name="$(echo "$file" | cut -d/ -f2)"
+        if [[ -n "$skill_name" ]] && is_valid_skill_name "$skill_name"; then
+            if [[ " ${SKILL_NAMES[*]} " != *" ${skill_name} "* ]]; then
+                SKILL_NAMES+=("$skill_name")
+            fi
+        fi
+    fi
+done <<< "$STAGED_FILES"
+
+if [[ "$SKILLS_DIR_TOUCHED" != "true" ]]; then
+    exit 0
+fi
+
+echo "[pre-commit] Validating skill changes..."
+
+if [[ "$MANIFEST_CHANGED" == "true" || ${#SKILL_NAMES[@]} -eq 0 ]]; then
+    "${SCRIPT_DIR}/validate-skill.sh" --all
+else
+    "${SCRIPT_DIR}/validate-skill.sh" "${SKILL_NAMES[@]}"
+fi
+
+if [[ "$MANIFEST_CHANGED" == "true" || ${#SKILL_NAMES[@]} -gt 0 ]]; then
+    "${SCRIPT_DIR}/generate-skills-md.sh" >/dev/null
+    if ! git diff --quiet SKILLS.md 2>/dev/null; then
+        git add SKILLS.md
+        echo "[pre-commit] Staged updated SKILLS.md"
+    fi
+fi
+
+echo "[pre-commit] Skill validation passed"

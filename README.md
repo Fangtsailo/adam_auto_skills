@@ -20,6 +20,12 @@ Personal Cursor Agent Skills 的集中管理倉庫。以 Git 追蹤所有自訂 
 
 # 產生 SKILLS.md 目錄
 ./bin/skill generate
+
+# 建立新 skill（scaffold）
+./bin/skill new my-skill --description "..." --tags workflow
+
+# 安裝 git hooks（commit 前自動驗證 skills）
+./bin/skill hooks install
 ```
 
 安裝後重新開啟 Cursor，Agent 即可發現已部署的 skills。
@@ -34,10 +40,12 @@ Personal Cursor Agent Skills 的集中管理倉庫。以 Git 追蹤所有自訂 
 | `list --installed` | 列出已安裝 skills（搭配 `--global` 或 `--project <path>`） |
 | `info <name>` | 顯示 skill 詳情（可加 `--global` 查看安裝狀態） |
 | `validate [--all] [<name>...]` | 驗證 skill 結構 |
+| `new <name> [options]` | 建立新 skill 模板並更新 manifest |
 | `install [options] [<names>...]` | 安裝 skills |
 | `sync [options] [<names>...]` | 重新同步已安裝 skills |
 | `uninstall [options] [<names>...]` | 移除已安裝 skills |
 | `generate` | 從 `skills/manifest.json` 產生 `SKILLS.md` |
+| `hooks install` | 安裝 pre-commit hook |
 
 ### 共用 Options
 
@@ -75,11 +83,11 @@ adam_auto_skill/
 │   ├── install.sh
 │   ├── sync.sh
 │   ├── uninstall.sh
-│   └── generate-skills-md.sh
-├── SKILLS.md                # 自動產生的 skill 總覽
-├── initial.md               # 專案需求規格
-└── README.md
-```
+│   ├── new-skill.sh
+│   ├── install-hooks.sh
+│   └── hooks/pre-commit
+├── .github/workflows/validate.yml
+├── SKILLS.md
 
 ## Install Manifest
 
@@ -101,17 +109,18 @@ adam_auto_skill/
 
 ## 新增 Skill
 
-1. 在 `skills/<skill-name>/` 建立目錄
-2. 撰寫 `SKILL.md`（含 `name`、`description` frontmatter）
-3. 更新 `skills/manifest.json`
-4. 驗證並更新目錄：
+**方式一（推薦）：**
 
 ```bash
-./bin/skill validate <skill-name>
-./bin/skill generate
+./bin/skill new my-skill --description "..." --tags workflow
 ```
 
-5. Git commit（建議格式：`skill(<name>): <description>`）
+**方式二（手動）：** 建立目錄、`SKILL.md`、更新 `manifest.json`，再執行 `validate` 與 `generate`。
+
+## 品質保障
+
+- **Pre-commit：** `./bin/skill hooks install` — commit 前自動驗證 skills
+- **CI：** `.github/workflows/validate.yml` — push/PR 時驗證全部 skills
 
 ## 存放路徑參考
 
@@ -125,7 +134,7 @@ adam_auto_skill/
 
 - **Phase 1** ✅：基礎倉庫、validate、install
 - **Phase 2** ✅：統一 CLI、install manifest、sync/uninstall、SKILLS.md
-- **Phase 3**：CI 驗證、pre-commit hook、skill scaffold
+- **Phase 3** ✅：CI 驗證、pre-commit hook、skill scaffold
 
 詳細規格見 [`initial.md`](initial.md)。
 

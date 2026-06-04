@@ -6,46 +6,41 @@
 
 ## 0. 實作進度
 
-**目前階段：Phase 2 完成 ✅ | Phase 3 待開始**
+**目前階段：Phase 3 完成 ✅ | Phase 4 待開始**
 
 | 階段 | 狀態 | 說明 |
 |------|------|------|
 | Phase 1 — 基礎倉庫（MVP） | ✅ 完成 | Git 初始化、skills 倉庫、validate/install 腳本、README |
 | Phase 2 — CLI 與狀態管理 | ✅ 完成 | `bin/skill`、install manifest、sync/uninstall、SKILLS.md |
-| Phase 3 — 品質與自動化 | ⬜ 未開始 | CI、pre-commit、skill scaffold |
+| Phase 3 — 品質與自動化 | ✅ 完成 | CI、pre-commit hook、skill scaffold |
 | Phase 4 — 進階 | ⬜ 未開始 | 第三方 skill、submodule、SDK 整合 |
 
-### 已交付項目（Phase 1 + Phase 2）
+### 已交付項目（Phase 1–3）
 
 | 項目 | 路徑 / 指令 | 狀態 |
 |------|-------------|------|
-| Git 倉庫 | `.git/` | ✅ initial commit 完成 |
+| Git 倉庫 | `.git/` | ✅ |
 | 統一 CLI | `bin/skill` | ✅ |
-| Install manifest | `.adam-manifest.json`（目標目錄內） | ✅ `scripts/manifest.py` |
-| 列出 skills | `./bin/skill list [--installed] [--tags]` | ✅ |
-| Skill 詳情 | `./bin/skill info <name>` | ✅ |
-| 同步 skills | `./bin/skill sync [--all]` | ✅ |
-| 移除 skills | `./bin/skill uninstall [--all]` | ✅ |
-| 自動目錄 | `SKILLS.md` | ✅ `./bin/skill generate` |
-| Skill 索引 | `skills/manifest.json` | ✅ |
+| Install manifest | `.adam-manifest.json` | ✅ |
+| Skill scaffold | `./bin/skill new <name>` | ✅ |
+| Pre-commit hook | `./bin/skill hooks install` | ✅ |
+| CI 驗證 | `.github/workflows/validate.yml` | ✅ |
+| Manifest 一致性 | `validate --all` | ✅ |
+| 自動目錄 | `SKILLS.md` | ✅ |
 | 範例 skills | `angular-code-review`、`git-commit-helper` | ✅ |
-| 管理腳本 | `scripts/lib.sh`、`install.sh`、`validate-skill.sh` 等 | ✅ |
 
 ### 已驗證行為
 
-- `./bin/skill validate --all` — 2 個 skills + manifest 全部通過
-- `./bin/skill install --global <name>` — symlink 安裝並寫入 manifest
-- `./bin/skill install --all --project <path> --copy` — 複製安裝全部 skills
-- `./bin/skill list --installed --global` — 讀取 `.adam-manifest.json`
-- `./bin/skill sync --global <name>` — 重新同步 symlink/copy
-- `./bin/skill uninstall --global <name>` — 移除目標且不影響 repo 原始檔
-- `./bin/skill generate` — 產生 `SKILLS.md`
+- `./bin/skill validate --all` — skills + manifest + 一致性驗證
+- `./bin/skill new <name>` — 建立 scaffold 並更新 manifest
+- `./bin/skill hooks install` + pre-commit — commit 前自動驗證
+- CI workflow — validate all + SKILLS.md 同步檢查
 
-### 待辦（Phase 3 起）
+### 待辦（Phase 4 起）
 
-- GitHub Actions CI 驗證 PR 中的 skills
-- Pre-commit hook 驗證變更的 skill
-- Skill 模板腳本（`skill new <name>` scaffold）
+- 從其他 Git remote 拉取第三方 skill
+- Project skill 以 submodule 方式整合
+- 與 Cursor SDK / Automations 整合
 - Push remote（若尚未設定）
 
 ---
@@ -87,10 +82,10 @@ Agent Skill 是 Cursor 中用來教導 AI Agent 執行特定任務的 Markdown �
 | # | 目標 | 說明 | 狀態 |
 |---|------|------|------|
 | G1 | **集中收納** | 所有自訂 skills 統一存放於此 repo，附目錄與說明 | ✅ Phase 1 |
-| G2 | **版本管理** | 以 Git 追蹤每個 skill 的演進，支援 tag / release | 🟡 Git 已 init，待 commit / tag |
+| G2 | **版本管理** | 以 Git 追蹤每個 skill 的演進，支援 tag / release | ✅ Git 已使用（Phase 1–2 commits）；tag 待後續 |
 | G3 | **選擇性安裝** | 可安裝全部、單一、或多個指定 skills 到目標位置 | ✅ Phase 1 |
 | G4 | **可更新 / 可移除** | 支援 sync、upgrade、uninstall，避免殘留舊版 | ✅ Phase 2 |
-| G5 | **品質一致** | 提供驗證腳本，確保 frontmatter、命名、結構符合規範 | ✅ Phase 1 |
+| G5 | **品質一致** | 提供驗證腳本，確保 frontmatter、命名、結構符合規範 | ✅ Phase 1–3（含 CI / pre-commit） |
 
 ### 2.3 非目標（初期不做）
 
@@ -103,13 +98,23 @@ Agent Skill 是 Cursor 中用來教導 AI Agent 執行特定任務的 Markdown �
 
 ## 3. 使用者情境
 
-### UC-1：新增 Skill
+### UC-1：新增 Skill ✅ Phase 3
 
-> 我寫好一個新的 `angular-code-review` skill，想把它收進中央倉庫並 commit。
+> 我寫好一個新的 skill，想把它收進中央倉庫並 commit。
 
-1. 在 `skills/` 下建立 `angular-code-review/` 目錄
-2. 放入符合規範的 `SKILL.md` 及相關檔案
-3. 執行驗證腳本確認格式正確
+**方式一（推薦）：**
+
+```bash
+./bin/skill new my-skill --description "..." --tags workflow
+./bin/skill validate my-skill
+git commit -m "skill(my-skill): add new skill"
+```
+
+**方式二（手動）：**
+
+1. 在 `skills/` 下建立目錄並撰寫 `SKILL.md`
+2. 更新 `skills/manifest.json`
+3. `./bin/skill validate <name>` 與 `./bin/skill generate`
 4. Git commit & push
 
 ### UC-2：安裝到 Personal（全域）
@@ -171,7 +176,8 @@ Agent Skill 是 Cursor 中用來教導 AI Agent 執行特定任務的 Markdown �
 - [x] **FR-02** 每個 skill 必須包含 `SKILL.md`，且 frontmatter 含 `name`、`description`
 - [x] **FR-03** 維護 `skills/manifest.json`（或 `SKILLS.md`）作為可讀目錄，記錄名稱、描述、版本、標籤
 - [x] **FR-04** 支援 skill 分類標籤（如 `angular`、`git`、`ci`、`cursor-config`）
-- [x] **FR-05** 提供 `validate` 命令檢查 skill 結構與 frontmatter 規範 → `scripts/validate-skill.sh`
+- [x] **FR-05** 提供 `validate` 命令檢查 skill 結構與 frontmatter 規範 → `./bin/skill validate`
+- [x] **FR-05b** Manifest 與 skill 目錄一致性檢查 → `validate --all`（Phase 3）
 
 ### 4.2 安裝與部署
 
@@ -191,7 +197,7 @@ Agent Skill 是 Cursor 中用來教導 AI Agent 執行特定任務的 Markdown �
 
 ### 4.4 Git 工作流
 
-- [x] **FR-30** 本 repo 以 Git 管理（initial commit 完成）
+- [x] **FR-30** 本 repo 以 Git 管理（Phase 1–3 commits）
 - [ ] **FR-31** 建議 commit 格式：`skill(<name>): <description>`，例如 `skill(angular-review): add NGXS checklist`
 - [ ] **FR-32** 重大變更以 Git tag 標記版本（如 `angular-review/v1.2.0`）
 - [x] **FR-33** 提供 `CHANGELOG.md` 或各 skill 目錄下 `CHANGELOG.md` 記錄變更
@@ -201,6 +207,13 @@ Agent Skill 是 Cursor 中用來教導 AI Agent 執行特定任務的 Markdown �
 - [x] **FR-40** 根目錄 `README.md` 說明專案用途、快速開始、指令參考
 - [ ] **FR-41** 各 skill 可選 `README.md` 補充使用範例（`SKILL.md` 保持精簡）
 - [x] **FR-42** `SKILLS.md` 自動或半自動生成 skill 總覽表 → `./bin/skill generate`
+
+### 4.6 品質與自動化（Phase 3）
+
+- [x] **FR-50** GitHub Actions CI 驗證 skills → `.github/workflows/validate.yml`
+- [x] **FR-51** Pre-commit hook 驗證變更的 skills → `scripts/hooks/pre-commit`
+- [x] **FR-52** Skill scaffold 模板 → `./bin/skill new <name>`
+- [x] **FR-53** Hook 安裝指令 → `./bin/skill hooks install`
 
 ---
 
@@ -222,14 +235,18 @@ adam_auto_skill/
 │   └── ...
 ├── scripts/                   # ✅ 本專案管理用腳本
 │   ├── lib.sh                 # ✅ 共用函式
-│   ├── install.sh             # ✅ 安裝入口
-│   └── validate-skill.sh      # ✅ 驗證 skill 結構
+│   ├── manifest.py            # ✅ Install manifest 管理
+│   ├── validate-skill.sh      # ✅ 驗證 skill 結構
+│   ├── install.sh / sync.sh / uninstall.sh
+│   ├── new-skill.sh           # ✅ Skill scaffold（Phase 3）
+│   ├── generate-skills-md.sh
+│   ├── install-hooks.sh
+│   └── hooks/pre-commit       # ✅ Pre-commit hook（Phase 3）
 ├── bin/
 │   └── skill                  # ✅ 統一 CLI 入口
 ├── SKILLS.md                  # ✅ 自動產生目錄
-└── .github/
-    └── workflows/
-        └── validate.yml       # ⬜ Phase 3：CI 驗證
+└── .github/workflows/
+    └── validate.yml           # ✅ CI 驗證（Phase 3）
 ```
 
 ---
@@ -321,18 +338,20 @@ description: >-
 
 ---
 
-## 8. CLI 指令規格（草案）
+## 8. CLI 指令規格
 
-**Phase 2 統一 CLI（✅ 已實作）：**
+**統一 CLI（Phase 2–3，✅ 已實作）：**
 
 ```bash
 ./bin/skill list [--installed] [--tags <tag>]
 ./bin/skill info <name> [--global|--project <path>]
 ./bin/skill validate [--all] [<name>...]
+./bin/skill new <name> [--description "..."] [--tags tag1,tag2]   # Phase 3
 ./bin/skill install [options] [<names>...]
 ./bin/skill sync [options] [<names>...]
 ./bin/skill uninstall [options] [<names>...]
 ./bin/skill generate
+./bin/skill hooks install                                        # Phase 3
 ```
 
 **Phase 1 腳本（仍可用，行為一致）：**
@@ -358,7 +377,7 @@ description: >-
 
 ### Phase 1 — 基礎倉庫（MVP） ✅ 完成
 
-- [x] 初始化 Git repo（已 init，待 initial commit）
+- [x] 初始化 Git repo（initial commit 完成；Phase 2 commit 完成）
 - [x] 建立 `skills/` 目錄結構與 `manifest.json` 格式
 - [x] 遷移 1～2 個現有 skill 作為範例（`angular-code-review`、`git-commit-helper`）
 - [x] 撰寫 `README.md`
@@ -375,11 +394,13 @@ description: >-
 - [x] 自動生成 `SKILLS.md`（`./bin/skill generate`）
 - [x] `list`、`info` 命令
 
-### Phase 3 — 品質與自動化
+### Phase 3 — 品質與自動化 ✅ 完成
 
-- [ ] GitHub Actions CI 驗證 PR 中的 skills
-- [ ] Pre-commit hook 驗證变更的 skill
-- [ ] Skill 模板腳本（`skill new <name>`  scaffold）
+- [x] GitHub Actions CI 驗證 PR 中的 skills（`.github/workflows/validate.yml`）
+- [x] Pre-commit hook 驗證變更的 skill（`scripts/hooks/pre-commit`）
+- [x] Skill 模板腳本（`./bin/skill new <name>`）
+- [x] Manifest 一致性驗證（`validate --all`）
+- [x] Hook 安裝器（`./bin/skill hooks install`）
 
 ### Phase 4 — 進階（可選）
 
@@ -422,11 +443,19 @@ description: >-
 | 3 | `sync`、`uninstall`、`list --installed` 可用 | ✅ |
 | 4 | 自動生成 `SKILLS.md` | ✅ |
 
-### Phase 3 成功標準（待完成）
+### Phase 3 成功標準
 
-- GitHub Actions CI 驗證 PR 中的 skills
-- Pre-commit hook 驗證變更的 skill
-- `skill new <name>` scaffold 模板
+| # | 標準 | 狀態 |
+|---|------|------|
+| 1 | GitHub Actions CI 驗證 PR 中的 skills | ✅ |
+| 2 | Pre-commit hook 驗證變更的 skill | ✅ |
+| 3 | `skill new <name>` scaffold 模板 | ✅ |
+
+### Phase 4 成功標準（待完成）
+
+- 從其他 Git remote 拉取第三方 skill
+- Project skill 以 submodule 方式整合
+- 與 Cursor SDK / Automations 整合
 
 ---
 
@@ -439,4 +468,4 @@ description: >-
 
 ---
 
-*文件版本：v0.3 | 建立日期：2026-06-03 | Phase 1 完成：2026-06-03 | Phase 2 完成：2026-06-03*
+*文件版本：v0.4 | 建立日期：2026-06-03 | Phase 3 完成：2026-06-03*

@@ -1,0 +1,26 @@
+name: Validate Skills
+
+on:
+    push:
+        branches: [master, main]
+    pull_request:
+        branches: [master, main]
+
+jobs:
+    validate:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Validate all skills
+              run: ./scripts/validate-skill.sh --all -v
+
+            - name: Verify SKILLS.md is up to date
+              run: |
+                  ./scripts/generate-skills-md.sh
+                  if ! git diff --quiet SKILLS.md; then
+                      echo "SKILLS.md is out of date. Run: ./bin/skill generate"
+                      git diff SKILLS.md
+                      exit 1
+                  fi

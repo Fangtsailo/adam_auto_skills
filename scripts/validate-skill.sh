@@ -143,6 +143,46 @@ validate_manifest() {
     log_pass "manifest.json"
 }
 
+validate_manifest_consistency() {
+    local manifest="${SKILLS_DIR}/manifest.json"
+    local result
+    result="$(python3 - "$manifest" "$SKILLS_DIR" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+manifest_file, skills_dir = sys.argv[1:3]
+with open(manifest_file, encoding="utf-8") as handle:
+    data = json.load(handle)
+
+manifest_names = {skill.get("name") for skill in data.get("skills", []) if skill.get("name")}
+repo_names = set()
+for path in Path(skills_dir).iterdir():
+    if path.is_dir() and (path / "SKILL.md").exists():
+        repo_names.add(path.name)
+
+missing_in_manifest = sorted(repo_names - manifest_names)
+missing_in_repo = sorted(manifest_names - repo_names)
+errors = []
+if missing_in_manifest:
+    errors.append(f"skills missing from manifest.json: {', '.join(missing_in_manifest)}")
+if missing_in_repo:
+    errors.append(f"manifest entries missing skill directory: {', '.join(missing_in_repo)}")
+print("\n".join(errors))
+PY
+)"
+
+    if [[ -n "$result" ]]; then
+        while IFS= read -r line; do
+            [[ -n "$line" ]] || continue
+            log_fail "$line"
+        done <<< "$result"
+        return
+    fi
+
+    log_pass "manifest consistency"
+}
+
 SKILL_NAMES=()
 VALIDATE_ALL=false
 
@@ -178,6 +218,10 @@ elif [[ ${#SKILL_NAMES[@]} -eq 0 ]]; then
 fi
 
 validate_manifest
+
+if [[ "$VALIDATE_ALL" == "true" ]]; then
+    validate_manifest_consistency
+fi
 
 for skill in "${SKILL_NAMES[@]}"; do
     validate_skill "$skill"

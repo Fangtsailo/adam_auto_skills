@@ -15,16 +15,18 @@ Commands:
   list        List repository or installed skills
   info        Show skill details
   validate    Validate skill structure and frontmatter
+  new         Scaffold a new skill
   install     Install skills to personal or project targets
   sync        Re-sync installed skills from this repository
   uninstall   Remove installed skills from a target
   generate    Generate SKILLS.md from skills/manifest.json
+  hooks       Manage git hooks (install)
   help        Show this help
 
 Examples:
   ./bin/skill list
-  ./bin/skill list --installed --global
-  ./bin/skill info angular-code-review
+  ./bin/skill new my-skill --description "..." --tags workflow
+  ./bin/skill hooks install
   ./bin/skill validate --all
   ./bin/skill install --global angular-code-review
   ./bin/skill sync --all --global
@@ -63,6 +65,22 @@ case "$COMMAND" in
         ;;
     generate|docs)
         exec "${REPO_ROOT}/scripts/generate-skills-md.sh" "$@"
+        ;;
+    new)
+        exec "${REPO_ROOT}/scripts/new-skill.sh" "$@"
+        ;;
+    hooks)
+        HOOKS_CMD="${1:-}"
+        shift || true
+        case "$HOOKS_CMD" in
+            install)
+                exec "${REPO_ROOT}/scripts/install-hooks.sh" "$@"
+                ;;
+            *)
+                echo "[ERROR] Usage: skill hooks install" >&2
+                exit 1
+                ;;
+        esac
         ;;
     help|-h|--help)
         usage
