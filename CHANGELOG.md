@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - `angular-dev-core-rules`: soften absolute bans; clarify scope vs `angular-code-review`; API-agnostic i18n and flexible subscribe/DOM guidance
+- `angular-code-review` (1.1.0): align checklist with `angular-dev-core-rules`; add scope split, severity guidance, and cross-links; avoid duplicating dev-core content
 
 ## [1.3.0] - 2026-06-03
 
