@@ -55,7 +55,7 @@ chmod +x bin/skill scripts/*.sh
 | Skill | 說明 |
 |-------|------|
 | `angular-code-review` | Angular PR 審查（團隊規範 + `angular-dev-core-rules` 對齊） |
-| `angular-dev-core-rules` | Angular 開發方向（嚴格 i18n、FP、宣告式）；PR 審查請用 `angular-code-review` |
+| `angular-dev-core-rules` | Angular 開發方向（YAML/Crowdin i18n、FP、宣告式）；PR 審查請用 `angular-code-review` |
 | `generate-mr-content` | 產生 MR 描述（Title、Root Cause、How to Fix） |
 
 完整列表：[`SKILLS.md`](SKILLS.md)

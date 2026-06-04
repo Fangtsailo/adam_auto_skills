@@ -18,12 +18,14 @@ description: >-
 
 Use **`angular-dev-core-rules`** for the core sections below; use **this skill** for team gates in the following subsections.
 
+**Authoritative source:** bullets under Core dev rules are review shorthand only. If anything conflicts with `angular-dev-core-rules`, follow dev-core.
+
 ### Core dev rules (angular-dev-core-rules)
 
-#### i18n
-- No silent fallback to another locale or hard-coded default when a key is missing (unless the project standardizes it globally).
-- New keys added across all supported locale files with aligned key paths.
-- No inline fallback copy in templates/services that masks missing keys.
+#### i18n (see `angular-dev-core-rules` + `apps/gui3/src/i18n/readme.md`)
+- No **runtime** fallback: no `instant` default text, inline English, or hidden locale switch when a key is missing. Build-time `en-us` fill in `translation.build.cjs` is project-standard — do not add a second app-level fallback.
+- New UI strings added in the correct **YAML** under `apps/gui3/src/i18n/` (not hand-synced across every `i18n.crowdin/<lang>.json`).
+- Extract/build workflow respected (`npm run i18n:extract`, `npm run i18n:build`; use `npm run i18n:build -- --validate` when validating); flag keys used in templates but missing from YAML/extract output.
 
 #### Functional style & state
 - Prefer immutability for NGXS/shared state (`patchState` with new collections; avoid in-place mutation of `ctx.getState()`).
@@ -31,8 +33,8 @@ Use **`angular-dev-core-rules`** for the core sections below; use **this skill**
 - RxJS: composed `pipe`; errors handled explicitly — not swallowed without clear UX intent.
 
 #### Declarative UI
-- View data via `select` + `async` pipe, template-friendly streams, or documented local Signals — not `subscribe` only to copy into template fields.
-- Component `subscribe` only when imperative (telemetry, legacy APIs, etc.) with `takeUntil` / `DestroyRef` and a brief **why** when non-obvious.
+- View data via `select` + `async` pipe, template-friendly streams, or documented local Signals — not `subscribe` only to copy into template fields (in **touched** code).
+- Component `subscribe` only when imperative (telemetry, legacy APIs, etc.) with `takeUntil` / `DestroyRef` and a brief **why** when non-obvious. Legacy `takeUntil` patterns in untouched lines: note only or omit.
 - DOM/`ElementRef`/`Renderer2` as last resort; prefer CDK or project abstractions.
 
 #### Comments
@@ -60,8 +62,9 @@ Use **`angular-dev-core-rules`** for the core sections below; use **this skill**
 
 ### Style & structure
 - File naming: kebab-case with suffixes (e.g. `user.component.ts`)
-- Imports sorted per `@ianvs/prettier-plugin-sort-imports`
-- 4-space indent, 120 char width, single quotes (TS/JS)
+- Imports sorted per `@ianvs/prettier-plugin-sort-imports`; follow `.vscode/code_style_guide.md` when present in the target repo
+- 4-space indent, 120 char width (`.prettierrc.yaml`); single quotes (TS/JS), double quotes (SASS/SCSS)
+- Semantic HTML and ARIA for new or changed interactive UI
 - Default to Module-based components unless Standalone is required by the project
 
 ## Severity guidance
@@ -70,7 +73,8 @@ Align with dev-core **prefer, not dogma** — do not demand drive-by rewrites ou
 
 | Finding | Typical severity |
 |---------|------------------|
-| Missing i18n keys / silent locale fallback | Critical |
+| Missing YAML i18n keys / runtime locale fallback in app code | Critical |
+| Untranslated Crowdin strings (build validate warnings only) | Suggestions unless PR blocks release |
 | NGXS in-place mutation of shared state | Critical |
 | Unsafe `innerHTML` / XSS risk | Critical |
 | `any` or broken NGXS patterns in **new** code | Critical |

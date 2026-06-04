@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.1] - 2026-06-04
+
+### Changed
+
+- `angular-dev-core-rules` (1.1.0): align manifest description with SKILL (project i18n, no runtime fallback); unify `npm run` i18n script wording
+- `angular-code-review` (1.1.1): authoritative-source note for dev-core shorthand; `npm run` i18n commands; style gates (`.vscode/code_style_guide.md`, SASS quotes, semantic HTML/ARIA)
+- `README.md`, `PROJECT_PLAN.md`, `SKILLS.md`: sync versions and descriptions with `skills/manifest.json`
+
 ## [1.4.0] - 2026-06-04
 
 ### Added

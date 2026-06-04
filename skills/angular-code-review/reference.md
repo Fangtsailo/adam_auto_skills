@@ -13,9 +13,11 @@ Use with `SKILL.md` for PR/MR reviews. Implementation principles live in **`angu
 
 ### i18n
 
-- Flag silent default-language fallback in app code unless project-wide standard.
-- Flag new template/service keys missing from any supported locale file.
-- Flag inline English (or other) fallback strings masking missing keys.
+- **Critical:** runtime fallback in app code (`instant` with default text, inline English masking missing keys).
+- **Critical:** template/service keys with no matching YAML source (or not produced by extract/compile).
+- **Not required:** manually editing every `i18n.crowdin/<lang>.json` for each new key — Crowdin + `npm run i18n:build` handles locales; build merges `en-us` for gaps.
+- **Suggestions:** untranslated strings surfaced by `npm run i18n:build -- --validate` (or `npm run i18n:validate`) until Crowdin catches up.
+- Details: `angular-dev-core-rules` and `apps/gui3/src/i18n/readme.md`.
 
 ### Declarative UI & subscriptions
 
@@ -80,11 +82,18 @@ export class UserService {
 
 Default to Module-based components unless Standalone is explicitly required by the project.
 
+## Style & accessibility (team gates)
+
+- **Suggestions:** import order, Prettier drift, or missing `track` on lists the PR already touches.
+- **Suggestions:** new interactive controls without semantic elements or ARIA when a native pattern exists (`button`, `label`, `aria-*`).
+- Target repo may define more in `.vscode/code_style_guide.md` and `.prettierrc.yaml`.
+
 ## Severity quick reference
 
 | Situation | Severity |
 |-----------|----------|
-| Missing keys / silent i18n fallback | Critical |
+| Missing YAML keys / runtime i18n fallback in app | Critical |
+| Crowdin gaps (build validate only) | Suggestions |
 | Shared NGXS state mutated in place | Critical |
 | New code uses `any` or bypasses NGXS without reason | Critical |
 | Subscribe-for-template in touched component | Suggestions |

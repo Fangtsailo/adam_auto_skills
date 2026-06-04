@@ -9,11 +9,11 @@
                 "code-review",
                 "typescript"
             ],
-            "version": "1.1.0"
+            "version": "1.1.1"
         },
         {
             "name": "angular-dev-core-rules",
-            "description": "Guides Angular implementation toward strict i18n, FP, declarative UI/data flow, and purposeful comments. Use for dev/refactor; use angular-code-review for PR review.",
+            "description": "Guides Angular implementation toward project i18n (YAML/Crowdin, no runtime fallback), FP, declarative UI/data flow, and purposeful comments. Use for dev/refactor; use angular-code-review for PR review.",
             "tags": [
                 "angular",
                 "ngxs",
@@ -21,7 +21,7 @@
                 "i18n",
                 "typescript"
             ],
-            "version": "1.0.0"
+            "version": "1.1.0"
         },
         {
             "name": "generate-mr-content",

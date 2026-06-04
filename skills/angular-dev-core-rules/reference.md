@@ -2,30 +2,57 @@
 
 Use when the task needs examples or trade-off guidance beyond `SKILL.md`.
 
-## 1. i18n (strict mode)
+## 1. i18n (project: YAML → Crowdin → assets)
 
 ### Principles
 
-- Do not add silent default-language fallback in app code or i18n config unless the project already standardizes it globally.
-- Treat missing translations as visible defects during development, not as something to mask in production.
-- Add keys to all supported locale files before wiring templates/services.
+| Layer | Rule |
+|-------|------|
+| **Authoring** | English-only YAML under `apps/gui3/src/i18n/`. Place files per `readme.md` (module folders, `$nub` / `$$nub` / `$$nui` merge rules). |
+| **Runtime (app)** | No silent fallback in templates or TS — no `instant(key, 'English')`, no inline default copy when a key is missing. |
+| **Build** | Missing Crowdin translations are merged from `en-us` in `translation.build.cjs`. Do not duplicate that with extra app-level fallback. |
+| **Quality** | Untranslated strings reported by `npm run i18n:build --validate` (or `i18n:validate`) are defects; fix via YAML + Crowdin, not component hacks. |
+
+### Workflow
+
+1. Add or change keys in the correct YAML file(s).
+2. `npm run i18n:extract` — updates Crowdin source (`i18n.crowdin/en-us.json`).
+3. Translations completed on Crowdin → download to `apps/gui3/src/i18n.crowdin/<lang>.json`.
+4. `npm run i18n:build` — per-module JSON under `src/assets/i18n/**/`; Angular loads via `NebulaTranslateLoader` + `@ngx-translate/core`.
 
 ### Checks
 
-- CI or build-time missing-key detection when the project supports it.
-- Same key tree structure across locale JSON/files.
+- New template/service keys exist in YAML (and survive extract/compile), not manually duplicated across every locale JSON.
+- Key naming matches existing conventions (`NUB.SwitchStackManagementDetail.TITLE`, `COMMON.Button.Delete`, etc.).
+- Interpolation uses `{{0}}` style per `translation.validate.cjs` (see i18n readme).
 
-### Examples (API-agnostic)
+### Examples
 
 ```html
-<!-- Prefer explicit keys; avoid inline fallback copy in templates -->
-<span>{{ 'user.profile.title' | translate }}</span>
+<!-- Prefer explicit keys; no inline English fallback -->
+<span>{{ 'NUB.SwitchStackManagementDetail.TITLE' | translate }}</span>
 ```
 
 ```ts
-// Avoid: third argument or option that supplies English when key is missing
-// Prefer: let the project's translate layer expose the missing key or error
-const title = translateService.instant('user.profile.title');
+// Avoid: default text when key is missing
+const title = translateService.instant('NUB.SomeBlock.TITLE', 'Default title');
+
+// Prefer: rely on translate layer + built locale JSON
+const title = translateService.instant('NUB.SomeBlock.TITLE');
+```
+
+```yaml
+# apps/gui3/src/i18n/.../example.yml (English source)
+MESSAGE: Operation completed
+TableHeader: Clients
+```
+
+### Build-time vs runtime fallback
+
+```text
+OK (build):  translatedDict[key] || en-us text  →  assets/i18n/<lang>/<module>.json
+Not OK (app): template "{{ key | translate }}" plus hard-coded English if translate returns key
+Not OK (app): instant(key, 'English fallback') in component code
 ```
 
 ## 2. Functional programming
@@ -70,8 +97,8 @@ readonly user$ = this.route.params.pipe(
     switchMap(id => this.userService.getUser(id)),
     catchError(err => {
         console.error(err);
-        return of({ error: true } as const);
-    })
+        return of({error: true} as const);
+    }),
 );
 ```
 
@@ -82,7 +109,7 @@ readonly user$ = this.route.params.pipe(
 // Trade-off: 300ms delay is acceptable for filter UX; tighten if SEO pages need instant URL reflect.
 const filters$ = this.route.queryParams.pipe(
     debounceTime(300),
-    map(params => normalizeFilters(params))
+    map(params => normalizeFilters(params)),
 );
 ```
 
@@ -114,7 +141,8 @@ readonly items$ = this.store.select(ItemsState.items);
 
 - One-off imperative integration (analytics, legacy callback) with proper teardown.
 - Coordinating multiple streams where a small facade method is clearer than template syntax.
-- Always pair with `takeUntil(destroy$)` or `DestroyRef.onDestroy`.
+- Existing NUB/page patterns that already use `takeUntil` — align **touched** code with dev-core rules; leave untouched legacy as-is unless the user requests a refactor.
+- Always pair with `takeUntil(destroy$)` or `DestroyRef.onDestroy` (both are used in this repo).
 
 ```ts
 // Prefer for view data
@@ -132,6 +160,7 @@ Default: state + template bindings. If DOM access is required, isolate in a dire
 
 | Situation | Suggestion |
 |-----------|------------|
+| New UI string | Add YAML key in correct `i18n/` path; run extract; do not edit all locale JSONs by hand |
 | Transform + side effect in one method | Split pure transform from effect |
 | Logic reused across components | Move to service or NGXS |
 | PR review / security / style gates | Apply `angular-code-review` |
@@ -151,8 +180,8 @@ readonly user$ = this.userService.getUser(id);
 // Weaker: in-place NGXS mutation
 const state = ctx.getState();
 state.items.push(newItem);
-ctx.patchState({ items: state.items });
+ctx.patchState({items: state.items});
 
 // Stronger: new collection
-ctx.patchState({ items: [...ctx.getState().items, newItem] });
+ctx.patchState({items: [...ctx.getState().items, newItem]});
 ```
