@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-06-03
+
+### Added
+
+- Remote skill registry: `config/remotes.json` and `scripts/remotes.py`
+- Commands: `remote`, `pull`, `submodule` (add/update/remove/list)
+- CI/SDK integration guide: `docs/automations.md`
+- Examples: `examples/install-skills-ci.sh`, `examples/github-action-install-skills.yml`
+
 ## [1.2.0] - 2026-06-03
 
 ### Added

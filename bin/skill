@@ -21,12 +21,18 @@ Commands:
   uninstall   Remove installed skills from a target
   generate    Generate SKILLS.md from skills/manifest.json
   hooks       Manage git hooks (install)
+  remote      Manage remote skill sources (list, add)
+  pull        Pull a skill from a configured remote
+  submodule   Manage skills as Git submodules (add, update, remove, list)
   help        Show this help
 
 Examples:
   ./bin/skill list
   ./bin/skill new my-skill --description "..." --tags workflow
   ./bin/skill hooks install
+  ./bin/skill remote add upstream https://github.com/org/skills-repo.git
+  ./bin/skill pull upstream/my-skill
+  ./bin/skill submodule add https://github.com/org/my-skill.git my-skill
   ./bin/skill validate --all
   ./bin/skill install --global angular-code-review
   ./bin/skill sync --all --global
@@ -81,6 +87,15 @@ case "$COMMAND" in
                 exit 1
                 ;;
         esac
+        ;;
+    remote)
+        exec "${REPO_ROOT}/scripts/remote.sh" "$@"
+        ;;
+    pull)
+        exec "${REPO_ROOT}/scripts/pull-skill.sh" "$@"
+        ;;
+    submodule)
+        exec "${REPO_ROOT}/scripts/submodule-skill.sh" "$@"
         ;;
     help|-h|--help)
         usage

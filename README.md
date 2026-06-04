@@ -26,6 +26,13 @@ Personal Cursor Agent Skills 的集中管理倉庫。以 Git 追蹤所有自訂 
 
 # 安裝 git hooks（commit 前自動驗證 skills）
 ./bin/skill hooks install
+
+# 從遠端拉取第三方 skill
+./bin/skill remote add upstream https://github.com/org/skills-repo.git
+./bin/skill pull upstream/some-skill
+
+# 以 submodule 管理獨立 skill repo
+./bin/skill submodule add https://github.com/org/my-skill.git my-skill
 ```
 
 安裝後重新開啟 Cursor，Agent 即可發現已部署的 skills。
@@ -46,6 +53,18 @@ Personal Cursor Agent Skills 的集中管理倉庫。以 Git 追蹤所有自訂 
 | `uninstall [options] [<names>...]` | 移除已安裝 skills |
 | `generate` | 從 `skills/manifest.json` 產生 `SKILLS.md` |
 | `hooks install` | 安裝 pre-commit hook |
+| `remote list` / `remote add` | 管理遠端 skill 來源 |
+| `pull <remote>/<name>` | 從遠端拉取 skill |
+| `submodule` | Submodule 管理（add / update / remove / list） |
+
+### Phase 4：遠端與整合
+
+| 情境 | 指令 |
+|------|------|
+| 註冊遠端 repo | `./bin/skill remote add <name> <git-url>` |
+| 拉取遠端 skill | `./bin/skill pull <name>/<skill>` |
+| Submodule 安裝 | `./bin/skill submodule add <url> <skill>` |
+| CI 安裝至專案 | 見 [`docs/automations.md`](docs/automations.md) |
 
 ### 共用 Options
 
@@ -73,21 +92,21 @@ Personal Cursor Agent Skills 的集中管理倉庫。以 Git 追蹤所有自訂 
 
 ```
 adam_auto_skill/
-├── bin/skill                # 統一 CLI 入口
-├── skills/                  # 所有 skills 的來源
-│   └── manifest.json        # Skill 索引
+├── bin/skill
+├── config/remotes.json
+├── skills/
 ├── scripts/
-│   ├── lib.sh               # 共用函式
-│   ├── manifest.py          # Install manifest 管理
-│   ├── validate-skill.sh
-│   ├── install.sh
-│   ├── sync.sh
-│   ├── uninstall.sh
-│   ├── new-skill.sh
-│   ├── install-hooks.sh
-│   └── hooks/pre-commit
+│   ├── remotes.py
+│   ├── pull-skill.sh
+│   ├── submodule-skill.sh
+│   └── ...
+├── docs/automations.md
+├── examples/
+│   ├── install-skills-ci.sh
+│   └── github-action-install-skills.yml
 ├── .github/workflows/validate.yml
-├── SKILLS.md
+└── SKILLS.md
+```
 
 ## Install Manifest
 
@@ -135,8 +154,9 @@ adam_auto_skill/
 - **Phase 1** ✅：基礎倉庫、validate、install
 - **Phase 2** ✅：統一 CLI、install manifest、sync/uninstall、SKILLS.md
 - **Phase 3** ✅：CI 驗證、pre-commit hook、skill scaffold
+- **Phase 4** ✅：遠端 pull、submodule、CI/SDK 整合文件
 
-詳細規格見 [`initial.md`](initial.md)。
+詳細規格見 [`initial.md`](initial.md)。CI/SDK 整合見 [`docs/automations.md`](docs/automations.md)。
 
 ## License
 

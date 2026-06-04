@@ -6,42 +6,37 @@
 
 ## 0. 實作進度
 
-**目前階段：Phase 3 完成 ✅ | Phase 4 待開始**
+**目前階段：Phase 4 完成 ✅**
 
 | 階段 | 狀態 | 說明 |
 |------|------|------|
 | Phase 1 — 基礎倉庫（MVP） | ✅ 完成 | Git 初始化、skills 倉庫、validate/install 腳本、README |
 | Phase 2 — CLI 與狀態管理 | ✅ 完成 | `bin/skill`、install manifest、sync/uninstall、SKILLS.md |
 | Phase 3 — 品質與自動化 | ✅ 完成 | CI、pre-commit hook、skill scaffold |
-| Phase 4 — 進階 | ⬜ 未開始 | 第三方 skill、submodule、SDK 整合 |
+| Phase 4 — 進階 | ✅ 完成 | 遠端 pull、submodule、CI/SDK 整合文件 |
 
-### 已交付項目（Phase 1–3）
+### 已交付項目（Phase 1–4）
 
 | 項目 | 路徑 / 指令 | 狀態 |
 |------|-------------|------|
-| Git 倉庫 | `.git/` | ✅ |
+| 遠端登錄 | `config/remotes.json` | ✅ |
+| 拉取遠端 skill | `./bin/skill pull <remote>/<name>` | ✅ |
+| Submodule 管理 | `./bin/skill submodule` | ✅ |
+| CI/SDK 整合文件 | `docs/automations.md` | ✅ |
+| CI 安裝範例 | `examples/install-skills-ci.sh` | ✅ |
 | 統一 CLI | `bin/skill` | ✅ |
-| Install manifest | `.adam-manifest.json` | ✅ |
-| Skill scaffold | `./bin/skill new <name>` | ✅ |
-| Pre-commit hook | `./bin/skill hooks install` | ✅ |
-| CI 驗證 | `.github/workflows/validate.yml` | ✅ |
-| Manifest 一致性 | `validate --all` | ✅ |
-| 自動目錄 | `SKILLS.md` | ✅ |
-| 範例 skills | `angular-code-review`、`git-commit-helper` | ✅ |
+| 品質自動化 | CI + pre-commit + validate | ✅ |
 
 ### 已驗證行為
 
-- `./bin/skill validate --all` — skills + manifest + 一致性驗證
-- `./bin/skill new <name>` — 建立 scaffold 並更新 manifest
-- `./bin/skill hooks install` + pre-commit — commit 前自動驗證
-- CI workflow — validate all + SKILLS.md 同步檢查
+- `./bin/skill remote add` + `./bin/skill pull <remote>/<skill>` — 從 Git 遠端拉取 skill
+- `./bin/skill submodule list` — submodule 狀態查詢
+- `file://` 本機 repo 作為 remote 測試 pull 成功
 
-### 待辦（Phase 4 起）
+### 待辦（可選）
 
-- 從其他 Git remote 拉取第三方 skill
-- Project skill 以 submodule 方式整合
-- 與 Cursor SDK / Automations 整合
-- Push remote（若尚未設定）
+- Push remote 至 GitHub（若尚未設定）
+- 實際 submodule add 需獨立 skill repo（指令已就緒）
 
 ---
 
@@ -215,6 +210,13 @@ git commit -m "skill(my-skill): add new skill"
 - [x] **FR-52** Skill scaffold 模板 → `./bin/skill new <name>`
 - [x] **FR-53** Hook 安裝指令 → `./bin/skill hooks install`
 
+### 4.7 進階整合（Phase 4）
+
+- [x] **FR-60** 遠端 skill 來源登錄 → `config/remotes.json` + `./bin/skill remote`
+- [x] **FR-61** 從遠端拉取 skill → `./bin/skill pull <remote>/<name>`
+- [x] **FR-62** Submodule 整合 → `./bin/skill submodule`
+- [x] **FR-63** CI / SDK 整合文件 → `docs/automations.md`
+
 ---
 
 ## 5. 建議的 Repository 結構
@@ -351,7 +353,10 @@ description: >-
 ./bin/skill sync [options] [<names>...]
 ./bin/skill uninstall [options] [<names>...]
 ./bin/skill generate
-./bin/skill hooks install                                        # Phase 3
+./bin/skill hooks install
+./bin/skill remote list | remote add <name> <url>
+./bin/skill pull <remote>/<skill>
+./bin/skill submodule add|update|remove|list
 ```
 
 **Phase 1 腳本（仍可用，行為一致）：**
@@ -402,11 +407,11 @@ description: >-
 - [x] Manifest 一致性驗證（`validate --all`）
 - [x] Hook 安裝器（`./bin/skill hooks install`）
 
-### Phase 4 — 進階（可選）
+### Phase 4 — 進階 ✅ 完成
 
-- [ ] 從其他 Git remote 拉取第三方 skill
-- [ ] Project skill 以 submodule 方式整合
-- [ ] 與 Cursor SDK / Automations 整合
+- [x] 從其他 Git remote 拉取第三方 skill（`remote` + `pull`）
+- [x] Project skill 以 submodule 方式整合（`submodule add/update/remove`）
+- [x] 與 Cursor SDK / Automations 整合（`docs/automations.md` + CI 範例）
 
 ---
 
@@ -451,11 +456,13 @@ description: >-
 | 2 | Pre-commit hook 驗證變更的 skill | ✅ |
 | 3 | `skill new <name>` scaffold 模板 | ✅ |
 
-### Phase 4 成功標準（待完成）
+### Phase 4 成功標準
 
-- 從其他 Git remote 拉取第三方 skill
-- Project skill 以 submodule 方式整合
-- 與 Cursor SDK / Automations 整合
+| # | 標準 | 狀態 |
+|---|------|------|
+| 1 | 從其他 Git remote 拉取第三方 skill | ✅ |
+| 2 | Project skill 以 submodule 方式整合 | ✅ |
+| 3 | 與 Cursor SDK / Automations 整合文件與範例 | ✅ |
 
 ---
 
@@ -468,4 +475,4 @@ description: >-
 
 ---
 
-*文件版本：v0.4 | 建立日期：2026-06-03 | Phase 3 完成：2026-06-03*
+*文件版本：v0.5 | Phase 4 完成：2026-06-03*

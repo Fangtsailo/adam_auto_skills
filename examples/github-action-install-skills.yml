@@ -1,0 +1,32 @@
+# Example: install adam_auto_skill skills into your repository in GitHub Actions.
+# Copy relevant steps into your workflow file.
+
+name: Install Cursor Skills
+
+on:
+    workflow_dispatch:
+
+jobs:
+    install-skills:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout project
+              uses: actions/checkout@v4
+
+            - name: Clone adam_auto_skill
+              run: |
+                  git clone --depth 1 "${{ env.ADAM_AUTO_SKILL_REPO }}" /tmp/adam_auto_skill
+
+            - name: Install skills into project
+              env:
+                  ADAM_AUTO_SKILL_REPO: https://github.com/YOUR_USER/adam_auto_skill.git
+              run: |
+                  chmod +x /tmp/adam_auto_skill/examples/install-skills-ci.sh
+                  /tmp/adam_auto_skill/examples/install-skills-ci.sh \
+                    --repo "${ADAM_AUTO_SKILL_REPO}" \
+                    --project "${{ github.workspace }}" \
+                    --all
+
+            # Optional: verify skills directory exists
+            - name: List installed skills
+              run: ls -la .cursor/skills/
