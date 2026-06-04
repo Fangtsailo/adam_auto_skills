@@ -1,9 +1,9 @@
 ---
 name: generate-mr-content
 description: >-
-  Generate merge request description (Title, Root Cause, How to Fix) from git
-  staged changes only. Use when the user says 產生MR內容, asks for MR content,
-  merge request description, or mentions generate-mr-content.
+  Generate merge request description in English (Title, Root Cause, How to Fix)
+  from git staged changes only. Use when the user says 產生MR內容, asks for MR
+  content, merge request description, or mentions generate-mr-content.
 disable-model-invocation: false
 ---
 
@@ -22,7 +22,8 @@ Apply this skill when the user says **產生MR內容** (or clearly equivalent wo
 3. If there are **no** staged changes, stop and tell the user to stage files first; do not generate MR content from unstaged work.
 4. Draft Title, Root Cause, and How to Fix from what the staged diff actually does.
 5. Verify **Title** length ≤ 80 characters (spaces and punctuation count).
-6. Reply with **one** ` ```markdown ` fenced block only (see Output Format)—never bare `###` headings in chat.
+6. Write **Title**, **Root Cause**, and **How to Fix** in **English** only (see Language)—even if the user asked in Chinese.
+7. Reply with **one** ` ```markdown ` fenced block only (see Output Format)—never bare `###` headings in chat.
 
 ## Scope Rules
 
@@ -35,6 +36,17 @@ Apply this skill when the user says **產生MR內容** (or clearly equivalent wo
 **Root Cause:** Why this change was needed—the problem or gap the staged diff addresses (inferred from the change, stated concisely).
 
 **How to Fix:** What the staged changes do to resolve it—aligned with the actual diff, not a wish list.
+
+## Language
+
+| Rule | Detail |
+|------|--------|
+| **MR body** | **English only** for Title, Root Cause, and How to Fix |
+| **User locale** | Trigger phrases may be Chinese (e.g. 產生MR內容); still output English inside the fence |
+| **Identifiers** | Keep code symbols as in the repo (`applyDiscount`, file paths, API names) |
+| **Not allowed** | Traditional/Simplified Chinese (or any non-English prose) in the fenced MR block |
+
+Status messages *outside* the fence (e.g.「請先 stage 變更」) may match the user's language; the copy-paste MR block must remain English.
 
 ## Output Format (copy-paste)
 
@@ -73,9 +85,9 @@ Some title
 
 | Section | Rules |
 |---------|--------|
-| **Title** | One line; ≤ 80 characters; summarizes the staged change intent; not a raw file list |
-| **Root Cause** | 1–3 bullets or ≤ 2 sentences; problem/gap implied by the diff |
-| **How to Fix** | 1–3 bullets or ≤ 2 sentences; matches what is actually staged |
+| **Title** | One line; ≤ 80 characters; **English**; summarizes the staged change intent; not a raw file list |
+| **Root Cause** | 1–3 bullets or ≤ 2 sentences; **English**; problem/gap implied by the diff |
+| **How to Fix** | 1–3 bullets or ≤ 2 sentences; **English**; matches what is actually staged |
 
 ## Quality
 

@@ -13,7 +13,7 @@
         },
         {
             "name": "generate-mr-content",
-            "description": "Generate MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix).",
+            "description": "Generate English MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix).",
             "tags": [
                 "merge-request",
                 "mr",
