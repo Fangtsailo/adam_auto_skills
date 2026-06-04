@@ -5,41 +5,90 @@ Personal Cursor Agent Skills 的集中管理倉庫。以 Git 追蹤所有自訂 
 ## 快速開始
 
 ```bash
-# 驗證所有 skills
-./scripts/validate-skill.sh --all
-
-# 安裝到本機（~/.cursor/skills/，預設 symlink）
-./scripts/install.sh --global angular-code-review
-
-# 安裝多個 skills
-./scripts/install.sh --global git-commit-helper angular-code-review
-
-# 安裝到指定專案（複製模式，適合分享給他人）
-./scripts/install.sh --project ~/projects/my-app angular-code-review --copy
-
-# 安裝全部 skills 到本機
-./scripts/install.sh --all --global
+# 建議：使用統一 CLI
+./bin/skill list
+./bin/skill validate --all
+./bin/skill install --global angular-code-review
+./bin/skill list --installed --global
 
 # 安裝全部 skills 到指定專案（建議 --copy）
-./scripts/install.sh --all --project ~/projects/my-app --copy
+./bin/skill install --all --project ~/projects/my-app --copy
+
+# 同步 / 移除
+./bin/skill sync --all --global
+./bin/skill uninstall --global angular-code-review
+
+# 產生 SKILLS.md 目錄
+./bin/skill generate
 ```
 
 安裝後重新開啟 Cursor，Agent 即可發現已部署的 skills。
+
+> Phase 1 的 `./scripts/install.sh`、`./scripts/validate-skill.sh` 仍可使用，行為與 `./bin/skill` 一致。
+
+## CLI 指令
+
+| 指令 | 說明 |
+|------|------|
+| `list` | 列出倉庫內 skills（可加 `--tags <tag>`） |
+| `list --installed` | 列出已安裝 skills（搭配 `--global` 或 `--project <path>`） |
+| `info <name>` | 顯示 skill 詳情（可加 `--global` 查看安裝狀態） |
+| `validate [--all] [<name>...]` | 驗證 skill 結構 |
+| `install [options] [<names>...]` | 安裝 skills |
+| `sync [options] [<names>...]` | 重新同步已安裝 skills |
+| `uninstall [options] [<names>...]` | 移除已安裝 skills |
+| `generate` | 從 `skills/manifest.json` 產生 `SKILLS.md` |
+
+### 共用 Options
+
+| 選項 | 說明 |
+|------|------|
+| `--global` / `--personal` | 目標：`~/.cursor/skills/` |
+| `--project <path>` | 目標：`<path>/.cursor/skills/` |
+| `--copy` | 複製模式（預設 symlink） |
+| `--force` | 覆寫已存在的 skill |
+| `--all` | 套用至倉庫或 manifest 內全部 skills |
+
+### 常用安裝情境
+
+| 情境 | 指令 |
+|------|------|
+| 本機安裝單一 skill | `./bin/skill install --global <name>` |
+| 本機安裝全部 skills | `./bin/skill install --all --global` |
+| 專案安裝單一 skill | `./bin/skill install --project <path> <name> --copy` |
+| 專案安裝全部 skills | `./bin/skill install --all --project <path> --copy` |
+| 查看本機已安裝 | `./bin/skill list --installed --global` |
+| 同步本機全部 skills | `./bin/skill sync --all --global` |
+| 移除本機 skill | `./bin/skill uninstall --global <name>` |
 
 ## 目錄結構
 
 ```
 adam_auto_skill/
+├── bin/skill                # 統一 CLI 入口
 ├── skills/                  # 所有 skills 的來源
-│   ├── manifest.json        # Skill 索引
-│   ├── angular-code-review/
-│   └── git-commit-helper/
+│   └── manifest.json        # Skill 索引
 ├── scripts/
-│   ├── validate-skill.sh    # 驗證 skill 結構
-│   └── install.sh           # 安裝 skill
+│   ├── lib.sh               # 共用函式
+│   ├── manifest.py          # Install manifest 管理
+│   ├── validate-skill.sh
+│   ├── install.sh
+│   ├── sync.sh
+│   ├── uninstall.sh
+│   └── generate-skills-md.sh
+├── SKILLS.md                # 自動產生的 skill 總覽
 ├── initial.md               # 專案需求規格
 └── README.md
 ```
+
+## Install Manifest
+
+安裝紀錄寫入目標目錄的 `.adam-manifest.json`：
+
+- Personal：`~/.cursor/skills/.adam-manifest.json`
+- Project：`<project>/.cursor/skills/.adam-manifest.json`
+
+記錄內容包含 skill 名稱、安裝模式（symlink/copy）、來源路徑、安裝時間。
 
 ## Skills 一覽
 
@@ -48,53 +97,21 @@ adam_auto_skill/
 | `angular-code-review` | angular, code-review | Angular 程式碼審查（NGXS、inject()、TypeScript） |
 | `git-commit-helper` | git, commit | 依 diff 產生 commit message |
 
-完整索引見 [`skills/manifest.json`](skills/manifest.json)。
+完整索引見 [`SKILLS.md`](SKILLS.md) 或 [`skills/manifest.json`](skills/manifest.json)。
 
 ## 新增 Skill
 
 1. 在 `skills/<skill-name>/` 建立目錄
 2. 撰寫 `SKILL.md`（含 `name`、`description` frontmatter）
 3. 更新 `skills/manifest.json`
-4. 執行驗證：
+4. 驗證並更新目錄：
 
 ```bash
-./scripts/validate-skill.sh <skill-name>
+./bin/skill validate <skill-name>
+./bin/skill generate
 ```
 
 5. Git commit（建議格式：`skill(<name>): <description>`）
-
-### SKILL.md 規範
-
-- 目錄名與 frontmatter `name` 必須一致
-- `name`：小寫、數字、連字號，最多 64 字元
-- `description`：最多 1024 字元，第三人稱，包含 WHAT 與 WHEN
-
-## 安裝選項
-
-| 選項 | 說明 |
-|------|------|
-| `--global` / `--personal` | 安裝到 `~/.cursor/skills/` |
-| `--project <path>` | 安裝到 `<path>/.cursor/skills/` |
-| `--copy` | 複製檔案（預設為 symlink） |
-| `--force` | 覆寫已存在的 skill |
-| `--all` | 安裝倉庫內全部 skills（可與 `--global` 或 `--project` 搭配） |
-
-### 常用安裝情境
-
-| 情境 | 指令 |
-|------|------|
-| 本機安裝單一 skill | `./scripts/install.sh --global <name>` |
-| 本機安裝全部 skills | `./scripts/install.sh --all --global` |
-| 專案安裝單一 skill | `./scripts/install.sh --project <path> <name> --copy` |
-| 專案安裝全部 skills | `./scripts/install.sh --all --project <path> --copy` |
-| 覆寫已存在的 skill | 加上 `--force` |
-
-> `--all` 與 `--project` 可任意組合；參數順序不拘（例如 `--project <path> --all --copy` 亦可）。
-
-### Symlink vs Copy
-
-- **Symlink（預設）**：修改本 repo 後立即生效，適合本機開發
-- **Copy**：獨立副本，適合安裝到他人專案或離線環境
 
 ## 存放路徑參考
 
@@ -106,8 +123,8 @@ adam_auto_skill/
 
 ## 開發路線圖
 
-- **Phase 1**（目前）：基礎倉庫、validate、install
-- **Phase 2**：統一 CLI（`bin/skill`）、install manifest、sync/uninstall
+- **Phase 1** ✅：基礎倉庫、validate、install
+- **Phase 2** ✅：統一 CLI、install manifest、sync/uninstall、SKILLS.md
 - **Phase 3**：CI 驗證、pre-commit hook、skill scaffold
 
 詳細規格見 [`initial.md`](initial.md)。

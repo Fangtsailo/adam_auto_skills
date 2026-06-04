@@ -6,45 +6,47 @@
 
 ## 0. 實作進度
 
-**目前階段：Phase 1 完成 ✅ | Phase 2 待開始**
+**目前階段：Phase 2 完成 ✅ | Phase 3 待開始**
 
 | 階段 | 狀態 | 說明 |
 |------|------|------|
 | Phase 1 — 基礎倉庫（MVP） | ✅ 完成 | Git 初始化、skills 倉庫、validate/install 腳本、README |
-| Phase 2 — CLI 與狀態管理 | ⬜ 未開始 | `bin/skill`、install manifest、sync/uninstall |
+| Phase 2 — CLI 與狀態管理 | ✅ 完成 | `bin/skill`、install manifest、sync/uninstall、SKILLS.md |
 | Phase 3 — 品質與自動化 | ⬜ 未開始 | CI、pre-commit、skill scaffold |
 | Phase 4 — 進階 | ⬜ 未開始 | 第三方 skill、submodule、SDK 整合 |
 
-### 已交付項目（Phase 1）
+### 已交付項目（Phase 1 + Phase 2）
 
 | 項目 | 路徑 / 指令 | 狀態 |
 |------|-------------|------|
-| Git 倉庫 | `.git/` | ✅ 已 init，檔案已 staged，**尚未 initial commit** |
+| Git 倉庫 | `.git/` | ✅ initial commit 完成 |
+| 統一 CLI | `bin/skill` | ✅ |
+| Install manifest | `.adam-manifest.json`（目標目錄內） | ✅ `scripts/manifest.py` |
+| 列出 skills | `./bin/skill list [--installed] [--tags]` | ✅ |
+| Skill 詳情 | `./bin/skill info <name>` | ✅ |
+| 同步 skills | `./bin/skill sync [--all]` | ✅ |
+| 移除 skills | `./bin/skill uninstall [--all]` | ✅ |
+| 自動目錄 | `SKILLS.md` | ✅ `./bin/skill generate` |
 | Skill 索引 | `skills/manifest.json` | ✅ |
-| 範例 skill | `skills/angular-code-review/`（含 `reference.md`） | ✅ |
-| 範例 skill | `skills/git-commit-helper/` | ✅ |
-| 共用函式庫 | `scripts/lib.sh` | ✅ |
-| 驗證腳本 | `scripts/validate-skill.sh` | ✅ |
-| 安裝腳本 | `scripts/install.sh` | ✅ |
-| 專案說明 | `README.md` | ✅ |
-| 變更紀錄 | `CHANGELOG.md` v1.0.0 | ✅ |
-| Git 忽略規則 | `.gitignore` | ✅ |
+| 範例 skills | `angular-code-review`、`git-commit-helper` | ✅ |
+| 管理腳本 | `scripts/lib.sh`、`install.sh`、`validate-skill.sh` 等 | ✅ |
 
 ### 已驗證行為
 
-- `./scripts/validate-skill.sh --all` — 2 個 skills + manifest 全部通過
-- `./scripts/install.sh --global <name>` — symlink 安裝至 `~/.cursor/skills/`
-- `./scripts/install.sh --project <path> <name> --copy` — 複製安裝至專案 `.cursor/skills/`
-- `./scripts/install.sh --all --project <path> --copy` — 複製安裝全部 skills 至指定專案
-- 重複安裝阻擋、`--force` 覆寫 — 正常運作
-- 禁止寫入 `~/.cursor/skills-cursor/` — 已實作於 `scripts/lib.sh`
+- `./bin/skill validate --all` — 2 個 skills + manifest 全部通過
+- `./bin/skill install --global <name>` — symlink 安裝並寫入 manifest
+- `./bin/skill install --all --project <path> --copy` — 複製安裝全部 skills
+- `./bin/skill list --installed --global` — 讀取 `.adam-manifest.json`
+- `./bin/skill sync --global <name>` — 重新同步 symlink/copy
+- `./bin/skill uninstall --global <name>` — 移除目標且不影響 repo 原始檔
+- `./bin/skill generate` — 產生 `SKILLS.md`
 
-### 待辦（Phase 2 起）
+### 待辦（Phase 3 起）
 
-- 建立 initial commit 並 push remote
-- 實作 `bin/skill` 統一 CLI（`list`、`info`、`sync`、`uninstall`）
-- Install manifest 追蹤已安裝狀態
-- 自動生成 `SKILLS.md`
+- GitHub Actions CI 驗證 PR 中的 skills
+- Pre-commit hook 驗證變更的 skill
+- Skill 模板腳本（`skill new <name>` scaffold）
+- Push remote（若尚未設定）
 
 ---
 
@@ -87,7 +89,7 @@ Agent Skill 是 Cursor 中用來教導 AI Agent 執行特定任務的 Markdown �
 | G1 | **集中收納** | 所有自訂 skills 統一存放於此 repo，附目錄與說明 | ✅ Phase 1 |
 | G2 | **版本管理** | 以 Git 追蹤每個 skill 的演進，支援 tag / release | 🟡 Git 已 init，待 commit / tag |
 | G3 | **選擇性安裝** | 可安裝全部、單一、或多個指定 skills 到目標位置 | ✅ Phase 1 |
-| G4 | **可更新 / 可移除** | 支援 sync、upgrade、uninstall，避免殘留舊版 | ⬜ Phase 2（symlink 模式下更新已即時生效） |
+| G4 | **可更新 / 可移除** | 支援 sync、upgrade、uninstall，避免殘留舊版 | ✅ Phase 2 |
 | G5 | **品質一致** | 提供驗證腳本，確保 frontmatter、命名、結構符合規範 | ✅ Phase 1 |
 
 ### 2.3 非目標（初期不做）
@@ -115,11 +117,8 @@ Agent Skill 是 Cursor 中用來教導 AI Agent 執行特定任務的 Markdown �
 > 我想在本機所有 Cursor 專案都能用到 `create-hook` 和 `babysit` 這兩個 skills。
 
 ```bash
-# ✅ Phase 1 已實作
-./scripts/install.sh --global angular-code-review git-commit-helper
-
-# ⬜ Phase 2 待實作
-skill install --global angular-code-review create-hook
+# ✅ Phase 2 已實作
+./bin/skill install --global angular-code-review git-commit-helper
 ```
 
 ### UC-3：安裝到指定專案
@@ -127,48 +126,39 @@ skill install --global angular-code-review create-hook
 > 我想把 skill 裝到 `~/projects/my-app/` 的 project skills 裡，讓團隊共用。
 
 ```bash
-# ✅ 安裝單一 skill
-./scripts/install.sh --project ~/projects/my-app angular-code-review --copy
-
-# ✅ 安裝全部 skills 到指定專案
-./scripts/install.sh --all --project ~/projects/my-app --copy
-
-# ⬜ Phase 2 待實作
-skill install --project ~/projects/my-app angular-nx-standards
-skill install --all --project ~/projects/my-app
+# ✅ Phase 2 已實作
+./bin/skill install --project ~/projects/my-app angular-code-review --copy
+./bin/skill install --all --project ~/projects/my-app --copy
 ```
 
-### UC-4：更新已安裝的 Skill ⬜ Phase 2
+### UC-4：更新已安裝的 Skill ✅ Phase 2
 
 > 中央倉庫的 skill 更新了，我想同步到已安裝的位置。
 
-> **Phase 1 備註：** symlink 模式下，修改本 repo 後即時生效，無需額外 sync。
+> **備註：** symlink 模式下，修改本 repo 後即時生效；copy 模式需執行 sync。
 
 ```bash
-skill sync angular-code-review
-# 或一次更新全部
-skill sync --all
+./bin/skill sync angular-code-review --global
+./bin/skill sync --all --global
 ```
 
-### UC-5：列出與查詢 ⬜ Phase 2
+### UC-5：列出與查詢 ✅ Phase 2
 
 > 我想看倉庫裡有哪些 skills，以及某個 skill 是否已安裝。
 
-> **Phase 1 替代：** 查閱 `skills/manifest.json` 或執行 `ls skills/`。
-
 ```bash
-skill list                  # 列出倉庫內所有 skills
-skill list --installed      # 列出已安裝到 personal 的 skills
-skill info angular-code-review
+./bin/skill list
+./bin/skill list --tags angular
+./bin/skill list --installed --global
+./bin/skill info angular-code-review
+./bin/skill info --global angular-code-review
 ```
 
-### UC-6：移除 Skill ⬜ Phase 2
-
-> **Phase 1 替代：** 手動刪除 `~/.cursor/skills/<name>` 或專案內 `.cursor/skills/<name>`。
+### UC-6：移除 Skill ✅ Phase 2
 
 ```bash
-skill uninstall --global angular-code-review
-skill uninstall --project ~/projects/my-app angular-nx-standards
+./bin/skill uninstall --global angular-code-review
+./bin/skill uninstall --all --project ~/projects/my-app
 ```
 
 ---
@@ -195,13 +185,13 @@ skill uninstall --project ~/projects/my-app angular-nx-standards
 
 ### 4.3 更新與移除
 
-- [ ] **FR-20** `sync` 重新指向或複製最新版本（symlink 模式下 git pull 即生效）→ Phase 2
-- [ ] **FR-21** `uninstall` 移除 symlink 或複製的目錄，不影響倉庫原始檔 → Phase 2
-- [ ] **FR-22** 記錄已安裝狀態（建議 `.skill-install-lock` 或 `~/.cursor/skills/.adam-manifest.json`）→ Phase 2
+- [x] **FR-20** `sync` 重新指向或複製最新版本 → `./bin/skill sync`
+- [x] **FR-21** `uninstall` 移除 symlink 或複製的目錄，不影響倉庫原始檔 → `./bin/skill uninstall`
+- [x] **FR-22** 記錄已安裝狀態 → `<target>/.cursor/skills/.adam-manifest.json`
 
 ### 4.4 Git 工作流
 
-- [x] **FR-30** 本 repo 以 Git 管理（已 init；待 initial commit）
+- [x] **FR-30** 本 repo 以 Git 管理（initial commit 完成）
 - [ ] **FR-31** 建議 commit 格式：`skill(<name>): <description>`，例如 `skill(angular-review): add NGXS checklist`
 - [ ] **FR-32** 重大變更以 Git tag 標記版本（如 `angular-review/v1.2.0`）
 - [x] **FR-33** 提供 `CHANGELOG.md` 或各 skill 目錄下 `CHANGELOG.md` 記錄變更
@@ -210,7 +200,7 @@ skill uninstall --project ~/projects/my-app angular-nx-standards
 
 - [x] **FR-40** 根目錄 `README.md` 說明專案用途、快速開始、指令參考
 - [ ] **FR-41** 各 skill 可選 `README.md` 補充使用範例（`SKILL.md` 保持精簡）
-- [ ] **FR-42** `SKILLS.md` 自動或半自動生成 skill 總覽表 → Phase 2
+- [x] **FR-42** `SKILLS.md` 自動或半自動生成 skill 總覽表 → `./bin/skill generate`
 
 ---
 
@@ -235,7 +225,8 @@ adam_auto_skill/
 │   ├── install.sh             # ✅ 安裝入口
 │   └── validate-skill.sh      # ✅ 驗證 skill 結構
 ├── bin/
-│   └── skill                  # ⬜ Phase 2：統一 CLI 入口
+│   └── skill                  # ✅ 統一 CLI 入口
+├── SKILLS.md                  # ✅ 自動產生目錄
 └── .github/
     └── workflows/
         └── validate.yml       # ⬜ Phase 3：CI 驗證
@@ -312,7 +303,7 @@ description: >-
 建立 symlink 或 copy 至目標 .cursor/skills/<name>/
         │
         ▼
-更新 install manifest（記錄來源路徑、模式、時間）  ← ⬜ Phase 2
+更新 install manifest（記錄來源路徑、模式、時間）  ← ✅ Phase 2
         │
         ▼
 輸出成功訊息
@@ -332,29 +323,23 @@ description: >-
 
 ## 8. CLI 指令規格（草案）
 
-**Phase 1 對應腳本：**
+**Phase 2 統一 CLI（✅ 已實作）：**
 
 ```bash
-./scripts/validate-skill.sh [--all] [<name>...]   # ✅ 已實作
-./scripts/install.sh [options] [<names>...]       # ✅ 已實作
-
-# 安裝全部至本機
-./scripts/install.sh --all --global
-
-# 安裝全部至指定專案
-./scripts/install.sh --all --project <path> [--copy] [--force]
+./bin/skill list [--installed] [--tags <tag>]
+./bin/skill info <name> [--global|--project <path>]
+./bin/skill validate [--all] [<name>...]
+./bin/skill install [options] [<names>...]
+./bin/skill sync [options] [<names>...]
+./bin/skill uninstall [options] [<names>...]
+./bin/skill generate
 ```
 
-**Phase 2 統一 CLI（待實作）：**
+**Phase 1 腳本（仍可用，行為一致）：**
 
 ```bash
-skill list [--installed] [--tags <tag>]     # 列出 skills
-skill info <name>                           # 顯示 skill 詳情
-skill validate [<name>]                     # 驗證一個或全部 skills
-skill install [options] <names...>          # 安裝
-skill install --all [options]               # 安裝全部
-skill sync [<names...>] [--all]             # 同步已安裝 skills
-skill uninstall [options] <names...>        # 移除
+./scripts/validate-skill.sh [--all] [<name>...]
+./scripts/install.sh [options] [<names>...]
 ```
 
 **共用 options：**
@@ -382,12 +367,13 @@ skill uninstall [options] <names...>        # 移除
 - [x] 實作 `scripts/lib.sh` 共用函式庫
 - [x] 撰寫 `CHANGELOG.md`、`.gitignore`
 
-### Phase 2 — CLI 與狀態管理
+### Phase 2 — CLI 與狀態管理 ✅ 完成
 
-- [ ] 統一 `bin/skill` CLI 入口
-- [ ] Install manifest 追蹤已安裝 skills
-- [ ] `list --installed`、`sync`、`uninstall` 命令
-- [ ] 自動生成 `SKILLS.md`
+- [x] 統一 `bin/skill` CLI 入口
+- [x] Install manifest 追蹤已安裝 skills（`.adam-manifest.json` + `scripts/manifest.py`）
+- [x] `list --installed`、`sync`、`uninstall` 命令
+- [x] 自動生成 `SKILLS.md`（`./bin/skill generate`）
+- [x] `list`、`info` 命令
 
 ### Phase 3 — 品質與自動化
 
@@ -424,15 +410,23 @@ skill uninstall [options] <names...>        # 移除
 | 1 | 在本 repo 新增一個 skill 並通過 validate | ✅ 已驗證 |
 | 2 | 執行一條命令將其安裝到 `~/.cursor/skills/`，Cursor 重開後可發現該 skill | ✅ 已驗證（symlink） |
 | 3 | 執行一條命令將其安裝到任意專案的 `.cursor/skills/` | ✅ 已驗證（copy） |
-| 4 | 執行 uninstall 乾淨移除，不影響倉庫原始檔 | ⬜ Phase 2 |
-| 5 | 所有變更有 Git 歷史可追溯 | ⬜ 待 initial commit |
+| 4 | 執行 uninstall 乾淨移除，不影響倉庫原始檔 | ✅ 已驗證 |
+| 5 | 所有變更有 Git 歷史可追溯 | ✅ initial commit 完成 |
 
-### Phase 2 成功標準（待完成）
+### Phase 2 成功標準
 
-- 統一 `bin/skill` CLI 取代分散腳本
-- Install manifest 追蹤已安裝 skills
-- `sync`、`uninstall`、`list --installed` 可用
-- 自動生成 `SKILLS.md`
+| # | 標準 | 狀態 |
+|---|------|------|
+| 1 | 統一 `bin/skill` CLI 取代分散腳本 | ✅ |
+| 2 | Install manifest 追蹤已安裝 skills | ✅ |
+| 3 | `sync`、`uninstall`、`list --installed` 可用 | ✅ |
+| 4 | 自動生成 `SKILLS.md` | ✅ |
+
+### Phase 3 成功標準（待完成）
+
+- GitHub Actions CI 驗證 PR 中的 skills
+- Pre-commit hook 驗證變更的 skill
+- `skill new <name>` scaffold 模板
 
 ---
 
@@ -445,4 +439,4 @@ skill uninstall [options] <names...>        # 移除
 
 ---
 
-*文件版本：v0.2 | 建立日期：2026-06-03 | Phase 1 完成：2026-06-03*
+*文件版本：v0.3 | 建立日期：2026-06-03 | Phase 1 完成：2026-06-03 | Phase 2 完成：2026-06-03*

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-06-03
+
+### Added
+
+- Unified CLI entry point: `bin/skill`
+- Install manifest tracking via `.adam-manifest.json` and `scripts/manifest.py`
+- Commands: `list`, `info`, `sync`, `uninstall`, `generate`
+- Auto-generated `SKILLS.md` catalog
+- `scripts/list.sh`, `scripts/info.sh`, `scripts/sync.sh`, `scripts/uninstall.sh`, `scripts/generate-skills-md.sh`
+
+### Changed
+
+- `install.sh` now records installs to the install manifest
+- README updated for Phase 2 CLI usage
+
 ## [1.0.0] - 2026-06-03
 
 ### Added

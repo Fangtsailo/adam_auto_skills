@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# Unified CLI for adam_auto_skill.
+
+set -euo pipefail
+
+CLI_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${CLI_DIR}/.." && pwd)"
+export REPO_ROOT
+
+usage() {
+    cat <<'EOF'
+Usage: skill <command> [options] [args...]
+
+Commands:
+  list        List repository or installed skills
+  info        Show skill details
+  validate    Validate skill structure and frontmatter
+  install     Install skills to personal or project targets
+  sync        Re-sync installed skills from this repository
+  uninstall   Remove installed skills from a target
+  generate    Generate SKILLS.md from skills/manifest.json
+  help        Show this help
+
+Examples:
+  ./bin/skill list
+  ./bin/skill list --installed --global
+  ./bin/skill info angular-code-review
+  ./bin/skill validate --all
+  ./bin/skill install --global angular-code-review
+  ./bin/skill sync --all --global
+  ./bin/skill uninstall --global angular-code-review
+  ./bin/skill generate
+
+Legacy scripts in scripts/ remain available and share the same install manifest.
+EOF
+}
+
+COMMAND="${1:-}"
+if [[ -z "$COMMAND" ]]; then
+    usage
+    exit 1
+fi
+shift || true
+
+case "$COMMAND" in
+    list)
+        exec "${REPO_ROOT}/scripts/list.sh" "$@"
+        ;;
+    info)
+        exec "${REPO_ROOT}/scripts/info.sh" "$@"
+        ;;
+    validate)
+        exec "${REPO_ROOT}/scripts/validate-skill.sh" "$@"
+        ;;
+    install)
+        exec "${REPO_ROOT}/scripts/install.sh" "$@"
+        ;;
+    sync)
+        exec "${REPO_ROOT}/scripts/sync.sh" "$@"
+        ;;
+    uninstall)
+        exec "${REPO_ROOT}/scripts/uninstall.sh" "$@"
+        ;;
+    generate|docs)
+        exec "${REPO_ROOT}/scripts/generate-skills-md.sh" "$@"
+        ;;
+    help|-h|--help)
+        usage
+        ;;
+    *)
+        echo "[ERROR] Unknown command: ${COMMAND}" >&2
+        echo "" >&2
+        usage >&2
+        exit 1
+        ;;
+esac
