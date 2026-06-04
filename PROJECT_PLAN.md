@@ -214,7 +214,7 @@ git commit -m "skill(my-skill): add new skill"
 ### 4.5 文件與可發現性
 
 - [x] **FR-40** `README.md` — 一般使用者快速上手（精簡）
-- [x] **FR-40b** `initial.md` — 完整規格與擴充手冊（本文件）
+- [x] **FR-40b** `PROJECT_PLAN.md` — 完整規格與擴充手冊（本文件）
 - [ ] **FR-41** 各 skill 可選 `README.md`
 - [x] **FR-42** `./bin/skill generate` → `SKILLS.md`
 
@@ -239,7 +239,7 @@ git commit -m "skill(my-skill): add new skill"
 ```
 adam_auto_skill/
 ├── README.md                      # 一般使用者快速上手（精簡）
-├── initial.md                     # 本文件：完整規格與擴充手冊
+├── PROJECT_PLAN.md                # 本文件：完整規格與擴充手冊
 ├── CHANGELOG.md
 ├── SKILLS.md                      # 自動產生，勿手動編輯
 ├── bin/skill                        # 統一 CLI
@@ -592,7 +592,7 @@ Cursor SDK 範例見 `docs/automations.md`。
 
 - Git、`skills/`、`manifest.json`、範例 skills
 - `validate-skill.sh`、`install.sh`、`lib.sh`
-- `README.md`（精簡）、`initial.md`、`CHANGELOG.md`
+- `README.md`（精簡）、`PROJECT_PLAN.md`、`CHANGELOG.md`
 
 ### Phase 2 — CLI 與狀態 ✅
 
@@ -625,7 +625,7 @@ Cursor SDK 範例見 `docs/automations.md`。
 | D3 | Manifest 格式 | ✅ JSON |
 | D4 | Tag 策略 | 初期全 repo；後續可 per-skill |
 | D5 | 命名前綴 | ✅ 不加 `adam-`，目錄名即 skill name |
-| D6 | 文件分工 | ✅ README 精簡；initial.md 完整規格 |
+| D6 | 文件分工 | ✅ README 精簡；PROJECT_PLAN.md 完整規格 |
 
 ---
 

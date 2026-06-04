@@ -7,7 +7,7 @@
 | 本機（所有專案） | `~/.cursor/skills/` |
 | 單一專案 | `<project>/.cursor/skills/` |
 
-安裝後請**重新開啟 Cursor**。擴充、CLI 完整規格與貢獻流程見 **[`initial.md`](initial.md)**。
+安裝後請**重新開啟 Cursor**。擴充、CLI 完整規格與貢獻流程見 **[`PROJECT_PLAN.md`](PROJECT_PLAN.md)**。
 
 ---
 
@@ -46,7 +46,7 @@ chmod +x bin/skill scripts/*.sh
 | 更新 copy 安裝 | `./bin/skill sync --all --project <path>` |
 | 查看已安裝 | `./bin/skill list --installed --global` |
 
-**安裝模式：** 本機開發用預設 **symlink**（改 central repo 即生效）；專案 / CI 建議 **`--copy`**（需 `sync` 更新）。詳見 [`initial.md` §7](initial.md#7-安裝機制設計)。
+**安裝模式：** 本機開發用預設 **symlink**（改 central repo 即生效）；專案 / CI 建議 **`--copy`**（需 `sync` 更新）。詳見 [`PROJECT_PLAN.md` §7](PROJECT_PLAN.md#7-安裝機制設計)。
 
 ---
 
@@ -69,7 +69,7 @@ chmod +x bin/skill scripts/*.sh
 ./bin/skill hooks install   # 可選：commit 前自動驗證
 ```
 
-貢獻檢查清單、遠端 pull、submodule、CI 整合 → [`initial.md`](initial.md)
+貢獻檢查清單、遠端 pull、submodule、CI 整合 → [`PROJECT_PLAN.md`](PROJECT_PLAN.md)
 
 ---
 
@@ -77,7 +77,7 @@ chmod +x bin/skill scripts/*.sh
 
 | 文件 | 用途 |
 |------|------|
-| [`initial.md`](initial.md) | 完整規格、CLI、擴充與貢獻手冊 |
+| [`PROJECT_PLAN.md`](PROJECT_PLAN.md) | 完整規格、CLI、擴充與貢獻手冊 |
 | [`docs/automations.md`](docs/automations.md) | 外部專案 / CI / SDK 安裝 |
 | [`CHANGELOG.md`](CHANGELOG.md) | 版本紀錄 |
 

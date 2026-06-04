@@ -45,5 +45,5 @@ All notable changes to this project will be documented in this file.
 - `skills/manifest.json` skill index
 - `scripts/validate-skill.sh` — validate SKILL.md frontmatter and structure
 - `scripts/install.sh` — install skills to personal or project directories (symlink/copy)
-- Project specification in `initial.md`
+- Project specification in `PROJECT_PLAN.md`
 - README with quick start guide
