@@ -12,6 +12,18 @@
             "version": "1.0.0"
         },
         {
+            "name": "angular-dev-core-rules",
+            "description": "Guides Angular implementation toward strict i18n, FP, declarative UI/data flow, and purposeful comments. Use for dev/refactor; use angular-code-review for PR review.",
+            "tags": [
+                "angular",
+                "ngxs",
+                "rxjs",
+                "i18n",
+                "typescript"
+            ],
+            "version": "1.0.0"
+        },
+        {
             "name": "generate-mr-content",
             "description": "Generate English MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix).",
             "tags": [

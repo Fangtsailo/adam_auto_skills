@@ -249,6 +249,11 @@ adam_auto_skill/
 │   ├── angular-code-review/
 │   │   ├── SKILL.md
 │   │   └── reference.md
+│   ├── angular-dev-core-rules/
+│   │   ├── SKILL.md
+│   │   └── reference.md
+│   ├── generate-mr-content/
+│   │   └── SKILL.md
 │   └── git-commit-helper/
 │       └── SKILL.md
 ├── scripts/
@@ -579,6 +584,8 @@ Cursor SDK 範例見 `docs/automations.md`。
 | Skill | 版本 | 標籤 | 說明 |
 |-------|------|------|------|
 | `angular-code-review` | 1.0.0 | angular, code-review, typescript | NGXS、`inject()`、嚴格 TypeScript、團隊規範 |
+| `angular-dev-core-rules` | 1.0.0 | angular, ngxs, rxjs, i18n, typescript | 開發實作方向（i18n/FP/宣告式）；審查用 `angular-code-review` |
+| `generate-mr-content` | 1.0.0 | merge-request, mr, workflow, documentation | 從 staged diff 產生 MR 描述（Title、Root Cause、How to Fix） |
 | `git-commit-helper` | 1.0.0 | git, commit, workflow | 分析 staged diff 產生 commit message |
 
 機器可讀：`skills/manifest.json`  

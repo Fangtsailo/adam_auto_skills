@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-06-04
+
+### Added
+
+- Skill `angular-dev-core-rules`: strict i18n, functional programming, declarative patterns, and purposeful comments (with `reference.md`)
+
+### Changed
+
+- `angular-dev-core-rules`: soften absolute bans; clarify scope vs `angular-code-review`; API-agnostic i18n and flexible subscribe/DOM guidance
+
 ## [1.3.0] - 2026-06-03
 
 ### Added
