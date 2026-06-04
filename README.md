@@ -55,7 +55,7 @@ chmod +x bin/skill scripts/*.sh
 | Skill | 說明 |
 |-------|------|
 | `angular-code-review` | Angular 程式碼審查（NGXS、`inject()`、TypeScript） |
-| `git-commit-helper` | 依 staged diff 產生 commit message |
+| `generate-mr-content` | 產生 MR 描述（Title、Root Cause、How to Fix） |
 
 完整列表：[`SKILLS.md`](SKILLS.md)
 

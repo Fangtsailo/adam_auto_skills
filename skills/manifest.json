@@ -12,12 +12,13 @@
             "version": "1.0.0"
         },
         {
-            "name": "git-commit-helper",
-            "description": "Generate descriptive git commit messages by analyzing staged changes and diffs.",
+            "name": "generate-mr-content",
+            "description": "Generate merge request description in Title, Root Cause, and How to Fix markdown format.",
             "tags": [
-                "git",
-                "commit",
-                "workflow"
+                "merge-request",
+                "mr",
+                "workflow",
+                "documentation"
             ],
             "version": "1.0.0"
         }
