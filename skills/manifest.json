@@ -13,7 +13,7 @@
         },
         {
             "name": "generate-mr-content",
-            "description": "Generate merge request description in Title, Root Cause, and How to Fix markdown format.",
+            "description": "Generate MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix).",
             "tags": [
                 "merge-request",
                 "mr",

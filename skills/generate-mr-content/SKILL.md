@@ -1,21 +1,39 @@
 ---
 name: generate-mr-content
 description: >-
-  Generate merge request / MR description content in a fixed markdown template
-  (Title, Root Cause, How to Fix). Use when the user asks for MR content, merge
-  request description, MR title and summary, or mentions generate-mr-content.
+  Generate merge request description (Title, Root Cause, How to Fix) from git
+  staged changes only. Use when the user says 產生MR內容, asks for MR content,
+  merge request description, or mentions generate-mr-content.
+disable-model-invocation: false
 ---
 
 # Generate MR Content
 
-Produce merge request description content from the user's context (bug report, diff, discussion, or stated problem).
+Produce MR description content **only** from the current git **staged** diff.
+
+## Trigger
+
+Apply this skill when the user says **產生MR內容** (or clearly equivalent wording, e.g.「產生 MR 內容」).
 
 ## Workflow
 
-1. Gather context: what broke, symptoms, affected area, and the fix (or proposed fix).
-2. If code/diff is available, read enough to state the real cause—not symptoms only.
-3. Draft all three sections in the exact format below.
-4. Verify **Title** length ≤ 80 characters (count letters only; spaces and punctuation count).
+1. Run `git diff --staged` (and `git status --short` if helpful for file context).
+2. Use **only** staged changes as the source of truth—ignore unstaged changes, prior chat, and assumptions not supported by the staged diff.
+3. If there are **no** staged changes, stop and tell the user to stage files first; do not generate MR content from unstaged work.
+4. Draft Title, Root Cause, and How to Fix from what the staged diff actually does.
+5. Verify **Title** length ≤ 80 characters (spaces and punctuation count).
+
+## Scope Rules
+
+| Allowed | Not allowed |
+|---------|-------------|
+| `git diff --staged` output | `git diff` (unstaged) |
+| Staged file paths and hunks | User narrative unrelated to staged diff |
+| Inferring problem/fix **implied by** the staged change | Inventing bugs or fixes not reflected in staged code |
+
+**Root Cause:** Why this change was needed—the problem or gap the staged diff addresses (inferred from the change, stated concisely).
+
+**How to Fix:** What the staged changes do to resolve it—aligned with the actual diff, not a wish list.
 
 ## Output Format
 
@@ -36,21 +54,20 @@ Return **only** this markdown structure—no preamble, no extra sections:
 
 | Section | Rules |
 |---------|--------|
-| **Title** | One line; ≤ 80 characters; states what the MR does (fix/feature), not file names; imperative or past tense as team prefers |
-| **Root Cause** | Why it failed; 1–3 bullets or ≤ 2 sentences; no stack traces unless essential |
-| **How to Fix** | What changed or should change; 1–3 bullets or ≤ 2 sentences; concrete actions |
+| **Title** | One line; ≤ 80 characters; summarizes the staged change intent; not a raw file list |
+| **Root Cause** | 1–3 bullets or ≤ 2 sentences; problem/gap implied by the diff |
+| **How to Fix** | 1–3 bullets or ≤ 2 sentences; matches what is actually staged |
 
 ## Quality
 
-- **Title**: Specific (e.g. `Fix cart duplicate items on rapid add` not `Bug fix`).
-- **Root Cause**: Underlying mechanism, not only user-visible symptom.
-- **How to Fix**: Maps to the cause; mention tests or config only if relevant.
-- Omit filler (`please`, `we should consider`, long background).
-- If context is insufficient, ask one focused question—otherwise infer from available evidence.
+- **Title**: Specific to the change (e.g. `Fix cart duplicate items on rapid add` not `Bug fix`).
+- **Root Cause**: Mechanism or requirement the diff addresses—not generic filler.
+- **How to Fix**: Describes staged implementation; mention tests only if they appear in the staged diff.
+- Omit filler and content not grounded in staged changes.
 
 ## Example
 
-**Input:** Checkout fails when user applies two coupons; race on `applyDiscount`.
+**Staged diff:** Adds a session lock in `applyDiscount` and returns an error when a second coupon is applied.
 
 **Output:**
 
@@ -60,9 +77,9 @@ Fix duplicate coupon application race in checkout
 
 ### Root Cause
 - `applyDiscount` had no guard when two requests ran concurrently
-- Second request read stale cart state before the first write completed
+- Second request could read stale cart state before the first write completed
 
 ### How to Fix
-- Add idempotent lock per cart session during discount application
-- Reject second coupon with clear error if one is already applied
+- Add per-cart-session lock during discount application
+- Reject a second coupon with a clear error when one is already applied
 ```
