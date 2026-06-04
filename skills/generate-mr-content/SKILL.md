@@ -22,6 +22,7 @@ Apply this skill when the user says **產生MR內容** (or clearly equivalent wo
 3. If there are **no** staged changes, stop and tell the user to stage files first; do not generate MR content from unstaged work.
 4. Draft Title, Root Cause, and How to Fix from what the staged diff actually does.
 5. Verify **Title** length ≤ 80 characters (spaces and punctuation count).
+6. Reply with **one** ` ```markdown ` fenced block only (see Output Format)—never bare `###` headings in chat.
 
 ## Scope Rules
 
@@ -35,9 +36,15 @@ Apply this skill when the user says **產生MR內容** (or clearly equivalent wo
 
 **How to Fix:** What the staged changes do to resolve it—aligned with the actual diff, not a wish list.
 
-## Output Format
+## Output Format (copy-paste)
 
-Return **only** this markdown structure—no preamble, no extra sections:
+The user pastes this into GitLab/GitHub MR description fields. **Do not render MR headings in chat**—wrap the **entire** deliverable in **one** fenced code block so they can copy raw markdown in one action.
+
+Rules:
+
+- **No** preamble, explanation, or text outside the fence (except a one-line hint like「以下可直接複製貼到 MR」*before* the fence is optional; prefer fence-only).
+- Use a `markdown` language tag on the fence: ` ```markdown ` … ` ``` `.
+- Inside the fence, use exactly this structure (headings are plain text inside the block, not live chat markdown):
 
 ```markdown
 ### Title
@@ -48,6 +55,18 @@ Return **only** this markdown structure—no preamble, no extra sections:
 
 ### How to Fix
 <concise bullets or 1–2 short sentences; actionable fix steps>
+```
+
+**Wrong** (renders in chat; hard to copy):
+
+### Title
+Some title
+
+**Right** (single copyable block):
+
+```markdown
+### Title
+Some title
 ```
 
 ## Section Rules
