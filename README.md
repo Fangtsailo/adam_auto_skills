@@ -57,7 +57,7 @@ chmod +x bin/skill scripts/*.sh
 | `angular-code-review` | Angular PR 審查（團隊規範 + `angular-dev-core-rules` 對齊） |
 | `angular-dev-core-rules` | Angular 開發方向（YAML/Crowdin i18n、FP、宣告式）；PR 審查請用 `angular-code-review` |
 | `generate-mr-content` | 產生 MR 描述（Title、Root Cause、How to Fix） |
-| `write-implementation-plan` | 將需求規劃為結構化實作計畫並寫入指定 md（需求章節 + 分 Phase；強烈建議用 mermaid 圖解流程與概念） |
+| `write-implementation-plan` | 將需求規劃為結構化實作計畫並寫入指定 md（概覽模式：Phase 拆分；詳盡模式：PR 拆分；強烈建議 mermaid） |
 
 完整列表：[`SKILLS.md`](SKILLS.md)
 

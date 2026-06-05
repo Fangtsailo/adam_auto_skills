@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- `write-implementation-plan` (1.2.0): dual modes—overview (Phase-based scope) and detailed (PR-based handoff); split templates into `reference-overview.md` and `reference-detailed.md`
 - `write-implementation-plan` (1.1.0): strongly recommend mermaid diagrams for flows, architecture, and phase dependencies; workflow, checklist, and reference templates updated
 
 ## [1.4.1] - 2026-06-04

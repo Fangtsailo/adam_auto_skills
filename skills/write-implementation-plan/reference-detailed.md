@@ -1,4 +1,6 @@
-# Implementation Plan Template
+# Implementation Plan Template — Detailed Mode
+
+Use for **詳盡模式** (ready to implement). Split work with **PR** only—never Phase.
 
 Copy and adapt when writing a plan. Replace placeholders; remove sections marked optional if not needed.
 
@@ -30,22 +32,24 @@ flowchart TD
     B --> C[<Outcome>]
 ```
 
-## Implementation Phases
+## Implementation PRs
 
-### Phase overview (recommended — use mermaid when multiple phases)
+### PR overview (recommended — use mermaid when multiple PRs)
+
+<One-line caption describing merge order and dependencies.>
 
 ```mermaid
 flowchart LR
-    P1[Phase 1: <title>] --> P2[Phase 2: <title>]
-    P2 --> P3[Phase 3: <title>]
+    R1[PR 1: <title>] --> R2[PR 2: <title>]
+    R2 --> R3[PR 3: <title>]
 ```
 
-### Phase 1: <short title>
+### PR 1: <short title>
 
 #### Scope
 - <Deliverable and boundaries>
 - <Files or areas: `path/to/module`, `path/to/component`>
-- <Dependency on other phases: none / requires Phase N>
+- <Merge dependency: none / requires PR N merged first>
 
 #### Implementation
 1. <Step with approach and key changes>
@@ -55,19 +59,20 @@ flowchart LR
 #### Verification
 - [ ] <Command, test, or manual check>
 - [ ] <Observable outcome>
+- [ ] <PR is reviewable size; CI green>
 
-### Phase 2: <short title>
+### PR 2: <short title>
 
 #### Scope
 ...
 
 #### Implementation
-...
+1. ...
 
 #### Verification
-...
+- [ ] ...
 
-<!-- Repeat Phase N as needed -->
+<!-- Repeat PR N as needed -->
 
 ## Risks and mitigations (optional)
 
@@ -112,13 +117,24 @@ flowchart LR
     Card -->|otherwise| Hidden[No badge]
 ```
 
-## Implementation Phases
+## Implementation PRs
 
-### Phase 1: UI and i18n
+### PR overview
+
+Stacked UI-first delivery; state PR only if DTO is insufficient:
+
+```mermaid
+flowchart LR
+    R1[PR 1: UI and i18n] --> R2[PR 2: NGXS selector]
+    R2 -.optional.-> R1
+```
+
+### PR 1: UI and i18n
 
 #### Scope
 - `product-card.component` template and styles only
-- Reuse existing `NgOptimizedImage` and i18n YAML keys under `product.card.*`
+- `apps/gui3/src/i18n/en.yaml`, `zh-TW.yaml` under `product.card.*`
+- Reuse existing `NgOptimizedImage`; no NGXS changes in this PR
 
 #### Implementation
 1. Add `@if (product.discountPercent > 0)` badge in template with `aria-label` from i18n
@@ -130,16 +146,19 @@ flowchart LR
 - [ ] Manual: listing page shows badge only for discounted products
 - [ ] Screen reader announces discount via `aria-label`
 
-### Phase 2: NGXS selector (if needed)
+### PR 2: NGXS selector (if needed)
 
 #### Scope
-- Only if discount must be derived in state—not required if DTO field is sufficient
+- `product.state.ts` and related selectors only
+- Requires PR 1 merged; skip entire PR if DTO binding in PR 1 is sufficient
 
 #### Implementation
-1. Skip if Phase 1 uses DTO directly; otherwise add selector in `product.state.ts`
+1. Add selector for effective discount percent with null/0 edge cases
+2. Wire `ProductCardComponent` to selector only if template cannot use DTO directly
 
 #### Verification
-- [ ] Unit test for selector edge cases (0%, null)
+- [ ] Unit tests for selector edge cases (0%, null)
+- [ ] No duplicate API calls introduced
 ```
 
 ## Mermaid quick reference
@@ -150,6 +169,6 @@ flowchart LR
 | Component data flow | `flowchart` | `A --> B` |
 | NGXS / state transitions | `stateDiagram-v2` | `[*] --> Idle` |
 | DB tables / relations | `erDiagram` | `USER ||--o{ ORDER : places` |
-| Phase gating | `flowchart` | `P1 --> P2` with `P2 -.depends on.-> P1` |
+| PR merge order | `flowchart` | `R1[PR 1] --> R2[PR 2]` with `R2 -.depends on.-> R1` |
 
 Prefer **mermaid** over ASCII art or bullet-only prose when the reader needs to grasp structure at a glance.
