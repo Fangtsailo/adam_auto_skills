@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Skill `write-implementation-plan`: structured requirement + phased implementation plans written to user-specified markdown files
+
+### Changed
+
+- `write-implementation-plan` (1.1.0): strongly recommend mermaid diagrams for flows, architecture, and phase dependencies; workflow, checklist, and reference templates updated
+
 ## [1.4.1] - 2026-06-04
 
 ### Changed

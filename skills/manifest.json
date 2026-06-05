@@ -25,7 +25,7 @@
         },
         {
             "name": "generate-mr-content",
-            "description": "Generate English MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix).",
+            "description": "Generate English MR description from git staged changes when user says \u7522\u751fMR\u5167\u5bb9 (Title, Root Cause, How to Fix).",
             "tags": [
                 "merge-request",
                 "mr",
@@ -33,6 +33,17 @@
                 "documentation"
             ],
             "version": "1.0.0"
+        },
+        {
+            "name": "write-implementation-plan",
+            "description": "Write structured implementation plans to a user-specified markdown file with required requirement and phased scope/implementation/verification sections. Strongly recommends mermaid diagrams for flows and concepts. Use when the user asks to plan a requirement, create an implementation plan, \u898f\u5283\u5be6\u4f5c\u8a08\u756b, or write a plan to an md file.",
+            "tags": [
+                "planning",
+                "workflow",
+                "documentation",
+                "mermaid"
+            ],
+            "version": "1.1.0"
         }
     ]
 }
