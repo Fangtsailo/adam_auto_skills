@@ -3,7 +3,8 @@ name: angular-code-review
 description: >-
   Review Angular PRs/MRs against team gates and angular-dev-core-rules (i18n,
   FP, declarative UI). Covers NGXS, inject(), TypeScript, style, security, and
-  performance. Use when reviewing Angular code or the user asks for a review.
+  performance. States commit intent first, then reports only the most serious
+  concerns. Use when reviewing Angular code or the user asks for a review.
 ---
 
 # Angular Code Review
@@ -67,9 +68,15 @@ Use **`angular-dev-core-rules`** for the core sections below; use **this skill**
 - Semantic HTML and ARIA for new or changed interactive UI
 - Default to Module-based components unless Standalone is required by the project
 
-## Severity guidance
+## Review approach
+
+1. **Commit intent first** — Before listing findings, read the diff / commit message and explain **what this change is trying to accomplish** (the author's goal, not a file-by-file summary). If intent is unclear from the diff alone, say so briefly.
+2. **Most serious concerns only** — After intent, report **only Critical-level issues** (see table below). Do **not** include Suggestions, Positive notes, style nits, or legacy patterns in untouched lines unless the user explicitly asks for a full review.
+3. **Nothing critical?** — Say so in one sentence (e.g. "No critical concerns found.") and stop. Do not pad with minor feedback.
 
 Align with dev-core **prefer, not dogma** — do not demand drive-by rewrites outside the PR scope unless the user asks.
+
+## Severity guidance
 
 | Finding | Typical severity |
 |---------|------------------|
@@ -85,21 +92,21 @@ Align with dev-core **prefer, not dogma** — do not demand drive-by rewrites ou
 
 ## Output Format
 
+Keep the response short. Use Traditional Chinese for prose; file paths and code references stay as in the repo.
+
 ```markdown
 # Angular Code Review
 
-## Summary
-[One-paragraph overview]
+## Commit 意圖
+[1–3 sentences: what the author is trying to achieve with this change]
 
-## Critical
-- [ ] Issue with file:line reference
+## 最嚴重疑慮
+- [ ] Issue with file:line reference and brief rationale (only if Critical)
 
-## Suggestions
-- [ ] Improvement with rationale (reference angular-dev-core-rules when applicable)
-
-## Positive
-- What was done well
+若無 Critical 問題：「未發現嚴重疑慮。」
 ```
+
+Do **not** output Suggestions or Positive sections unless the user asks for a full review.
 
 ## Additional resources
 
