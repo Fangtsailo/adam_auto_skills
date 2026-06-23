@@ -24,6 +24,22 @@
             "version": "1.1.0"
         },
         {
+            "name": "angular-developer",
+            "description": "Generates Angular code and provides architectural guidance. Trigger when creating projects, components, or services, or for best practices on reactivity (signals, linkedSignal, resource), forms, dependency injection, routing, SSR, accessibility (ARIA), animations, styling (component styles, Tailwind CSS), testing, or CLI tooling.",
+            "tags": [
+                "imported",
+                "angular"
+            ],
+            "version": "1.0.0",
+            "install_type": "imported",
+            "source": {
+                "remote": "angular",
+                "url": "https://github.com/angular/skills.git",
+                "branch": "main",
+                "skills_path": "."
+            }
+        },
+        {
             "name": "generate-mr-content",
             "description": "Generate English MR description from git staged changes when user says \u7522\u751fMR\u5167\u5bb9 (Title, Root Cause, How to Fix).",
             "tags": [
@@ -36,7 +52,7 @@
         },
         {
             "name": "write-implementation-plan",
-            "description": "Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Strongly recommends mermaid diagrams. Use when planning a requirement, 規劃實作計畫, 概覽模式, or 詳盡模式.",
+            "description": "Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Strongly recommends mermaid diagrams. Use when planning a requirement, \u898f\u5283\u5be6\u4f5c\u8a08\u756b, \u6982\u89bd\u6a21\u5f0f, or \u8a73\u76e1\u6a21\u5f0f.",
             "tags": [
                 "planning",
                 "workflow",

@@ -252,6 +252,9 @@ adam_auto_skill/
 │   ├── angular-dev-core-rules/
 │   │   ├── SKILL.md
 │   │   └── reference.md
+│   ├── angular-developer/         # imported from angular/skills
+│   │   ├── SKILL.md
+│   │   └── references/
 │   ├── generate-mr-content/
 │   │   └── SKILL.md
 │   └── git-commit-helper/
@@ -585,6 +588,7 @@ Cursor SDK 範例見 `docs/automations.md`。
 |-------|------|------|------|
 | `angular-code-review` | 1.1.1 | angular, code-review, typescript | PR 審查（團隊 gates + `angular-dev-core-rules` 對齊） |
 | `angular-dev-core-rules` | 1.1.0 | angular, ngxs, rxjs, i18n, typescript | 開發實作（YAML/Crowdin i18n、FP、宣告式）；審查用 `angular-code-review` |
+| `angular-developer` | 1.0.0 | imported, angular | 官方 Angular 慣例（Signals、Forms、Routing 等）；團隊規範以 `angular-dev-core-rules` 為準 |
 | `generate-mr-content` | 1.0.0 | merge-request, mr, workflow, documentation | 從 staged diff 產生 MR 描述（Title、Root Cause、How to Fix） |
 
 機器可讀：`skills/manifest.json`  

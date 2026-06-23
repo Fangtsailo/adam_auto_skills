@@ -13,7 +13,8 @@ description: >-
 
 - **This skill:** PR/MR checklist, severity (Critical / Suggestions / Positive), output format, and team-wide gates (TypeScript, style, security, performance).
 - **`angular-dev-core-rules`:** Source of truth for i18n, functional style, comments, and declarative UI/data flow. Do not duplicate or contradict those rules here — reference them when flagging issues.
-- For reviews touching templates, NGXS, RxJS, or translations, apply both skills together.
+- **`angular-developer`:** Official Angular API and architecture guidance (Signals, Forms, Routing, etc.). Use for framework-level review questions; team gates still follow `angular-dev-core-rules`.
+- For reviews touching templates, NGXS, RxJS, or translations, apply `angular-dev-core-rules` and this skill together; consult `angular-developer` for Angular API best practices.
 
 ## Review Checklist
 

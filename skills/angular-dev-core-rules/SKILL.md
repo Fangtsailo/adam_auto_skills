@@ -12,7 +12,10 @@ description: >-
 ## Scope & related skills
 
 - **This skill:** implementation direction while writing or refactoring code.
+- **`angular-developer`:** Official Angular conventions (Signals, Forms, Routing, DI, testing, CLI). Read its `references/` for deep guidance on framework APIs.
 - **`angular-code-review`:** PR/MR review checklist, output format, style/security/performance gates.
+- **Precedence:** When this skill conflicts with `angular-developer`, follow **this skill** (team i18n, NGXS, project structure).
+- **Build verification:** NX monorepos use `nx build <project>` instead of `ng build`.
 - Apply only in the Angular domain. Prefer existing project patterns when they already satisfy these principles.
 
 ## 1. i18n (YAML → Crowdin; no runtime fallback)

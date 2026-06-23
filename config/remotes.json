@@ -1,4 +1,11 @@
 {
     "version": "1.0.0",
-    "remotes": []
+    "remotes": [
+        {
+            "name": "angular",
+            "url": "https://github.com/angular/skills.git",
+            "branch": "main",
+            "skills_path": "."
+        }
+    ]
 }
