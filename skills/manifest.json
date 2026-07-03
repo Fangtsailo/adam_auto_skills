@@ -51,6 +51,17 @@
             "version": "1.0.0"
         },
         {
+            "name": "knowledge-implementation-guideline",
+            "description": "Determines whether hard-coded frontend business/domain knowledge should be frontend-only, backend-only, or both, using a Q1/Q2/Q3 decision tree (SSOT mutation, UX validation, catalog/aggregation/performance/cross-client consistency). Classifies knowledge attributes and produces standardized knowledge-entry writeups.",
+            "tags": [
+                "architecture",
+                "frontend-backend",
+                "decision-tree",
+                "documentation"
+            ],
+            "version": "1.0.0"
+        },
+        {
             "name": "write-implementation-plan",
             "description": "Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Strongly recommends mermaid diagrams. Use when planning a requirement, \u898f\u5283\u5be6\u4f5c\u8a08\u756b, \u6982\u89bd\u6a21\u5f0f, or \u8a73\u76e1\u6a21\u5f0f.",
             "tags": [
