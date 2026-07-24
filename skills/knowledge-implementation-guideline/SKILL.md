@@ -1,113 +1,146 @@
 ---
 name: knowledge-implementation-guideline
 description: >-
-  Determines whether a piece of domain/business knowledge (business rule,
-  state derivation, permission check) currently hard-coded in the frontend
-  should be implemented frontend-only, backend-only, or both, using an
-  objective Q1/Q2/Q3 decision tree based on SSOT mutation, UX validation
-  needs, catalog/aggregation scope, performance, and cross-client
-  consistency. Also classifies a knowledge entry into one of four attributes
-  (Wording 顯示 / UI 操作 / 狀態顯示 / 狀態遷移與轉換) and produces a
-  standardized knowledge-entry writeup. Use when the user asks to 盤點
-  knowledge、判斷前後端實作歸屬、決定這段邏輯該放前端還是後端, reviews
-  hard-coded business logic placement, or mentions Knowledge 條目、SSOT、
-  dry-run、實作歸屬決策樹.
+  Determines FE/BE/Shared Ownership for a Business Rule (business rule, Entity
+  State derivation, permission check) using an objective Q1/Q2/Q3 decision tree
+  based on SSOT mutation, UX Validate needs, Reference Data Reverse Lookup,
+  Data Aggregation (Full Scope Instance Data / cross Domain Entity), and
+  Conditional Mapping. Also classifies a rule into one of four Rule Types
+  (Presentation Formatting / Local UI State / Display / Calculation / Write
+  Action) and produces a standardized writeup. Use when the user asks to 審查
+  Business Rule、判斷前後端 Ownership、決定這段邏輯該放前端還是後端, reviews
+  hard-coded domain knowledge placement, or mentions Business Rule、Knowledge
+  條目、SSOT、dry-run、Ownership 決策樹、實作歸屬.
 disable-model-invocation: false
 ---
 
-# Knowledge 條目與前後端實作歸屬指南
+# Business Rule Ownership Guideline
 
-用於盤點、撰寫與判定各類 **Knowledge 條目**（商業規則、狀態推算、權限裁決等）應由前端、後端或前後端共同實作，避免前端 hard-code 需要全貌的 domain knowledge，或前後端規則不一致造成 bug。
+跨功能模組通用架構指南：審查、撰寫與判定各類 **Business Rule** 應由前端、後端或前後端共同實作（FE-only / BE-only / Shared Ownership）。
+
+> 本指南借用部分 DDD 風格名詞（Domain Entity、Entity State），核心目的是規範 **Business Rule 的前後端 Ownership 判定**，**不是** Domain-Driven Design 實作指南。
 
 ## 使用前提
 
-1. **先確保單一職責**：一條 knowledge 只能是「資料提供 / UI 互動 / 寫入 action」其中一種，不可混寫。若覺得同一條又前端又後端，代表混寫，須拆開後個別跑決策樹。
-2. **屬性與實作歸屬分開回答**：屬性（下表）描述「這條規則做什麼」；實作歸屬（決策樹）回答「誰該做」。兩者須分開填寫，不可互相取代。
-3. 判斷原則：**從需求層面出發**，不受現有實作架構（現在 API 回傳什麼欄位）影響。
+1. **進入決策樹前須符合 SRP**（見下方「Business Rule 的定義」）。若同一條又前端又後端，代表混寫，須拆開後個別跑決策樹。
+2. **Rule Type 與 Ownership 分開回答**：Rule Type 是撰寫階段的拆條輔助標籤；Ownership 由決策樹產出。兩者不可互相取代。
+3. **判斷原則：從需求層面出發**，不受現有實作架構（現在 API 回傳什麼欄位）影響。
+4. **dry-run 附屬於 Write Action 條目**：不獨立成條、不單獨跑決策樹；不因 dry-run 不改 SSOT 而誤判 Q1=否。
 
-## Knowledge 屬性（四選一）
+## Business Rule 的定義
 
-| 屬性 | 定義 | 判準 |
+一條 **Business Rule** 是審查與判定 Ownership 的最小單位，應滿足：
+
+1. **具業務語意**：RD／PM 能讀懂「這條規則在產品上做什麼」。
+2. **單一職責（SRP）**：只描述一種職責（提供資料、顯示／推算、純 UI、或寫入 action），不混寫。
+3. **可獨立判定 Ownership**：能單獨跑決策樹得出 FE-only / BE-only / Shared。
+4. **找得到落點**：能指出對應哪個畫面、哪支 API、或哪段 code。
+
+完整名詞解釋見 [reference.md](reference.md#名詞解釋)。
+
+## Rule Type（撰寫階段的拆條輔助標籤）
+
+用於檢查 SRP；**不取代 Ownership 決策樹**。
+
+| Rule Type | 定義 | Ownership 傾向 |
 |---|---|---|
-| Wording 顯示 | 將後端已算定的 literal 值轉成可讀文案／格式 | 不重新推算業務狀態、不改 SSOT |
-| UI 操作 | 純前端互動，離開畫面即失效 | 不影響 database／web-be 任何狀態 |
-| 狀態顯示 | 顯示／推算／條件判斷（含按鈕可否點、旗標消費） | 不送出 mutating request、不改 SSOT；SSOT 未變時每次結果應相同 |
-| 狀態遷移與轉換 | 觸發時送出 mutating request | 直接或間接改變業務實體 SSOT；後端必須實作 |
+| Presentation Formatting | 將已算定的 literal 轉成可讀文案／格式；不重新推算 Entity State、不改 SSOT | 幾乎必為 FE-only |
+| Local UI State | 純前端互動，離開畫面即失效；不影響 database／web-be | 必為 FE-only |
+| Display / Calculation | 顯示／推算／條件判斷（含按鈕可否點）；不呼叫寫入 API、不改 SSOT | 需完整跑 Q3 |
+| Write Action | 觸發時呼叫寫入 API，改變 SSOT；後端必須實作 | 需另跑 Q2（Shared 或 BE-only） |
 
-常見歧義（如「先算數值 vs 再用數值篩選」「旗標判定 vs 旗標呈現」）與更多範例見 [reference.md](reference.md#knowledge-屬性常見歧義)。
+常見歧義與 Examples 見 [reference.md](reference.md#rule-type-細節)。
 
-## 實作歸屬決策樹
+## Ownership 決策樹
 
 ```mermaid
 flowchart TD
-    START["一條 Knowledge 條目 (已單一職責)"] --> Q1{"Q1 觸發時是否會送出 mutating request<br/>改變 DB/web-be 的業務實體狀態 (SSOT)?"}
-    Q1 -->|有狀態修改| Q2{"Q2 UX 是否需要即時 Validate?<br/>★後端必須 (安全/最終裁決/全貌)"}
-    Q2 -->|是| OWN_BOTH["實作歸屬: 前後端均須實作"]
-    Q2 -->|否| OWN_BE1["實作歸屬: 只有後端實作<br/>前端僅呼叫 API 送出"]
+    START["一條 Business Rule"] --> Q1{"Q1 是否為寫入操作：被觸發時是否會呼叫<br/>寫入 API 改變 SSOT（mutate persisted data）?"}
+    Q1 -->|會寫入| Q2{"Q2 UX 是否需要即時 Validate?<br/>★後端必須 (安全/最終裁決/Full Scope Instance Data)"}
+    Q2 -->|是| OWN_BOTH["Ownership: Shared Ownership"]
+    Q2 -->|否| OWN_BE1["Ownership: BE-only Ownership<br/>前端僅呼叫 API 送出"]
 
-    Q1 -->|無狀態修改| Q3{"Q3 是否符合任一?<br/>① 需 DB 全貌/catalog<br/>② 需跨多筆實體聚合<br/>③ 前端取得結果成本過高<br/>(運算量龐大 或 原始資料 payload 過大)<br/>④ 需跨 client 集中維護/規則一致性"}
-    Q3 -->|任一成立| OWN_BE2["實作歸屬: 只有後端實作<br/>前端直接消費結果欄位"]
-    Q3 -->|全不成立| OWN_FE["實作歸屬: 只有前端實作<br/>(含純 UI 互動、簡單 lookup/mapping/篩選)"]
+    Q1 -->|僅讀取／顯示| Q3{"Q3 是否符合任一?<br/>① Reverse Lookup（對 Reference Data 反查，例外見 Q3①）<br/>② Data Aggregation（Full Scope Instance Data、跨多筆聚合、跨 Domain Entity）<br/>③ Conditional Mapping"}
+    Q3 -->|任一成立| OWN_BE2["Ownership: BE-only Ownership<br/>前端直接消費結果欄位"]
+    Q3 -->|全不成立| OWN_FE["Ownership: FE-only Ownership<br/>(含純 Local UI State、簡單 Keyed Lookup/篩選)"]
 ```
 
-**唯一**通往「前後端均須實作」的路徑是 Q1→Q2。判定為「前後端均須實作」時，兩側職責**不可互換**（見 [reference.md](reference.md#守備範圍對照)）。
+**唯一**通往 Shared Ownership 的路徑是 Q1→Q2。判定為 Shared 時，兩側職責**不可互換**（見 [reference.md](reference.md#responsibility-matrixraci)）。
 
-### Q1 — 會不會改變 SSOT？
+### Q1 — 是否為寫入操作？
 
-用「**有沒有送出 mutating request**」當客觀判準，避免把「顯示一個由狀態算出來的值／旗標／數量」誤判為改狀態。
+以「**有沒有呼叫寫入 API**」為準；顯示／推算／按鈕可否點等不呼叫寫入 API 者 → 否。
 
-- **是** → 後端永遠必須實作（安全：不可信任前端；後端握有全貌做最終裁決與寫入）→ 進 Q2。
+- **是** → 後端永遠必須實作 → 進 Q2。
 - **否** → 進 Q3。
-
-> 「按鈕能不能點／顯示一個數量或旗標」本身不會改狀態，走 Q3；只有「按下去送出的 mutating request」才走 Q1=是。
 
 ### Q2 — UX 是否需要即時 Validate？
 
-使用者操作當下，UX 是否需要即時 Validate（格式、明顯衝突、已載入資料比對、dry-run 預覽等）以減少 round-trip？
+操作當下是否需要即時 Validate（格式、必填、衝突預檢、已載入資料比對、dry-run 預覽等）？
 
-- **是** → **前後端均須實作**（前端即時 Validate／dry-run，後端最終驗證與寫入）。
-- **否** → **只有後端實作**（前端只呼叫 API 送出 action，無預驗證 UI）。
+- 有前置輸入需回饋（含寫入表單）→ **是** → **Shared Ownership**。
+- 僅「按下即送 API、無預驗證」（如列上 Delete／Reboot）→ **否** → **BE-only**（前端僅呼叫 API 送出）。
 
-### Q3 — 非寫入路徑的前後端分流
+### Q3 — 顯示／推算類規則的 Ownership
 
-純顯示、條件判斷、數值計算或純 UI 互動，皆不改變 SSOT。符合以下**任一**即「只有後端實作」（前端直接消費結果欄位）：
+符合以下**任一**即 **BE-only**（前端直接消費後端算好的結果欄位）：
 
-1. 需要 **database 全貌／業務 catalog** 才能判斷；
-2. 需要**跨多筆業務實體聚合**；
-3. **前端自行取得結果的成本過高**——運算量龐大（browser 效能限制）或原始資料量龐大（下發會使 payload／網路 I/O 暴增，即使單筆計算很簡單）；
-4. 需**跨 client（WEB／APP／API consumer）集中維護**同一套規則以確保一致性。
+1. **Reverse Lookup**（例外見下方 Q3①）
+2. **Data Aggregation**（Full Scope Instance Data、跨多筆聚合、跨 Domain Entity）
+3. **Conditional Mapping**（須查 Mapping Table 才能唯一解讀欄位以得出 Entity State）
 
-**以上全不成立** → **只有前端實作**：純 UI 互動（篩選／跳轉／展開／勾選），或所需輸入僅來自使用者當下互動、或與單一實體綁定的單筆／少量資料，且僅做簡單 lookup／mapping／篩選／勾選統計。
+**全不成立 → FE-only**：Local UI State、僅對使用者當下互動／已載入資料做 lookup／篩選／勾選統計、**Consume** 後端已下發的 Entity Attribute，或 Reference Data **Keyed Lookup**。
 
-> 純顯示的「安全」考量不在 Q3；安全防線在寫入時由後端把關（Q1）。Q3④ 只談「集中維護／規則一致性」，不談「不可信前端」。
+#### Q3① Reference Data Lookup
 
-各判定分支的 Pros／Cons／完整 Examples 見 [reference.md](reference.md#code-level-實作-knowledge)。
+| 類型 | 判準 | Ownership |
+|---|---|---|
+| Keyed Lookup | 已知且唯一 key → 單一屬性／定義；不遍歷整表 | 允許 FE（不觸發 Q3①） |
+| Reverse Lookup | 條件／不含唯一 key → 清單或需遍歷反查的衍生 Entity State | 預設 BE-only |
 
-## Knowledge 條目撰寫範本
+**FE-only 例外**（Reverse Lookup 須**同時**符合）：① 低變動 Reference Data；② Reference Data 已因其他用途快取（非為此反查才新拉）；③ 僅反查 Reference Data 欄位，不涉及 Full Scope Instance Data。
+
+#### Q3② Data Aggregation
+
+符合任一即觸發：
+
+- **Full Scope Instance Data**：須完整 Domain Entity Instance（含未載入紀錄）
+- **跨多筆 instance 聚合**：統計／合併／清單推算，且同 SSOT 下結果**不因**使用者當下 UI 互動而變
+- **跨 Domain Entity**：組合兩個以上 Domain Entity 的 Instance 資料推導 Entity State（含單列、已載入；一律 BE-only）
+
+不觸發：推算結果僅隨 UI 互動而變，且僅 Consume 已下發 Entity Attribute（勾選統計）→ FE-only。
+
+#### Q3③ Conditional Mapping
+
+單一 API 欄位字面值因 context（如 `subtype`、product scope）須查 **Mapping Table** 才能唯一解讀以得出 Entity State → **一律 BE-only**。
+
+Q3 各節完整 Examples 與 Ownership Pros／Cons 見 [reference.md](reference.md#q3-詳細判準與-examples)。
+
+## Business Rule 撰寫範本
 
 ```markdown
 * [畫面／模組] 規則简述
-  * 屬性: 狀態顯示 | UI 操作 | Wording 顯示 | 狀態遷移與轉換
-  * 實作歸屬: 只有前端實作 | 只有後端實作 | 前後端均須實作
-  * 實作歸屬判定: AI | 人工
+  * Rule Type: Display / Calculation | Local UI State | Presentation Formatting | Write Action
+  * Ownership: FE-only | BE-only | Shared
+  * Ownership 判定方式: AI | 人工
   * 判定歸屬的理由:
     * Q1 是/否：…
     * Q2 是/否：…（僅 Q1=是 時）
-    * Q3 ①②③④ 或 全不成立：…（僅 Q1=否 時）
+    * Q3 ①②③ 或 全不成立：…（僅 Q1=否 時）
   * 範圍備註: 不含 …；現況技術債 …
 ```
 
-必要欄位：標題、屬性、實作歸屬、判定方式（AI／人工）、判定理由（對應 Q1/Q2/Q3）、範圍備註、Code／API 參照（選填）。
+必要欄位：標題、Rule Type、Ownership、判定方式、判定理由、範圍備註；Code／API 參照選填。
 
-## 盤點與落地流程
+## 審查與推進流程
 
 1. **選定範圍**：模組／畫面／user flow。
-2. **從 code 或 spec 抽出候選規則**，先不判定歸屬。
-3. **拆成單一職責條目**：資料、UI、寫入分開；旗標判定與呈現分開；計算與篩選分開。
-4. **標註屬性**（四選一）與**跑決策樹**得出實作歸屬。
+2. **從 code 或 spec 抽出候選規則**，先不判定 Ownership。
+3. **拆成符合 SRP 的條目**：旗標判定與呈現分開；計算與篩選分開。
+4. **標註 Rule Type**（四選一）與**跑決策樹**得出 Ownership。
 5. **記錄現況 vs 目標**：若 code 與決策樹結論不符，標為技術債並註明期望 API／欄位。
-6. **與 BE 對齊**：優先處理 Q3①②④ 與寫入路徑不一致項；分期收斂前端過度實作。
+6. **與 BE 對齊**：優先處理 Q3①②③ 與寫入路徑不一致項；分期收斂前端過度實作。
 
 ## Additional resources
 
-- 完整名詞解釋、屬性常見歧義、FE-only／BE-only／前後端均須的 Pros／Cons／Examples、完整守備範圍對照表：[reference.md](reference.md)
+- 名詞解釋、Rule Type 細節、FE／BE／Shared Pros／Cons／Examples、Responsibility Matrix、Q3 完整判準：[reference.md](reference.md)
