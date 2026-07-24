@@ -85,36 +85,13 @@ flowchart TD
 
 符合以下**任一**即 **BE-only**（前端直接消費後端算好的結果欄位）：
 
-1. **Reverse Lookup**（例外見下方 Q3①）
+1. **Reverse Lookup**（Reference Data 反查；有限 FE-only 例外）
 2. **Data Aggregation**（Full Scope Instance Data、跨多筆聚合、跨 Domain Entity）
 3. **Conditional Mapping**（須查 Mapping Table 才能唯一解讀欄位以得出 Entity State）
 
 **全不成立 → FE-only**：Local UI State、僅對使用者當下互動／已載入資料做 lookup／篩選／勾選統計、**Consume** 後端已下發的 Entity Attribute，或 Reference Data **Keyed Lookup**。
 
-#### Q3① Reference Data Lookup
-
-| 類型 | 判準 | Ownership |
-|---|---|---|
-| Keyed Lookup | 已知且唯一 key → 單一屬性／定義；不遍歷整表 | 允許 FE（不觸發 Q3①） |
-| Reverse Lookup | 條件／不含唯一 key → 清單或需遍歷反查的衍生 Entity State | 預設 BE-only |
-
-**FE-only 例外**（Reverse Lookup 須**同時**符合）：① 低變動 Reference Data；② Reference Data 已因其他用途快取（非為此反查才新拉）；③ 僅反查 Reference Data 欄位，不涉及 Full Scope Instance Data。
-
-#### Q3② Data Aggregation
-
-符合任一即觸發：
-
-- **Full Scope Instance Data**：須完整 Domain Entity Instance（含未載入紀錄）
-- **跨多筆 instance 聚合**：統計／合併／清單推算，且同 SSOT 下結果**不因**使用者當下 UI 互動而變
-- **跨 Domain Entity**：組合兩個以上 Domain Entity 的 Instance 資料推導 Entity State（含單列、已載入；一律 BE-only）
-
-不觸發：推算結果僅隨 UI 互動而變，且僅 Consume 已下發 Entity Attribute（勾選統計）→ FE-only。
-
-#### Q3③ Conditional Mapping
-
-單一 API 欄位字面值因 context（如 `subtype`、product scope）須查 **Mapping Table** 才能唯一解讀以得出 Entity State → **一律 BE-only**。
-
-Q3 各節完整 Examples 與 Ownership Pros／Cons 見 [reference.md](reference.md#q3-詳細判準與-examples)。
+Q3①②③ 的完整判準、例外條件、Examples，以及 FE／BE／Shared Pros／Cons，**只**見 [reference.md](reference.md#q3-詳細判準與-examples)——判定有歧義或需舉例時再讀，勿在此重述細節。
 
 ## Business Rule 撰寫範本
 
@@ -130,7 +107,7 @@ Q3 各節完整 Examples 與 Ownership Pros／Cons 見 [reference.md](reference.
   * 範圍備註: 不含 …；現況技術債 …
 ```
 
-必要欄位：標題、Rule Type、Ownership、判定方式、判定理由、範圍備註；Code／API 參照選填。
+必要欄位：標題、Rule Type、Ownership、判定方式、判定理由、範圍備註；Code／API 參照選填。欄位說明見 [reference.md](reference.md#撰寫一條-business-rule-的建議欄位)。
 
 ## 審查與推進流程
 
@@ -143,4 +120,4 @@ Q3 各節完整 Examples 與 Ownership Pros／Cons 見 [reference.md](reference.
 
 ## Additional resources
 
-- 名詞解釋、Rule Type 細節、FE／BE／Shared Pros／Cons／Examples、Responsibility Matrix、Q3 完整判準：[reference.md](reference.md)
+- 名詞解釋、Rule Type 細節、Ownership Pros／Cons／Examples、Responsibility Matrix、Q3 完整判準：[reference.md](reference.md)

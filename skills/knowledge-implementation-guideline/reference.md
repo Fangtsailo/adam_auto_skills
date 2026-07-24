@@ -1,6 +1,6 @@
 # Reference: Business Rule Ownership Guideline
 
-補充 [SKILL.md](SKILL.md) 的完整名詞解釋、Rule Type 細節、Ownership Pros／Cons／Examples、Responsibility Matrix、與 Q3 詳細判準。
+補充 [SKILL.md](SKILL.md)。**分工：** SKILL 只保留前提、定義、Rule Type 摘要、決策樹、Q1／Q2、Q3 一行摘要、撰寫範本與流程；**本檔**是名詞解釋、Rule Type 細節、Ownership Pros／Cons／Examples、Responsibility Matrix、與 **Q3①②③ 完整判準** 的唯一詳細來源（勿再把判準抄回 SKILL）。
 
 ## 要解決的問題
 
