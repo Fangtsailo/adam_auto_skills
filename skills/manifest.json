@@ -40,6 +40,17 @@
             }
         },
         {
+            "name": "architect-first-gate",
+            "description": "Assumes system-architect role before coding: designs macro component communication (participants, data flow, NGXS/IO/service/API), confirms existing architecture with mermaid, then waits for explicit user approval (gate) before writing code. Use when fixing bugs, implementing features, refactoring cross-component flows, or when the user mentions \u5b8f\u89c0\u7d44\u4ef6\u6e9d\u901a, \u67b6\u69cb\u8a2d\u8a08, or \u9598\u9580.",
+            "tags": [
+                "architecture",
+                "workflow",
+                "gate",
+                "mermaid"
+            ],
+            "version": "1.0.0"
+        },
+        {
             "name": "generate-mr-content",
             "description": "Generate English MR description from git staged changes when user says \u7522\u751fMR\u5167\u5bb9 (Title, Root Cause, How to Fix).",
             "tags": [

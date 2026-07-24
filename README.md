@@ -59,6 +59,7 @@ chmod +x bin/skill scripts/*.sh
 | `angular-developer` | Angular 官方慣例（Signals、Forms、Routing、DI、測試、CLI）；團隊規範以 `angular-dev-core-rules` 為準 |
 | `generate-mr-content` | 產生 MR 描述（Title、Root Cause、How to Fix） |
 | `write-implementation-plan` | 將需求規劃為結構化實作計畫並寫入指定 md（概覽模式：Phase 拆分；詳盡模式：PR 拆分；強烈建議 mermaid） |
+| `architect-first-gate` | 實作／修 bug 前先以系統架構師做宏觀組件溝通設計（mermaid），**閘門制：使用者同意後才寫碼** |
 
 完整列表：[`SKILLS.md`](SKILLS.md)
 

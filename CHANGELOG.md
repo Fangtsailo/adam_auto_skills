@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Skill `architect-first-gate`: system-architect role before coding; macro component communication design with mermaid; hard gate waits for explicit user approval before writing code
 - Skill `write-implementation-plan`: structured requirement + phased implementation plans written to user-specified markdown files
 
 ### Changed
