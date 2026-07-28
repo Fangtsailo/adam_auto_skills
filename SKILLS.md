@@ -2,7 +2,7 @@
 
 Auto-generated from `skills/manifest.json`. Do not edit manually.
 
-*Generated at: 2026-07-24 08:45:42 UTC*
+*Generated at: 2026-07-28 08:35:47 UTC*
 
 | Skill | Version | Tags | Description |
 |-------|---------|------|-------------|
@@ -12,7 +12,7 @@ Auto-generated from `skills/manifest.json`. Do not edit manually.
 | `architect-first-gate` | 1.0.0 | architecture, workflow, gate, mermaid | Assumes system-architect role before coding: designs macro component communication (participants, data flow, NGXS/IO/service/API), confirms existing architecture with mermaid, then waits for explicit user approval (gate) before writing code. Use when fixing bugs, implementing features, refactoring cross-component flows, or when the user mentions 宏觀組件溝通, 架構設計, or 閘門. |
 | `generate-mr-content` | 1.0.0 | merge-request, mr, workflow, documentation | Generate English MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix). |
 | `knowledge-implementation-guideline` | 1.0.1 | architecture, frontend-backend, decision-tree, documentation | Determines whether hard-coded frontend business/domain knowledge should be frontend-only, backend-only, or both, using a Q1/Q2/Q3 decision tree (SSOT mutation, UX validation, catalog/aggregation/performance/cross-client consistency). Classifies knowledge attributes and produces standardized knowledge-entry writeups. |
-| `write-implementation-plan` | 1.2.1 | planning, workflow, documentation, mermaid | Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Strongly recommends mermaid diagrams. Use when planning a requirement, 規劃實作計畫, 概覽模式, or 詳盡模式. |
+| `write-implementation-plan` | 1.3.0 | planning, workflow, documentation, mermaid | Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Enforces reviewable unit size (≤3 files / ≤200 lines) and human checkpoints between units. Strongly recommends mermaid diagrams. Use when planning a requirement, 規劃實作計畫, 概覽模式, or 詳盡模式. |
 
 ## Install
 

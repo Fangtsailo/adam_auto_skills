@@ -2,6 +2,8 @@
 
 Use for **詳盡模式** (ready to implement). Split work with **PR** only—never Phase.
 
+**Reviewability (mandatory):** each PR targets **≤ 3 files** and **≤ ~200 lines** net diff. If larger, add another PR. Each Verification includes a **human checkpoint** before the next PR.
+
 Copy and adapt when writing a plan. Replace placeholders; remove sections marked optional if not needed.
 
 ```markdown
@@ -48,8 +50,9 @@ flowchart LR
 
 #### Scope
 - <Deliverable and boundaries>
-- <Files or areas: `path/to/module`, `path/to/component`>
-- <Merge dependency: none / requires PR N merged first>
+- <Files (≤3): `path/a`, `path/b`, `path/c`>
+- <Estimated size: ≤~200 lines net diff>
+- <Merge dependency: none / requires PR N merged and human-approved first>
 
 #### Implementation
 1. <Step with approach and key changes>
@@ -59,7 +62,8 @@ flowchart LR
 #### Verification
 - [ ] <Command, test, or manual check>
 - [ ] <Observable outcome>
-- [ ] <PR is reviewable size; CI green>
+- [ ] Diff stays within ≤3 files and ≤~200 lines; CI green
+- [ ] **Human checkpoint:** reviewer approves / merges before starting PR 2
 
 ### PR 2: <short title>
 
@@ -71,8 +75,9 @@ flowchart LR
 
 #### Verification
 - [ ] ...
+- [ ] **Human checkpoint:** reviewer approves / merges before starting PR 3 (or done)
 
-<!-- Repeat PR N as needed -->
+<!-- Repeat PR N as needed; split further if a PR would exceed ≤3 files / ≤~200 lines -->
 
 ## Risks and mitigations (optional)
 
@@ -121,44 +126,45 @@ flowchart LR
 
 ### PR overview
 
-Stacked UI-first delivery; state PR only if DTO is insufficient:
+Stacked small PRs; each ≤3 files / ≤~200 lines; human approve between PRs:
 
 ```mermaid
 flowchart LR
-    R1[PR 1: UI and i18n] --> R2[PR 2: NGXS selector]
-    R2 -.optional.-> R1
+    R1[PR 1: UI + en i18n] --> R2[PR 2: zh-TW or NGXS]
 ```
 
 ### PR 1: UI and i18n
 
 #### Scope
-- `product-card.component` template and styles only
-- `apps/gui3/src/i18n/en.yaml`, `zh-TW.yaml` under `product.card.*`
+- Files (≤3): `product-card.component.html`, `_product-card.scss`, `apps/gui3/src/i18n/en.yaml`
+- Estimated size: ≤~200 lines; `zh-TW.yaml` in PR 2 if adding both locales would exceed file limit
 - Reuse existing `NgOptimizedImage`; no NGXS changes in this PR
 
 #### Implementation
 1. Add `@if (product.discountPercent > 0)` badge in template with `aria-label` from i18n
-2. Add `product.card.discount-badge` key to `en.yaml` and `zh-TW.yaml`
+2. Add `product.card.discount-badge` key to `en.yaml`
 3. Style badge per design tokens in `_product-card.scss`
 
 #### Verification
 - [ ] `npm run test -- product-card` passes
 - [ ] Manual: listing page shows badge only for discounted products
-- [ ] Screen reader announces discount via `aria-label`
+- [ ] Diff ≤3 files / ≤~200 lines; CI green
+- [ ] **Human checkpoint:** approve / merge before PR 2
 
-### PR 2: NGXS selector (if needed)
+### PR 2: zh-TW i18n (or NGXS if needed)
 
 #### Scope
-- `product.state.ts` and related selectors only
-- Requires PR 1 merged; skip entire PR if DTO binding in PR 1 is sufficient
+- Files (≤3): `apps/gui3/src/i18n/zh-TW.yaml` (and at most two related files if wiring needed)
+- Requires PR 1 merged and approved; skip NGXS if DTO binding in PR 1 is sufficient
 
 #### Implementation
-1. Add selector for effective discount percent with null/0 edge cases
-2. Wire `ProductCardComponent` to selector only if template cannot use DTO directly
+1. Add matching `product.card.discount-badge` key to `zh-TW.yaml`
+2. If DTO is insufficient: add selector in `product.state.ts` with null/0 edge cases (keep ≤3 files)
 
 #### Verification
-- [ ] Unit tests for selector edge cases (0%, null)
+- [ ] Locale string present; unit tests for selector edge cases if added
 - [ ] No duplicate API calls introduced
+- [ ] **Human checkpoint:** approve / merge (or done)
 ```
 
 ## Mermaid quick reference

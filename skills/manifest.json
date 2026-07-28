@@ -74,14 +74,14 @@
         },
         {
             "name": "write-implementation-plan",
-            "description": "Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Strongly recommends mermaid diagrams. Use when planning a requirement, \u898f\u5283\u5be6\u4f5c\u8a08\u756b, \u6982\u89bd\u6a21\u5f0f, or \u8a73\u76e1\u6a21\u5f0f.",
+            "description": "Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Enforces reviewable unit size (\u22643 files / \u2264200 lines) and human checkpoints between units. Strongly recommends mermaid diagrams. Use when planning a requirement, \u898f\u5283\u5be6\u4f5c\u8a08\u756b, \u6982\u89bd\u6a21\u5f0f, or \u8a73\u76e1\u6a21\u5f0f.",
             "tags": [
                 "planning",
                 "workflow",
                 "documentation",
                 "mermaid"
             ],
-            "version": "1.2.1"
+            "version": "1.3.0"
         }
     ]
 }

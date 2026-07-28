@@ -2,6 +2,8 @@
 
 Use for **概覽模式**. Split work with **Phase** only—never PR.
 
+**Reviewability:** each Phase must be small enough to expand later into Detailed PRs of **≤ 3 files** and **≤ ~200 lines** each. Include a **human checkpoint** (sign-off / demo) before the next Phase.
+
 Copy and adapt when writing a plan. Replace placeholders; remove optional sections if not needed.
 
 ```markdown
@@ -57,7 +59,8 @@ flowchart LR
 
 #### Verification
 - <Observable outcome or acceptance check>
-- <Stakeholder sign-off or demo scenario if relevant>
+- <Human checkpoint: stakeholder sign-off or demo before Phase 2>
+- <Phase scoped so later PRs can stay ≤3 files / ≤~200 lines each>
 
 ### Phase 2: <short title>
 
@@ -69,8 +72,9 @@ flowchart LR
 
 #### Verification
 - ...
+- <Human checkpoint before next Phase (or done)>
 
-<!-- Repeat Phase N as needed; prefer 1–3 Phases -->
+<!-- Repeat Phase N as needed; prefer 1–3 Phases; do not hide large rewrites in one Phase -->
 
 ## Open questions (optional)
 
@@ -121,18 +125,21 @@ flowchart LR
 #### Verification
 - Badge appears only for discounted products on listing page
 - No regression on non-discounted cards
+- **Human checkpoint:** demo / sign-off before Phase 2
+- Later Detailed PRs for this Phase stay ≤3 files / ≤~200 lines each
 
 ### Phase 2: State layer (if needed)
 
 #### Scope
 - NGXS selector only if discount cannot be read from DTO directly
-- Depends on Phase 1 UI approach
+- Depends on Phase 1 UI approach and human sign-off
 
 #### Implementation
 - Evaluate after Phase 1; add selector only if derivation is required
 
 #### Verification
 - Edge cases covered (0%, null) if selector is added
+- **Human checkpoint:** sign-off (or skip Phase if not needed)
 ```
 
 ## Mermaid quick reference
