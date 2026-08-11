@@ -41,7 +41,7 @@
         },
         {
             "name": "architect-first-gate",
-            "description": "Assumes system-architect role before coding: designs macro component communication (participants, data flow, NGXS/IO/service/API), confirms existing architecture with mermaid, then waits for explicit user approval (gate) before writing code. Use when fixing bugs, implementing features, refactoring cross-component flows, or when the user mentions \u5b8f\u89c0\u7d44\u4ef6\u6e9d\u901a, \u67b6\u69cb\u8a2d\u8a08, or \u9598\u9580.",
+            "description": "Assumes system-architect role before coding: designs macro component communication (participants, data flow, NGXS/IO/service/API), confirms existing architecture with mermaid, then waits for explicit user approval (gate) before writing code. Use when fixing bugs, implementing features, refactoring cross-component flows, or when the user mentions 宏觀組件溝通, 架構設計, or 閘門.",
             "tags": [
                 "architecture",
                 "workflow",
@@ -52,12 +52,23 @@
         },
         {
             "name": "generate-mr-content",
-            "description": "Generate English MR description from git staged changes when user says \u7522\u751fMR\u5167\u5bb9 (Title, Root Cause, How to Fix).",
+            "description": "Generate English MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix).",
             "tags": [
                 "merge-request",
                 "mr",
                 "workflow",
                 "documentation"
+            ],
+            "version": "1.0.0"
+        },
+        {
+            "name": "git-commit",
+            "description": "Commit staged changes via mise exec -- cog commit (Cocogitto). Infers TYPE from branch, runs generate-mr-content (shows full MR block; MESSAGE=Title), sets SCOPE from prompt ID (e.g. commit 71166 → RM-71166) or omits it, and always waits for explicit confirmation before committing. Use when the user says commit, commit <id>, 產生commit, 幫我 commit, git:commit, or 送出 commit.",
+            "tags": [
+                "git",
+                "commit",
+                "workflow",
+                "cocogitto"
             ],
             "version": "1.0.0"
         },
@@ -74,7 +85,7 @@
         },
         {
             "name": "td-detail-fillin",
-            "description": "Fill or rewrite the\u300c\u7d66 BE RD\u300dDetail block of Inventory tech-debt (TD) entries using product language, real API field paths, and clear Consume-vs-FE-\u63a8\u7b97 separation. Use when the user asks to \u5beb TD Detail\u3001\u586b\u5beb\u7d66 BE RD\u3001\u88dc TD Detail\u3001\u6539\u5beb Detail\u3001\u5c0d\u9f4a td_fillin_guideline, or mentions TD-00x Detail / \u7be9\u9078\u96c6\u5408 / \u76f4\u901a API vs FE \u63a8\u7b97 for BE handoff.",
+            "description": "Fill or rewrite the「給 BE RD」Detail block of Inventory tech-debt (TD) entries using product language, real API field paths, and clear Consume-vs-FE-推算 separation. Use when the user asks to 寫 TD Detail、填寫給 BE RD、補 TD Detail、改寫 Detail、對齊 td_fillin_guideline, or mentions TD-00x Detail / 篩選集合 / 直通 API vs FE 推算 for BE handoff.",
             "tags": [
                 "workflow",
                 "documentation",
@@ -85,7 +96,7 @@
         },
         {
             "name": "write-implementation-plan",
-            "description": "Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Enforces reviewable unit size (\u22643 files / \u2264200 lines) and human checkpoints between units. Strongly recommends mermaid diagrams. Use when planning a requirement, \u898f\u5283\u5be6\u4f5c\u8a08\u756b, \u6982\u89bd\u6a21\u5f0f, or \u8a73\u76e1\u6a21\u5f0f.",
+            "description": "Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Enforces reviewable unit size (≤3 files / ≤200 lines) and human checkpoints between units. Strongly recommends mermaid diagrams. Use when planning a requirement, 規劃實作計畫, 概覽模式, or 詳盡模式.",
             "tags": [
                 "planning",
                 "workflow",
