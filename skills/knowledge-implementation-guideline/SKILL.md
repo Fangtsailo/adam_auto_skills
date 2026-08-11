@@ -32,11 +32,11 @@ disable-model-invocation: false
 一條 **Business Rule** 是審查與判定 Ownership 的最小單位，應滿足：
 
 1. **具業務語意**：RD／PM 能讀懂「這條規則在產品上做什麼」。
-2. **單一職責（SRP）**：只描述一種職責（提供資料、顯示／推算、純 UI、或寫入 action），不混寫。
+2. **單一職責（SRP）**：只描述一種職責（顯示／推算、純 UI／格式、或寫入 action），不混寫。後端下發 Attribute 不是第五種 Rule Type。Action Enablement 與 Write Action 必須拆條。
 3. **可獨立判定 Ownership**：能單獨跑決策樹得出 FE-only / BE-only / Shared。
 4. **找得到落點**：能指出對應哪個畫面、哪支 API、或哪段 code。
 
-完整名詞解釋見 [reference.md](reference.md#名詞解釋)。
+完整名詞解釋見 [reference.md](reference.md#名詞解釋)。Strict Consume 與跨 Domain Entity 硬邊界見 [reference.md](reference.md#strict-consume--跨-domain-entity-硬邊界)。
 
 ## Rule Type（撰寫階段的拆條輔助標籤）
 
@@ -76,10 +76,12 @@ flowchart TD
 
 ### Q2 — UX 是否需要即時 Validate？
 
-操作當下是否需要即時 Validate（格式、必填、衝突預檢、已載入資料比對、dry-run 預覽等）？
+**雙條件須同時成立**才＝是 → Shared：
 
-- 有前置輸入需回饋（含寫入表單）→ **是** → **Shared Ownership**。
-- 僅「按下即送 API、無預驗證」（如列上 Delete／Reboot）→ **否** → **BE-only**（前端僅呼叫 API 送出）。
+1. 使用者輸入／選擇會改變可否送出或寫入 payload；且
+2. FE 實作與 BE 最終驗證同一業務規則子集（含 dry-run 預覽）。
+
+僅 dialog／選列／acknowledge → 不足以 Q2=是。僅「按下即送、無預驗證」→ 否 → BE-only。
 
 ### Q3 — 顯示／推算類規則的 Ownership
 
@@ -120,4 +122,4 @@ Q3①②③ 的完整判準、例外條件、Examples，以及 FE／BE／Shared 
 
 ## Additional resources
 
-- 名詞解釋、Rule Type 細節、Ownership Pros／Cons／Examples、Responsibility Matrix、Q3 完整判準：[reference.md](reference.md)
+- 名詞解釋、Strict Consume／跨 Domain Entity 硬邊界、Rule Type 細節、Ownership Pros／Cons／Examples、Responsibility Matrix、Q3 完整判準：[reference.md](reference.md)

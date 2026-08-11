@@ -16,19 +16,29 @@
 
 | 類別 | 名詞 | 解釋 |
 |---|---|---|
-| 核心概念 | Domain Entity | 具獨立身分、可被 API 讀寫、其資料可能寫入 **SSOT** 的領域物件（本專案常見：Device、License、Organization、Site）。 |
-| 核心概念 | Entity State | 一條 Business Rule 要回答的、關於某 Domain Entity 的業務狀態／可操作性語意（如 License 是否 Expired、可否 Assign；Device 是否 Online）。 |
+| 核心概念 | Domain Entity | 具獨立身分、可被 API 讀寫、其資料可能寫入 **SSOT** 的領域物件（例如 Device、License、Organization、Site，依目標專案替換）。 |
+| 核心概念 | Entity State | 關於某 Domain Entity 的業務事實／可操作語意（如 Expired、Assignable、Online）。可由 Entity Attribute 承載或由規則算出；**不等同**於「一條 Business Rule 的答案」。 |
 | 核心概念 | Entity Attribute | API response 中表達 Entity 性質的具名欄位（如 `display_status`、`applicability.transferable`、`model_name`）。 |
 | 核心概念 | Domain Entity Instance | 某 **Domain Entity** 的一筆具體、可個別識別的實際資料紀錄（如某張 License、某台 Device）；與 **Reference Data** 的共用定義不同。 |
-| 核心概念 | SSOT（Single Source of Truth） | 系統中權威的狀態來源（通常為 web-be／database / MZC / EMS）；顯示與推算應以其為準，前端不可自稱唯一權威。 |
+| 核心概念 | SSOT（Single Source of Truth） | 某一關注點上 product state 的權威來源。Ownership 樹（Q1）以 client 視角 **web-be API** 為 mutate 邊界；database／MZC／EMS 為後端內部。文件權威須另加說明。前端不可自稱唯一權威。 |
 | Ownership | Reference Data | 後端刻意發布、供各 client 查詢消費的共用參考資料 API（如 `model-property`、`license-catalog`）；SSOT 仍在後端，與具體、可個別識別的 **Domain Entity Instance** 資料不同。 |
 | Ownership | Keyed Lookup | 對 **Reference Data** 以已知且唯一 key 直接取得對應屬性／定義，不遍歷整表；資料來源可為 API response、**Reference Data**，或後端程式內靜態定義。允許 FE。 |
 | Ownership | Reverse Lookup | 已知條件需遍歷整表反查 entity 清單或衍生 per-entity **Entity State**；預設屬 Q3①，由後端下發，但符合特定條件（低變動頻率 Reference Data 等）時可例外允許 FE 自行推算。 |
-| Ownership | Full Scope Instance Data | 判定規則時所需的**完整** **Domain Entity Instance** 資料（含前端未載入的紀錄；非 **Reference Data** 可取代）。前端通常只有 subset，故常導向 Q3②（Data Aggregation）。跨 **Domain Entity** 推算亦屬 Q3②。 |
-| Ownership | Consume（消費） | 直接讀取 API 已下發的 **Entity Attribute** 以取得 **Entity State**（含 `applicability.*` 對其他屬性的 includes／boolean 比對），不自行推導。 |
-| Ownership | Consumer | 須獨立實作或驗證同一 **Entity State**、且須得相同答案的下游單位。包含 **client 型態**（WEB、APP、**API Consumer**）、**product scope** 路徑（ORG、MSP 等）、或 **FE／BE** 各自須產出／驗證相同結果時。 |
-| Ownership | API Consumer | 以 API 呼叫消費 **Entity State** 或觸發寫入的 **Consumer**（非 WEB／APP UI client）。分兩類：**External** — 對外 **Open API** 的下游整合方；**Internal** — 對內 **Cron Job API** 的排程／批次呼叫方。 |
-| Ownership | Mapping Table | 解讀單一 API 欄位多義字面值的映射知識（硬編碼常數／enum map，如 `LICENSE_PLAN_MAPPING`，或散落的隱性規則）。須查 **Mapping Table** 才能唯一解讀欄位以得出 **Entity State** 者 → Q3③（Conditional Mapping），一律 BE-only。 |
+| Ownership | Full Scope Instance Data | 規則語義所需的完整 **Domain Entity Instance** 集合（含未載入紀錄）。依需求資料依賴判定，不因碰巧載齊而改判。跨 **Domain Entity** 推算亦屬 Q3②。 |
+| Ownership | Consume（消費） | 直接讀取已承載 Entity State **最終答案**的 Entity Attribute（最終旗標／預算值）。跨 entity 的 `includes`／membership **不是** Consume（見 [Strict Consume 硬邊界](#strict-consume--跨-domain-entity-硬邊界)）。 |
+| Ownership | Consumer | 下游 client 型態：WEB、APP、API Consumer。**不是**決策樹輸入。ORG／MSP 是 Product Scope，不是 Consumer。 |
+| Ownership | API Consumer | 以 API 呼叫消費 Entity State 或觸發寫入的 Consumer。**External** Open API；**Internal** Cron Job API。 |
+| Ownership | Product Scope | 產品路徑（ORG／MSP）。多義解讀 → Q3③。禁止各 scope FE 複製同一 Entity State 推算。不新增 Q3④。 |
+| Ownership | Mapping Table | 將 API 字面值解讀成 Entity State 或業務識別的映射。主檢驗＝產出種類；輔助＝是否對齊後端識別空間。i18n／格式 ≠ Mapping Table。 |
+| Ownership | Action Enablement | 控制項可否點／可見＝Display／Calculation，須與 Write Action 拆條。 |
+
+## Strict Consume / 跨 Domain Entity 硬邊界
+
+本 skill 自洽；下列硬邊界適用於所有使用本指南的專案：
+
+1. **Strict Consume**：前端只讀取已承載 Entity State **最終答案**的 Entity Attribute（最終旗標／預算值）。讀到後可格式化、篩選、勾選統計；**不可**再自行推算該 Entity State。
+2. **跨 Domain Entity 不是 Consume**：用 A entity 的欄位去 `includes`／membership／比對 B entity 以得出可否／狀態，即使資料在**同一 response nested**、即使已全部載入，仍屬跨 Domain Entity 組合推算 → Q3② → **BE-only**（目標由 BE 下發最終旗標／列級欄位）。
+3. **邊界依 entity 身分**：是否「跨 Domain Entity」看領域身分（兩個可獨立讀寫的 Domain Entity），不看 response 形狀或前端是否碰巧載齊。
 
 ## Rule Type 細節
 
@@ -59,26 +69,26 @@ Examples:
 Examples:
 
 - **Entity State** 推算（Active／Expiring 等；API 無對應 **Entity Attribute** 時）
-- Action 可否（選單項目是否啟用；跨 **Domain Entity** 推算者見 Q3②）
-- 透過 `applicability` 等 **Entity Attribute** 消費（Consume）**Entity State**（旗標本身若需 Full Scope Instance Data 推算，屬 BE-only Ownership）
+- **Action Enablement**（選單／按鈕可否點；須與 Write Action 拆條；跨 Domain Entity 見 Q3②／[硬邊界](#strict-consume--跨-domain-entity-硬邊界)）
+- **Strict Consume** 最終旗標（如 `applicability.assignable`）；旗標本身若需 Full Scope／跨 entity 推算，屬 BE-only
 - 可購類型與到期日**業務取值**（數值由後端算定，前端 Consume）
 
 ### Write Action（寫入操作）
 
-觸發時會**呼叫寫入 API**，直接或間接改變 **SSOT**；**後端必須實作**，且可能因 UX 需要而前後端並存（dry-run）。**Ownership 傾向：需另跑 Q2 才知道是 Shared 還是 BE-only。**
+觸發時會**呼叫寫入 API**，直接或間接改變 **SSOT**；**後端必須實作**，且可能因 UX 需要而前後端並存（dry-run）。**Ownership 傾向：需另跑 Q2 才知道是 Shared 還是 BE-only。** 不含按鈕 disabled 推算。
 
 Examples:
 
 - 執行 Assign／Transfer／Activate 等寫入（含 dry-run）
-- 表單提交前的合法性驗證（dry-run）
+- 表單提交前的合法性驗證（dry-run；須滿足 Q2 雙條件才 Shared）
 - 停用／升級等會改變 **SSOT** 的 action
 
 ### 常見歧義
 
 - **先算出數值 vs 再用數值篩選**：「剩餘天數怎麼算」是 Display / Calculation（常由後端算好下發）；「使用者選 ≤90 天後表格只顯示符合的列」是 Local UI State。兩者常相鄰，但須拆成兩條。
-- **Display / Calculation vs Write Action**：「按鈕能不能點」「顯示某數量／旗標」屬 Display / Calculation；「按下去送出的 action」才屬 Write Action。
-- **Literal → Presentation Formatting**：後端下發 enum／代碼／日期 literal，前端僅做格式化與 i18n，不重新推算 Entity State——屬 Presentation Formatting，非 Display / Calculation。
-- **旗標判定 vs 旗標呈現**：後端依 Full Scope Instance Data 判定並下發旗標（BE-only）；前端依旗標決定是否顯示圖示或文案（Consume，FE-only）——應分條。
+- **Action Enablement vs Write Action**：「按鈕能不能點」屬 Display / Calculation；「按下去送出的 action」才屬 Write Action——**強制拆兩條**。
+- **Literal → Presentation Formatting**：後端下發 enum／代碼／日期 literal，前端僅做格式化與 i18n，不重新推算 Entity State——屬 Presentation Formatting；業務識別 remap（如 plan code）屬 Mapping Table／Q3③。
+- **旗標判定 vs 旗標呈現**：後端依 Full Scope／跨 entity 判定並下發最終旗標（BE-only）；前端 Strict Consume 旗標（FE-only）——應分條。
 - **圖表計算 vs 點選跳轉過濾**：聚合計算、跨實體統計屬 Display / Calculation（常 BE-only／Q3②）；點選後跳轉並 client-side 過濾屬 Local UI State——不可混寫。
 
 ## Code-level Ownership
@@ -101,8 +111,9 @@ Examples:
 
 - Literal → Presentation Formatting 類轉換
 - Filter／篩選（對已載入資料的 client-side 過濾，與寫入無關）
-- 純 Local UI State 推算（跳轉前 cross-check、對話框內表單啟用）；按鈕 disabled 判斷僅限 Consume 後端已下發欄位或單一 entity 資料，**不含**跨 **Domain Entity** 推算（見 Q3②）
-- Consume 後端已下發的 **Entity Attribute** 以呈現 **Entity State**
+- 純 Local UI State 推算（跳轉前 cross-check、對話框內表單狀態）
+- Action Enablement 僅限 **Strict Consume** 最終旗標／預算值（**不含**跨 Domain Entity includes／membership）
+- Strict Consume 後端已下發的 **Entity Attribute** 以呈現 **Entity State**
 
 ### BE-only Ownership
 
@@ -144,9 +155,11 @@ Examples:
 
 **Examples**
 
-- 執行 Assign／Transfer 等寫入（前端 dry-run 即時預覽，後端寫入 API 最終驗證與寫入）
+- 執行 Assign／Transfer 等寫入（前端 dry-run 預覽**同一**驗證規則子集，後端寫入 API 最終驗證與寫入）
 - 金鑰／配對驗證（前端先比對已載入資料排除明顯重複，後端 dry-run 驗證合法性）
-- 停用前是否需確認 Auto-Upgrade（前端依已下發欄位顯示 acknowledge，後端執行實際寫入）
+- 數量／quota 等會改變 payload 或可否送出的前置驗證（兩邊同一規則）
+
+> 僅 acknowledge／開 dialog／選列不足以 Shared；那些另條 Local UI／Presentation／Enablement。
 
 ## Responsibility Matrix（RACI）
 
@@ -186,33 +199,38 @@ Examples:
 
 **客觀判準**（符合任一即觸發 Q3②）：
 
-- **Full Scope Instance Data**：須完整 **Domain Entity Instance** 資料（含未載入紀錄）。
+- **Full Scope Instance Data**：規則語義須完整 **Domain Entity Instance** 集合（含未載入紀錄）。不因碰巧載齊而改判 FE-only。
 - **跨多筆 instance 聚合**：
   - 須對多筆 **Domain Entity Instance** 統計、合併或清單推算（可同 entity，可跨 entity），且同 SSOT 下**結果不因使用者當下 UI 互動**（勾選、client-side filter 可見範圍）而改變。
-  - **不觸發**者：推算結果僅隨使用者 UI 互動而變，且僅 **Consume** 已下發 **Entity Attribute** → FE-only（勾選統計）。
-- **跨 Domain Entity**：須組合兩個以上 **Domain Entity** 的 **Domain Entity Instance** 資料推導 **Entity State**（含單列、已載入資料；一律 BE-only）。
+  - **不觸發**者：推算結果僅隨使用者 UI 互動而變，且僅 **Strict Consume** 已下發最終 **Entity Attribute** → FE-only（勾選統計）。
+- **跨 Domain Entity**：組合兩個以上 Domain Entity 的 instance 資料推導 Entity State（含單列、已載入、**同一 response nested**）。邊界依 entity 身分（見 [硬邊界](#strict-consume--跨-domain-entity-硬邊界)）。目標：BE 下發最終旗標／列級欄位。
 
 **Example**：
 
-- 全部 Expired License 數量 → BE-only（Q3②，跨多筆 instance 聚合）
-- Dashboard online device CPU 平均 → BE-only（Q3②，跨多筆 instance 聚合；與 UI 互動無關）
-- 使用者勾選 N 台 Device，Consume `applicability.assign` 決定 bulk action 可否 → FE-only（Q3 全不成立，勾選統計）
-- Device 單列依已載入 License 判斷 Assign 可否 → BE-only（Q3②，跨 Domain Entity）
+- 全部 Expired License 數量 → BE-only（Q3②）
+- Dashboard online device CPU 平均 → BE-only（Q3②）
+- 勾選 N 台 Device，Consume 最終 `assignable` 旗標 → FE-only
+- Device 單列用 License `applicability.model_names.includes(device.model)` → BE-only（Q3②；nested 不免死）
+- 小 Org 碰巧載齊後 FE 加總 → 仍 BE-only
 
 ### Conditional Mapping（Q3③）
 
-**判定軸**：單一 API 欄位字面值是否須靠 **Mapping Table** 才能唯一解讀以得出 **Entity State**。
+**判定軸**：單一 API 欄位字面值是否須靠 **Mapping Table** 才能唯一解讀以得出 **Entity State** 或業務識別值。
 
 **客觀判準**：
 
-- **Conditional Mapping**：同一欄位字面值因 context（如 `subtype`、product scope）須對照不同解讀方式或取值來源，須查 **Mapping Table** 方能唯一確定。
+- **Conditional Mapping**：同一欄位字面值因 context（如 `subtype`、**Product Scope**）須對照不同解讀方式或取值來源，須查 **Mapping Table**。
+- 產出是人讀文案／格式 → Presentation Formatting；產出是 Entity State／業務識別或對齊後端識別空間 → Mapping Table。
+- 跨 Product Scope 禁止各 FE 複製同一 Entity State 推算；不新增 Q3④。
 
 **Example**：
 
 - `subtype === DEFERRED` 到期改讀 `remain_amount` → BE-only（Q3③）
-- MSP `LICENSE_PLAN_MAPPING` → BE-only（Q3③）
+- MSP `LICENSE_PLAN_MAPPING`：
   - `NCC_PRO` → 後端 `NPRO`
   - `CNP` → 後端 `CNP`、`CNPP`
+  → BE-only（Q3③）
+- enum → i18n 顯示文字 → Presentation Formatting（非 Q3③）
 
 ## 撰寫一條 Business Rule 的建議欄位
 
@@ -222,7 +240,7 @@ Rule Type 與 Ownership 回答不同問題，須分開填寫。建議至少包�
 |---|---|
 | 標題 | `[畫面／模組] 規則简述` |
 | Rule Type | Presentation Formatting / Local UI State / Display / Calculation / Write Action（四選一） |
-| Ownership | FE-only / BE-only / Shared |
+| Ownership | FE-only / BE-only / Shared（**目標**歸屬＝決策樹結論） |
 | 判定方式 | AI（依決策樹推導）/ 人工 |
 | 判定理由 | 對應 Q1／Q2／Q3 的簡述 |
 | 範圍備註 | 不含哪些相鄰規則、已知技術債 |

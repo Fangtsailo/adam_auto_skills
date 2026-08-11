@@ -63,14 +63,25 @@
         },
         {
             "name": "knowledge-implementation-guideline",
-            "description": "Determines whether hard-coded frontend business/domain knowledge should be frontend-only, backend-only, or both, using a Q1/Q2/Q3 decision tree (SSOT mutation, UX validation, catalog/aggregation/performance/cross-client consistency). Classifies knowledge attributes and produces standardized knowledge-entry writeups.",
+            "description": "Determines FE/BE/Shared Ownership for a Business Rule using a Q1/Q2/Q3 decision tree (SSOT mutation, UX Validate, Reverse Lookup, Data Aggregation, Conditional Mapping). Classifies Rule Type and produces standardized writeups.",
             "tags": [
                 "architecture",
                 "frontend-backend",
                 "decision-tree",
                 "documentation"
             ],
-            "version": "1.0.1"
+            "version": "1.1.1"
+        },
+        {
+            "name": "td-detail-fillin",
+            "description": "Fill or rewrite the\u300c\u7d66 BE RD\u300dDetail block of Inventory tech-debt (TD) entries using product language, real API field paths, and clear Consume-vs-FE-\u63a8\u7b97 separation. Use when the user asks to \u5beb TD Detail\u3001\u586b\u5beb\u7d66 BE RD\u3001\u88dc TD Detail\u3001\u6539\u5beb Detail\u3001\u5c0d\u9f4a td_fillin_guideline, or mentions TD-00x Detail / \u7be9\u9078\u96c6\u5408 / \u76f4\u901a API vs FE \u63a8\u7b97 for BE handoff.",
+            "tags": [
+                "workflow",
+                "documentation",
+                "inventory",
+                "tech-debt"
+            ],
+            "version": "1.0.0"
         },
         {
             "name": "write-implementation-plan",

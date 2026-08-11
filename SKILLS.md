@@ -2,7 +2,7 @@
 
 Auto-generated from `skills/manifest.json`. Do not edit manually.
 
-*Generated at: 2026-07-28 08:35:47 UTC*
+*Generated at: 2026-08-11 01:48:30 UTC*
 
 | Skill | Version | Tags | Description |
 |-------|---------|------|-------------|
@@ -11,7 +11,8 @@ Auto-generated from `skills/manifest.json`. Do not edit manually.
 | `angular-developer` | 1.0.0 | imported, angular | Generates Angular code and provides architectural guidance. Trigger when creating projects, components, or services, or for best practices on reactivity (signals, linkedSignal, resource), forms, dependency injection, routing, SSR, accessibility (ARIA), animations, styling (component styles, Tailwind CSS), testing, or CLI tooling. |
 | `architect-first-gate` | 1.0.0 | architecture, workflow, gate, mermaid | Assumes system-architect role before coding: designs macro component communication (participants, data flow, NGXS/IO/service/API), confirms existing architecture with mermaid, then waits for explicit user approval (gate) before writing code. Use when fixing bugs, implementing features, refactoring cross-component flows, or when the user mentions 宏觀組件溝通, 架構設計, or 閘門. |
 | `generate-mr-content` | 1.0.0 | merge-request, mr, workflow, documentation | Generate English MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix). |
-| `knowledge-implementation-guideline` | 1.0.1 | architecture, frontend-backend, decision-tree, documentation | Determines whether hard-coded frontend business/domain knowledge should be frontend-only, backend-only, or both, using a Q1/Q2/Q3 decision tree (SSOT mutation, UX validation, catalog/aggregation/performance/cross-client consistency). Classifies knowledge attributes and produces standardized knowledge-entry writeups. |
+| `knowledge-implementation-guideline` | 1.1.1 | architecture, frontend-backend, decision-tree, documentation | Determines FE/BE/Shared Ownership for a Business Rule using a Q1/Q2/Q3 decision tree (SSOT mutation, UX Validate, Reverse Lookup, Data Aggregation, Conditional Mapping). Classifies Rule Type and produces standardized writeups. |
+| `td-detail-fillin` | 1.0.0 | workflow, documentation, inventory, tech-debt | Fill or rewrite the「給 BE RD」Detail block of Inventory tech-debt (TD) entries using product language, real API field paths, and clear Consume-vs-FE-推算 separation. Use when the user asks to 寫 TD Detail、填寫給 BE RD、補 TD Detail、改寫 Detail、對齊 td_fillin_guideline, or mentions TD-00x Detail / 篩選集合 / 直通 API vs FE 推算 for BE handoff. |
 | `write-implementation-plan` | 1.3.0 | planning, workflow, documentation, mermaid | Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Enforces reviewable unit size (≤3 files / ≤200 lines) and human checkpoints between units. Strongly recommends mermaid diagrams. Use when planning a requirement, 規劃實作計畫, 概覽模式, or 詳盡模式. |
 
 ## Install
