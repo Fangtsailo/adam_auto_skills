@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Skill `i-have-adhd` (imported from [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd)): ADHD-friendly output — lead with next action, numbered steps, no preamble/tangents
 - Skill `architect-first-gate`: system-architect role before coding; macro component communication design with mermaid; hard gate waits for explicit user approval before writing code
 - Skill `write-implementation-plan`: structured requirement + phased implementation plans written to user-specified markdown files
 

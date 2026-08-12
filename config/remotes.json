@@ -6,6 +6,12 @@
             "url": "https://github.com/angular/skills.git",
             "branch": "main",
             "skills_path": "."
+        },
+        {
+            "name": "i-have-adhd",
+            "url": "https://github.com/ayghri/i-have-adhd.git",
+            "branch": "main",
+            "skills_path": "skills"
         }
     ]
 }

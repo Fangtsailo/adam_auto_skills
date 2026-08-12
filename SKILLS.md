@@ -2,7 +2,7 @@
 
 Auto-generated from `skills/manifest.json`. Do not edit manually.
 
-*Generated at: 2026-08-12 00:55:36 UTC*
+*Generated at: 2026-08-12 03:27:29 UTC*
 
 | Skill | Version | Tags | Description |
 |-------|---------|------|-------------|
@@ -13,6 +13,7 @@ Auto-generated from `skills/manifest.json`. Do not edit manually.
 | `fe-code-to-api-requirement` | 1.0.0 | requirements, backend-handoff, api-design, documentation | Convert frontend code into a Traditional Chinese requirement spec for backend API design discussions. Bans existing API endpoints/fields, current-behavior narration, and frontend variable/function names; enforces minimum-background-knowledge wording and removes ambiguous jargon. |
 | `generate-mr-content` | 1.0.0 | merge-request, mr, workflow, documentation | Generate English MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix). |
 | `git-commit` | 1.0.0 | git, commit, workflow, cocogitto | Commit staged changes via mise exec -- cog commit (Cocogitto). Infers TYPE from branch, runs generate-mr-content (shows full MR block; MESSAGE=Title), sets SCOPE from prompt ID (e.g. commit 71166 → RM-71166) or omits it, and always waits for explicit confirmation before committing. Use when the user says commit, commit <id>, 產生commit, 幫我 commit, git:commit, or 送出 commit. |
+| `i-have-adhd` | 1.0.0 | imported, i-have-adhd | Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible. Invoke with /i-have-adhd; stays on until "stop adhd mode". |
 | `knowledge-implementation-guideline` | 1.1.1 | architecture, frontend-backend, decision-tree, documentation | Determines FE/BE/Shared Ownership for a Business Rule using a Q1/Q2/Q3 decision tree (SSOT mutation, UX Validate, Reverse Lookup, Data Aggregation, Conditional Mapping). Classifies Rule Type and produces standardized writeups. |
 | `td-detail-fillin` | 1.0.0 | workflow, documentation, inventory, tech-debt | Fill or rewrite the「給 BE RD」Detail block of Inventory tech-debt (TD) entries using product language, real API field paths, and clear Consume-vs-FE-推算 separation. Use when the user asks to 寫 TD Detail、填寫給 BE RD、補 TD Detail、改寫 Detail、對齊 td_fillin_guideline, or mentions TD-00x Detail / 篩選集合 / 直通 API vs FE 推算 for BE handoff. |
 | `write-implementation-plan` | 1.3.0 | planning, workflow, documentation, mermaid | Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Enforces reviewable unit size (≤3 files / ≤200 lines) and human checkpoints between units. Strongly recommends mermaid diagrams. Use when planning a requirement, 規劃實作計畫, 概覽模式, or 詳盡模式. |
