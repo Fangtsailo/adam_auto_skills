@@ -51,6 +51,17 @@
             "version": "1.0.0"
         },
         {
+            "name": "fe-code-to-api-requirement",
+            "description": "Convert frontend code into a Traditional Chinese requirement spec for backend API design discussions. Bans existing API endpoints/fields, current-behavior narration, and frontend variable/function names; enforces minimum-background-knowledge wording and removes ambiguous jargon.",
+            "tags": [
+                "requirements",
+                "backend-handoff",
+                "api-design",
+                "documentation"
+            ],
+            "version": "1.0.0"
+        },
+        {
             "name": "generate-mr-content",
             "description": "Generate English MR description from git staged changes when user says 產生MR內容 (Title, Root Cause, How to Fix).",
             "tags": [
