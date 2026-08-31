@@ -1,10 +1,11 @@
 ---
 name: angular-code-review
 description: >-
-  Review Angular PRs/MRs against team gates and angular-dev-core-rules (i18n,
-  FP, declarative UI). Covers NGXS, inject(), TypeScript, style, security, and
-  performance. States commit intent first, then reports only the most serious
-  concerns. Use when reviewing Angular code or the user asks for a review.
+  Review Angular PRs/MRs against team gates, angular-dev-core-rules (FP,
+  declarative UI), and zyxel-i18n-write (string write path). Covers NGXS,
+  inject(), TypeScript, style, security, and performance. States commit intent
+  first, then reports only the most serious concerns. Use when reviewing
+  Angular code or the user asks for a review.
 ---
 
 # Angular Code Review
@@ -12,22 +13,23 @@ description: >-
 ## Scope & related skills
 
 - **This skill:** PR/MR checklist, severity (Critical / Suggestions / Positive), output format, and team-wide gates (TypeScript, style, security, performance).
-- **`angular-dev-core-rules`:** Source of truth for i18n, functional style, comments, and declarative UI/data flow. Do not duplicate or contradict those rules here — reference them when flagging issues.
+- **`zyxel-i18n-write`:** Authoritative i18n write path. Use it when reviewing added or changed UI strings.
+- **`angular-dev-core-rules`:** Source of truth for i18n **runtime**, functional style, comments, and declarative UI/data flow. Do not duplicate or contradict those rules here — reference them when flagging issues.
 - **`angular-developer`:** Official Angular API and architecture guidance (Signals, Forms, Routing, etc.). Use for framework-level review questions; team gates still follow `angular-dev-core-rules`.
-- For reviews touching templates, NGXS, RxJS, or translations, apply `angular-dev-core-rules` and this skill together; consult `angular-developer` for Angular API best practices.
+- For reviews touching templates, NGXS, RxJS, or translations, apply `zyxel-i18n-write`, `angular-dev-core-rules`, and this skill together; consult `angular-developer` for Angular API best practices.
 
 ## Review Checklist
 
 Use **`angular-dev-core-rules`** for the core sections below; use **this skill** for team gates in the following subsections.
 
-**Authoritative source:** bullets under Core dev rules are review shorthand only. If anything conflicts with `angular-dev-core-rules`, follow dev-core.
+**Authoritative source:** bullets under Core dev rules are review shorthand only. If anything conflicts with `angular-dev-core-rules`, follow dev-core. If anything conflicts with `zyxel-i18n-write` on how strings are written, follow **`zyxel-i18n-write`**.
 
 ### Core dev rules (angular-dev-core-rules)
 
-#### i18n (see `angular-dev-core-rules` + `apps/gui3/src/i18n/readme.md`)
+#### i18n (see `zyxel-i18n-write` + `angular-dev-core-rules` runtime + `apps/gui3/src/i18n/readme.md`)
+- Write path matches `zyxel-i18n-write` (Dedupe bind vs YAML + Crowdin reuse vs YAML-only). Hand-editing Crowdin JSON is required on reuse; do **not** flag that as an error.
 - No **runtime** fallback: no `instant` default text, inline English, or hidden locale switch when a key is missing. Build-time `en-us` fill in `translation.build.cjs` is project-standard — do not add a second app-level fallback.
-- New UI strings added in the correct **YAML** under `apps/gui3/src/i18n/` (not hand-synced across every `i18n.crowdin/<lang>.json`).
-- Extract/build workflow respected (`npm run i18n:extract`, `npm run i18n:build`; use `npm run i18n:build -- --validate` when validating); flag keys used in templates but missing from YAML/extract output.
+- Flag template/service keys that are not Dedupe Terms and are missing from YAML. Do not require `npm run i18n:extract` in the PR.
 
 #### Functional style & state
 - Prefer immutability for NGXS/shared state (`patchState` with new collections; avoid in-place mutation of `ctx.getState()`).
@@ -81,7 +83,8 @@ Align with dev-core **prefer, not dogma** — do not demand drive-by rewrites ou
 
 | Finding | Typical severity |
 |---------|------------------|
-| Missing YAML i18n keys / runtime locale fallback in app code | Critical |
+| Missing YAML i18n keys (non-Dedupe) / runtime locale fallback in app code | Critical |
+| Dedupe Term added as YAML, or stale Crowdin text left on a changed YAML key | Critical |
 | Untranslated Crowdin strings (build validate warnings only) | Suggestions unless PR blocks release |
 | NGXS in-place mutation of shared state | Critical |
 | Unsafe `innerHTML` / XSS risk | Critical |
@@ -112,4 +115,5 @@ Do **not** output Suggestions or Positive sections unless the user asks for a fu
 ## Additional resources
 
 - Review examples and NGXS notes: [reference.md](reference.md)
+- i18n write path: [../zyxel-i18n-write/SKILL.md](../zyxel-i18n-write/SKILL.md)
 - i18n, FP, declarative UI depth: [../angular-dev-core-rules/reference.md](../angular-dev-core-rules/reference.md)

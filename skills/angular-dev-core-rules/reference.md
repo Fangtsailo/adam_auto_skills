@@ -2,35 +2,41 @@
 
 Use when the task needs examples or trade-off guidance beyond `SKILL.md`.
 
-## 1. i18n (project: YAML → Crowdin → assets)
+## 1. i18n (write path: `zyxel-i18n-write`; runtime: no fallback)
 
 ### Principles
 
 | Layer | Rule |
 |-------|------|
-| **Authoring** | English-only YAML under `apps/gui3/src/i18n/`. Place files per `readme.md` (module folders, `$nub` / `$$nub` / `$$nui` merge rules). |
+| **Authoring** | Follow `zyxel-i18n-write`. YAML that is added is English-only under `apps/gui3/src/i18n/`, placed per `readme.md`. |
 | **Runtime (app)** | No silent fallback in templates or TS — no `instant(key, 'English')`, no inline default copy when a key is missing. |
 | **Build** | Missing Crowdin translations are merged from `en-us` in `translation.build.cjs`. Do not duplicate that with extra app-level fallback. |
 | **Quality** | Untranslated strings reported by `npm run i18n:build --validate` (or `i18n:validate`) are defects; fix via YAML + Crowdin, not component hacks. |
 
 ### Workflow
 
-1. Add or change keys in the correct YAML file(s).
-2. `npm run i18n:extract` — updates Crowdin source (`i18n.crowdin/en-us.json`).
-3. Translations completed on Crowdin → download to `apps/gui3/src/i18n.crowdin/<lang>.json`.
-4. `npm run i18n:build` — per-module JSON under `src/assets/i18n/**/`; Angular loads via `NebulaTranslateLoader` + `@ngx-translate/core`.
+Implementation write steps live in **`zyxel-i18n-write`** (Dedupe Term vs Crowdin reuse vs YAML-only). Do not run `i18n:extract` during implementation.
+
+Deploy/build (not the agent write path):
+
+1. Crowdin translates new YAML keys after deploy.
+2. `npm run i18n:build` — per-module JSON under `src/assets/i18n/**/`; Angular loads via `NebulaTranslateLoader` + `@ngx-translate/core`.
 
 ### Checks
 
-- New template/service keys exist in YAML (and survive extract/compile), not manually duplicated across every locale JSON.
+- Non-Dedupe template/service keys exist in YAML. Dedupe Terms bind `I18N_DEDUPE_TERMS.*` and must not be added as YAML.
+- Hand-editing `i18n.crowdin/<lang>.json` (including `en-us.json`) is **required** when `zyxel-i18n-write` Rule 2 applies; do not treat that as a defect.
 - Key naming matches existing conventions (`NUB.SwitchStackManagementDetail.TITLE`, `COMMON.Button.Delete`, etc.).
 - Interpolation uses `{{0}}` style per `translation.validate.cjs` (see i18n readme).
 
 ### Examples
 
 ```html
-<!-- Prefer explicit keys; no inline English fallback -->
+<!-- YAML-backed key -->
 <span>{{ 'NUB.SwitchStackManagementDetail.TITLE' | translate }}</span>
+
+<!-- Dedupe Term: no | translate; see zyxel-i18n-write -->
+<span>{{ I18N_DEDUPE_TERMS.VLAN }}</span>
 ```
 
 ```ts

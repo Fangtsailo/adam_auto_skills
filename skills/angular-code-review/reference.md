@@ -6,18 +6,22 @@ Use with `SKILL.md` for PR/MR reviews. Implementation principles live in **`angu
 
 | Topic | Skill |
 |-------|--------|
-| i18n, FP, comments, declarative UI | `angular-dev-core-rules` |
+| i18n **write path** (Dedupe / Crowdin reuse / YAML-only) | `zyxel-i18n-write` |
+| i18n runtime, FP, comments, declarative UI | `angular-dev-core-rules` |
 | Checklist severity, output format, TS/style/security/performance gates | `angular-code-review` (this skill) |
 
-## Review gates (from angular-dev-core-rules)
+## Review gates (from zyxel-i18n-write + angular-dev-core-rules)
 
 ### i18n
 
 - **Critical:** runtime fallback in app code (`instant` with default text, inline English masking missing keys).
-- **Critical:** template/service keys with no matching YAML source (or not produced by extract/compile).
-- **Not required:** manually editing every `i18n.crowdin/<lang>.json` for each new key — Crowdin + `npm run i18n:build` handles locales; build merges `en-us` for gaps.
+- **Critical:** non-Dedupe template/service keys with no matching YAML source.
+- **Critical:** Dedupe Term authored as YAML, or `| translate` on `I18N_DEDUPE_TERMS.*`.
+- **Critical:** changed YAML English still paired with the old Crowdin value for that key.
+- **Required:** follow `zyxel-i18n-write`. Hand-editing `i18n.crowdin/<lang>.json` (including `en-us.json`) on translation reuse is correct — do not flag it.
+- **Not required:** `npm run i18n:extract` in the PR.
 - **Suggestions:** untranslated strings surfaced by `npm run i18n:build -- --validate` (or `npm run i18n:validate`) until Crowdin catches up.
-- Details: `angular-dev-core-rules` and `apps/gui3/src/i18n/readme.md`.
+- Details: `zyxel-i18n-write`, `angular-dev-core-rules`, and `apps/gui3/src/i18n/readme.md`.
 
 ### Declarative UI & subscriptions
 
@@ -92,7 +96,8 @@ Default to Module-based components unless Standalone is explicitly required by t
 
 | Situation | Severity |
 |-----------|----------|
-| Missing YAML keys / runtime i18n fallback in app | Critical |
+| Missing YAML keys (non-Dedupe) / runtime i18n fallback in app | Critical |
+| Dedupe Term as YAML, or stale Crowdin text on a changed key | Critical |
 | Crowdin gaps (build validate only) | Suggestions |
 | Shared NGXS state mutated in place | Critical |
 | New code uses `any` or bypasses NGXS without reason | Critical |

@@ -1,10 +1,11 @@
 ---
 name: angular-dev-core-rules
 description: >-
-  Guides Angular implementation toward project i18n (YAML/Crowdin), functional
-  programming, declarative UI/data flow, and purposeful comments. Use when
-  building or refactoring Angular/NGXS/RxJS components, services, or state
-  logic. For PR review checklists, use angular-code-review instead.
+  Guides Angular implementation toward functional programming, declarative
+  UI/data flow, purposeful comments, and i18n runtime rules. String write path
+  is zyxel-i18n-write. Use when building or refactoring Angular/NGXS/RxJS
+  components, services, or state logic. For PR review checklists, use
+  angular-code-review instead.
 ---
 
 # Angular Dev Core Rules
@@ -13,18 +14,19 @@ description: >-
 
 - **This skill:** implementation direction while writing or refactoring code.
 - **`angular-developer`:** Official Angular conventions (Signals, Forms, Routing, DI, testing, CLI). Read its `references/` for deep guidance on framework APIs.
+- **`zyxel-i18n-write`:** Authoritative write path for user-visible strings (Dedupe / Crowdin reuse / YAML-only).
 - **`angular-code-review`:** PR/MR review checklist, output format, style/security/performance gates.
-- **Precedence:** When this skill conflicts with `angular-developer`, follow **this skill** (team i18n, NGXS, project structure).
+- **Precedence:** When this skill conflicts with `angular-developer`, follow **this skill** (NGXS, project structure). When this skill conflicts with `zyxel-i18n-write` on how to write strings, follow **`zyxel-i18n-write`**.
 - **Build verification:** NX monorepos use `nx build <project>` instead of `ng build`.
 - Apply only in the Angular domain. Prefer existing project patterns when they already satisfy these principles.
 
-## 1. i18n (YAML → Crowdin; no runtime fallback)
+## 1. i18n (write path: `zyxel-i18n-write`; no runtime fallback)
 
-- **Source of truth:** add English strings in `apps/gui3/src/i18n/**/*.yml`. Follow folder rules in `apps/gui3/src/i18n/readme.md` (`$`, `$$`, per-module paths). Do not hand-edit every `i18n.crowdin/<lang>.json` for new keys.
-- **Workflow:** after YAML changes, run `npm run i18n:extract`; translations go through Crowdin → `apps/gui3/src/i18n.crowdin/<lang>.json`; assets are built via `npm run i18n:build` (use `--validate` in CI/pre-commit when applicable).
+- **Write path:** follow `zyxel-i18n-write` whenever adding or changing user-visible strings. YAML folder rules stay in `apps/gui3/src/i18n/readme.md` (`$`, `$$`, per-module paths).
+- **Do not** restate Dedupe / Crowdin-reuse / YAML-only steps here. Do not require `npm run i18n:extract` during implementation.
 - **Runtime:** do not add app-level fallback when a key is missing (`translateService.instant` with default text, inline English in templates, or a hidden locale switch). Let `@ngx-translate` show the key or the project’s missing-key behavior.
-- **Build pipeline (project standard):** `tools/i18n/translation.build.cjs` fills missing Crowdin strings from `en-us`. That is not a license to skip YAML keys or mask defects — treat `npm run i18n:build -- --validate` (or `npm run i18n:validate`) warnings on untranslated strings as defects to fix via Crowdin, not as something to paper over in component code.
-- Reuse existing key prefixes (`NUB.*`, `COMMON.*`, etc.) and `| translate` / project translate helpers.
+- **Build pipeline (project standard):** `tools/i18n/translation.build.cjs` fills missing Crowdin strings from `en-us`. That is not a license to skip YAML keys (for non-Dedupe strings) or mask defects — treat `npm run i18n:build -- --validate` (or `npm run i18n:validate`) warnings on untranslated strings as defects to fix via Crowdin, not as something to paper over in component code.
+- YAML-backed strings use existing key prefixes (`NUB.*`, `COMMON.*`, etc.) and `| translate` / project translate helpers. Dedupe Terms bind `I18N_DEDUPE_TERMS.*` with no `| translate`.
 
 ## 2. Functional programming (prefer, not dogma)
 
@@ -49,4 +51,5 @@ description: >-
 ## Additional resources
 
 - Patterns, NGXS notes, and examples: [reference.md](reference.md)
+- String write path: `../zyxel-i18n-write/SKILL.md`
 - i18n structure and build flow: `apps/gui3/src/i18n/readme.md`
