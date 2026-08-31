@@ -2,7 +2,7 @@
 
 Auto-generated from `skills/manifest.json`. Do not edit manually.
 
-*Generated at: 2026-08-12 03:27:29 UTC*
+*Generated at: 2026-08-31 03:30:31 UTC*
 
 | Skill | Version | Tags | Description |
 |-------|---------|------|-------------|

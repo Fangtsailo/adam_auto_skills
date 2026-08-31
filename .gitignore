@@ -13,3 +13,6 @@ credentials.json
 # Temp
 tmp/
 *.tmp
+
+# External agent skills (npx skills)
+.agents/
