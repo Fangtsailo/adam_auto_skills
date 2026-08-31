@@ -2,7 +2,7 @@
 
 Auto-generated from `skills/manifest.json`. Do not edit manually.
 
-*Generated at: 2026-08-31 03:30:31 UTC*
+*Generated at: 2026-08-31 05:33:12 UTC*
 
 | Skill | Version | Tags | Description |
 |-------|---------|------|-------------|
@@ -16,6 +16,7 @@ Auto-generated from `skills/manifest.json`. Do not edit manually.
 | `i-have-adhd` | 1.0.0 | imported, i-have-adhd | Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible. Invoke with /i-have-adhd; stays on until "stop adhd mode". |
 | `knowledge-implementation-guideline` | 1.1.1 | architecture, frontend-backend, decision-tree, documentation | Determines FE/BE/Shared Ownership for a Business Rule using a Q1/Q2/Q3 decision tree (SSOT mutation, UX Validate, Reverse Lookup, Data Aggregation, Conditional Mapping). Classifies Rule Type and produces standardized writeups. |
 | `td-detail-fillin` | 1.0.0 | workflow, documentation, inventory, tech-debt | Fill or rewrite the「給 BE RD」Detail block of Inventory tech-debt (TD) entries using product language, real API field paths, and clear Consume-vs-FE-推算 separation. Use when the user asks to 寫 TD Detail、填寫給 BE RD、補 TD Detail、改寫 Detail、對齊 td_fillin_guideline, or mentions TD-00x Detail / 篩選集合 / 直通 API vs FE 推算 for BE handoff. |
+| `ui-operation-desc` | 1.0.0 | documentation, requirements, workflow, handoff | Generate a Traditional Chinese UI-operation description from user-specified code so cross-team readers understand what the user does on screen. Documents may only mark which code to read; every claim is grounded in that code, then API and code vocabulary are stripped. Use when the user asks to 產生畫面操作說明、用人話講畫面、去實作化描述畫面、寫使用者操作目的／使用者操作流程, mentions ui-operation-desc, or wants a screen walkthrough for PM / QA / another unit — not an API spec and not a TD Detail. |
 | `write-implementation-plan` | 1.3.0 | planning, workflow, documentation, mermaid | Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Enforces reviewable unit size (≤3 files / ≤200 lines) and human checkpoints between units. Strongly recommends mermaid diagrams. Use when planning a requirement, 規劃實作計畫, 概覽模式, or 詳盡模式. |
 
 ## Install
