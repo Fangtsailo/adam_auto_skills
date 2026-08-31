@@ -1,12 +1,7 @@
 ---
 name: td-detail-fillin
-description: >-
-  Fill or rewrite the「給 BE RD」Detail block of Inventory tech-debt (TD)
-  entries using product language, real API field paths, and clear
-  Consume-vs-FE-推算 separation. Use when the user asks to 寫 TD Detail、
-  填寫給 BE RD、補 TD Detail、改寫 Detail、對齊 td_fillin_guideline, or
-  mentions TD-00x Detail / 篩選集合 / 直通 API vs FE 推算 for BE handoff.
-disable-model-invocation: false
+description: Fill or rewrite the 給 BE RD Detail block of an Inventory tech-debt entry.
+disable-model-invocation: true
 ---
 
 # TD Detail 填寫指南（給 BE RD）
@@ -25,13 +20,13 @@ Apply when the user asks to write, rewrite, review, or align a TD **Detail** for
 2. **Gather evidence** — read the **real** Inventory（or related）API docs／types and the **real** FE filter／row logic. Do not write from the log title or FE comments alone.
 3. **Draft Detail** — follow「建議章節骨架」in order; omit inapplicable sections, but keep **這條在做什麼／現行 API／期望結果**.
 4. **Self-check** — run「交件前 Checklist」before presenting.
-5. **Output** — write Detail in **Traditional Chinese product language**. Evidence (file paths, line numbers, function names) may stay in scratch／notes; **never** put FE paths／line numbers／function or variable names in Detail body.
+5. **Output** — write Detail in Traditional Chinese 畫面用詞 ([`CONTEXT.md`](CONTEXT.md)). API field paths stay; **去實作化** does not strip them from a TD Detail. Evidence (file paths, line numbers, function names) stays in scratch; never put FE paths, line numbers, or function/variable names in the Detail body.
 
 Canonical example to mirror structure and tone:
 
 - `inventory-knowledge/E03-E04_related_td.md` → **TD-004 — GSP 授權狀態同步至 NCC／PRO／RAP 篩選集合**
 
-Internal vocabulary: root [`CONTEXT.md`](../../../CONTEXT.md). In Detail, use the left column of the terminology table below. Full human-readable rules (including易曲解詞彙): `inventory-knowledge/td_fillin_guideline.md`.
+Internal vocabulary: [`CONTEXT.md`](CONTEXT.md). In Detail, use the left column of the terminology table below. Full human-readable rules (including易曲解詞彙) live in the consuming repo at `inventory-knowledge/td_fillin_guideline.md` — not shipped with this skill.
 
 ---
 
@@ -39,7 +34,7 @@ Internal vocabulary: root [`CONTEXT.md`](../../../CONTEXT.md). In Detail, use th
 
 Detail **對 BE 用中文產品語**。寫 Detail 時用下表左側用語，避免把右側 `_Avoid_`／FE 實作名寫進正文。
 
-| Detail 用語 | 意思 | 對應 `CONTEXT.md`（若有） | 避免寫入 Detail |
+| Detail 用語 | 意思 | 內部對應詞（若有） | 避免寫入 Detail |
 |-------------|------|---------------------------|-----------------|
 | 組織 Inventory 裝置列表上的授權狀態篩選 | 產品 UI 上裝置表的授權篩選語意（**不是**後端 Device List API／資源名） | Device list（UI surface） | 裸寫 `Device List` |
 | 篩選狀態 | 單一可被列表篩選命中的狀態標籤（如 `ACTIVE`、`UNLICENSE`） | Device License Filter State 的成員；部分亦屬 Filter Bucket | `licState`、side bag、加性… |
@@ -157,6 +152,6 @@ Copy and tick before delivering Detail:
 
 ## Related sources
 
-- Human-readable guideline: `inventory-knowledge/td_fillin_guideline.md`
-- Canonical Detail: `inventory-knowledge/E03-E04_related_td.md`（TD-004）
-- Domain vocabulary: [`CONTEXT.md`](../../../CONTEXT.md)
+- Human-readable guideline (consuming repo): `inventory-knowledge/td_fillin_guideline.md`
+- Canonical Detail (consuming repo): `inventory-knowledge/E03-E04_related_td.md`（TD-004）
+- Domain vocabulary: [`CONTEXT.md`](CONTEXT.md)

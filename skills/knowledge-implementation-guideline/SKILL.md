@@ -1,17 +1,7 @@
 ---
 name: knowledge-implementation-guideline
-description: >-
-  Determines FE/BE/Shared Ownership for a Business Rule (business rule, Entity
-  State derivation, permission check) using an objective Q1/Q2/Q3 decision tree
-  based on SSOT mutation, UX Validate needs, Reference Data Reverse Lookup,
-  Data Aggregation (Full Scope Instance Data / cross Domain Entity), and
-  Conditional Mapping. Also classifies a rule into one of four Rule Types
-  (Presentation Formatting / Local UI State / Display / Calculation / Write
-  Action) and produces a standardized writeup. Use when the user asks to 審查
-  Business Rule、判斷前後端 Ownership、決定這段邏輯該放前端還是後端, reviews
-  hard-coded domain knowledge placement, or mentions Business Rule、Knowledge
-  條目、SSOT、dry-run、Ownership 決策樹、實作歸屬.
-disable-model-invocation: false
+description: Decide FE/BE/Shared ownership for a Business Rule with the Q1/Q2/Q3 tree and produce the standard writeup.
+disable-model-invocation: true
 ---
 
 # Business Rule Ownership Guideline

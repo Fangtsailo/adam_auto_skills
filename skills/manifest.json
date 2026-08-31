@@ -51,8 +51,17 @@
             "version": "1.0.0"
         },
         {
+            "name": "ask-adam",
+            "description": "Pick which hand-fired skill to follow, then do that work.",
+            "tags": [
+                "workflow",
+                "router"
+            ],
+            "version": "1.0.0"
+        },
+        {
             "name": "fe-code-to-api-requirement",
-            "description": "Convert frontend code into a Traditional Chinese requirement spec for backend API design discussions. Bans existing API endpoints/fields, current-behavior narration, and frontend variable/function names; enforces minimum-background-knowledge wording and removes ambiguous jargon.",
+            "description": "Convert frontend code into a Traditional Chinese backend-facing requirement spec that does not design the API.",
             "tags": [
                 "requirements",
                 "backend-handoff",
@@ -63,7 +72,7 @@
         },
         {
             "name": "generate-mr-content",
-            "description": "Generate English MR description from git staged changes when user says \u7522\u751fMR\u5167\u5bb9 (Title, Root Cause, How to Fix).",
+            "description": "Generate an English MR description (Title, Root Cause, How to Fix) from git staged changes.",
             "tags": [
                 "merge-request",
                 "mr",
@@ -74,7 +83,7 @@
         },
         {
             "name": "git-commit",
-            "description": "Commit staged changes via mise exec -- cog commit (Cocogitto). Infers TYPE from branch, runs generate-mr-content (shows full MR block; MESSAGE=Title), sets SCOPE from prompt ID (e.g. commit 71166 \u2192 RM-71166) or omits it, and always waits for explicit confirmation before committing. Use when the user says commit, commit <id>, \u7522\u751fcommit, \u5e6b\u6211 commit, git:commit, or \u9001\u51fa commit.",
+            "description": "Commit staged changes with Cocogitto via mise, after showing the MR block and waiting for confirmation.",
             "tags": [
                 "git",
                 "commit",
@@ -101,7 +110,7 @@
         },
         {
             "name": "knowledge-implementation-guideline",
-            "description": "Determines FE/BE/Shared Ownership for a Business Rule using a Q1/Q2/Q3 decision tree (SSOT mutation, UX Validate, Reverse Lookup, Data Aggregation, Conditional Mapping). Classifies Rule Type and produces standardized writeups.",
+            "description": "Decide FE/BE/Shared ownership for a Business Rule with the Q1/Q2/Q3 tree and produce the standard writeup.",
             "tags": [
                 "architecture",
                 "frontend-backend",
@@ -112,7 +121,7 @@
         },
         {
             "name": "td-detail-fillin",
-            "description": "Fill or rewrite the\u300c\u7d66 BE RD\u300dDetail block of Inventory tech-debt (TD) entries using product language, real API field paths, and clear Consume-vs-FE-\u63a8\u7b97 separation. Use when the user asks to \u5beb TD Detail\u3001\u586b\u5beb\u7d66 BE RD\u3001\u88dc TD Detail\u3001\u6539\u5beb Detail\u3001\u5c0d\u9f4a td_fillin_guideline, or mentions TD-00x Detail / \u7be9\u9078\u96c6\u5408 / \u76f4\u901a API vs FE \u63a8\u7b97 for BE handoff.",
+            "description": "Fill or rewrite the \u7d66 BE RD Detail block of an Inventory tech-debt entry.",
             "tags": [
                 "workflow",
                 "documentation",
@@ -123,7 +132,7 @@
         },
         {
             "name": "ui-operation-desc",
-            "description": "Generate a Traditional Chinese UI-operation description from user-specified code so cross-team readers understand what the user does on screen. Documents may only mark which code to read; every claim is grounded in that code, then API and code vocabulary are stripped. Use when the user asks to \u7522\u751f\u756b\u9762\u64cd\u4f5c\u8aaa\u660e\u3001\u7528\u4eba\u8a71\u8b1b\u756b\u9762\u3001\u53bb\u5be6\u4f5c\u5316\u63cf\u8ff0\u756b\u9762\u3001\u5beb\u4f7f\u7528\u8005\u64cd\u4f5c\u76ee\u7684\uff0f\u4f7f\u7528\u8005\u64cd\u4f5c\u6d41\u7a0b, mentions ui-operation-desc, or wants a screen walkthrough for PM / QA / another unit \u2014 not an API spec and not a TD Detail.",
+            "description": "Write a Traditional Chinese UI-operation description from specified code for readers who do not write that code.",
             "tags": [
                 "documentation",
                 "requirements",
@@ -134,7 +143,7 @@
         },
         {
             "name": "write-implementation-plan",
-            "description": "Write structured implementation plans to a user-specified markdown file. Overview mode splits scope by Phase; detailed mode splits by PR for implementation handoff. Enforces reviewable unit size (\u22643 files / \u2264200 lines) and human checkpoints between units. Strongly recommends mermaid diagrams. Use when planning a requirement, \u898f\u5283\u5be6\u4f5c\u8a08\u756b, \u6982\u89bd\u6a21\u5f0f, or \u8a73\u76e1\u6a21\u5f0f.",
+            "description": "Write a structured implementation plan to a user-specified markdown file, split by Phase or by PR.",
             "tags": [
                 "planning",
                 "workflow",

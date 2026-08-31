@@ -1,13 +1,7 @@
 ---
 name: write-implementation-plan
-description: >-
-  Write structured implementation plans to a user-specified markdown file.
-  Supports overview mode (Phase-based scope alignment) and detailed mode
-  (PR-based executable handoff). Enforces reviewable unit size (≤3 files /
-  ≤200 lines) and human checkpoints between units. Strongly recommends mermaid
-  diagrams. Use when the user asks to plan a requirement, create an
-  implementation plan, 規劃實作計畫, 概覽模式, 詳盡模式, or write a plan to an md file.
-disable-model-invocation: false
+description: Write a structured implementation plan to a user-specified markdown file, split by Phase or by PR.
+disable-model-invocation: true
 ---
 
 # Write Implementation Plan

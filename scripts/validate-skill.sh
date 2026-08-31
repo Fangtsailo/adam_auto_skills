@@ -116,6 +116,13 @@ validate_skill() {
         return
     fi
 
+    if grep -qE '\]\((\./)?CONTEXT\.md\)' "$skill_md"; then
+        if [[ ! -e "${skill_dir}/CONTEXT.md" ]]; then
+            log_fail "${skill_name}: SKILL.md points at CONTEXT.md but ${skill_dir}/CONTEXT.md is missing"
+            return
+        fi
+    fi
+
     if grep -q 'skills-cursor' "$skill_md" 2>/dev/null; then
         if grep -qE '(write|install|create|copy).*(skills-cursor)|(skills-cursor).*(write|install|create|copy)' "$skill_md" 2>/dev/null; then
             log_fail "${skill_name}: SKILL.md must not instruct writing to skills-cursor"

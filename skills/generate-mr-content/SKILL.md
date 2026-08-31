@@ -1,10 +1,7 @@
 ---
 name: generate-mr-content
-description: >-
-  Generate merge request description in English (Title, Root Cause, How to Fix)
-  from git staged changes only. Use when the user says 產生MR內容, asks for MR
-  content, merge request description, or mentions generate-mr-content.
-disable-model-invocation: false
+description: Generate an English MR description (Title, Root Cause, How to Fix) from git staged changes.
+disable-model-invocation: true
 ---
 
 # Generate MR Content

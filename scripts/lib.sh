@@ -132,6 +132,28 @@ remove_skill_at_target() {
     fi
 }
 
+# Copy a skill directory and replace in-tree file symlinks with the files they
+# point at in the source tree, so copy-install still has those files.
+copy_skill_directory() {
+    local source_path="$1"
+    local target_path="$2"
+    local link rel src_link resolved
+
+    cp -R "$source_path" "$target_path"
+
+    while IFS= read -r -d '' link; do
+        rel="${link#"${target_path}/"}"
+        src_link="${source_path}/${rel}"
+        if [[ -L "$src_link" ]]; then
+            resolved="$(readlink -f "$src_link" 2>/dev/null || true)"
+            if [[ -n "$resolved" && -f "$resolved" ]]; then
+                rm "$link"
+                cp "$resolved" "$link"
+            fi
+        fi
+    done < <(find "$target_path" -type l -print0 2>/dev/null)
+}
+
 install_skill_to_target() {
     local skill_name="$1"
     local target_dir="$2"
@@ -161,7 +183,7 @@ install_skill_to_target() {
             log_info "Installed (symlink): ${skill_name} -> ${target_path}"
             ;;
         copy)
-            cp -R "$source_path" "$target_path"
+            copy_skill_directory "$source_path" "$target_path"
             log_info "Installed (copy): ${skill_name} -> ${target_path}"
             ;;
         *)
@@ -262,7 +284,7 @@ sync_skill_at_target() {
             log_info "Synced (symlink): ${skill_name} -> ${target_path}"
             ;;
         copy)
-            cp -R "$source_path" "$target_path"
+            copy_skill_directory "$source_path" "$target_path"
             log_info "Synced (copy): ${skill_name} -> ${target_path}"
             ;;
         *)

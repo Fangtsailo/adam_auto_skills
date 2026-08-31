@@ -1,15 +1,7 @@
 ---
 name: git-commit
-description: >-
-  Commit staged changes via mise exec -- cog commit (Cocogitto conventional
-  commits). Infers TYPE from branch name, runs generate-mr-content and shows
-  the full MR block to the user, uses its Title as MESSAGE, sets SCOPE from
-  an ID in the user prompt (e.g. commit 71166 → RM-71166) or omits SCOPE when
-  the prompt has no ID (e.g. commit), and always waits for explicit user
-  confirmation before running the commit. Use when the user says commit,
-  commit <id>, 產生commit、幫我 commit、git:commit、送出 commit, or asks to
-  commit with the project manage flow.
-disable-model-invocation: false
+description: Commit staged changes with Cocogitto via mise, after showing the MR block and waiting for confirmation.
+disable-model-invocation: true
 ---
 
 # Git Commit (cog via mise)

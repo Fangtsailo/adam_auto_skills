@@ -2,7 +2,6 @@
 name: architect-first-gate
 description: >-
   Assumes system-architect role before coding: designs macro component communication (participants, data flow, NGXS/IO/service/API), confirms existing architecture with mermaid, then waits for explicit user approval (gate) before writing code. Use when fixing bugs, implementing features, refactoring cross-component flows, or when the user mentions 宏觀組件溝通, 架構設計, or 閘門.
-disable-model-invocation: false
 ---
 
 # Architect First Gate
@@ -76,7 +75,7 @@ Required sections — see [reference.md](reference.md) for the full template:
 | Small (2–3 participants) | Short Goal + one sequence diagram + mechanism bullets |
 | Medium / large | Full template; call out store vs component responsibilities |
 
-Large multi-PR work: after gate approval, optionally use `write-implementation-plan` for a detailed md plan — **gate still comes first**.
+Large multi-PR work: after gate approval, optionally follow [write-implementation-plan](../write-implementation-plan/SKILL.md) for a detailed md plan — **gate still comes first**.
 
 ### 3. Gate — STOP
 
@@ -108,8 +107,8 @@ Treat as **not approval**: questions, partial feedback, silence, or "大致可�
 
 | Skill | Relationship |
 |-------|----------------|
-| `write-implementation-plan` | Optional **after** gate for large Phase/PR md plans |
-| `knowledge-implementation-guideline` | Use when the design hinges on FE/BE ownership of a rule |
+| `write-implementation-plan` | Optional **after** gate: follow [write-implementation-plan](../write-implementation-plan/SKILL.md) |
+| `knowledge-implementation-guideline` | If the design hinges on FE/BE ownership, follow [knowledge-implementation-guideline](../knowledge-implementation-guideline/SKILL.md) |
 | `angular-dev-core-rules` / `angular-developer` | Apply **during** implementation (step 4), not instead of the gate |
 
 ## Additional resources

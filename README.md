@@ -52,16 +52,9 @@ chmod +x bin/skill scripts/*.sh
 
 ## 內建 Skills
 
-| Skill | 說明 |
-|-------|------|
-| `angular-code-review` | Angular PR 審查（團隊規範 + `angular-dev-core-rules` 對齊） |
-| `angular-dev-core-rules` | Angular 開發方向（YAML/Crowdin i18n、FP、宣告式）；PR 審查請用 `angular-code-review` |
-| `angular-developer` | Angular 官方慣例（Signals、Forms、Routing、DI、測試、CLI）；團隊規範以 `angular-dev-core-rules` 為準 |
-| `generate-mr-content` | 產生 MR 描述（Title、Root Cause、How to Fix） |
-| `write-implementation-plan` | 將需求規劃為結構化實作計畫並寫入指定 md（概覽模式：Phase 拆分；詳盡模式：PR 拆分；強烈建議 mermaid） |
-| `architect-first-gate` | 實作／修 bug 前先以系統架構師做宏觀組件溝通設計（mermaid），**閘門制：使用者同意後才寫碼** |
+手打的 skill 只記一個：`/ask-adam`。它會選對的 SKILL.md 並做完。
 
-完整列表：[`SKILLS.md`](SKILLS.md)
+完整列表：[`SKILLS.md`](SKILLS.md)。Angular 寫碼／審查仍會自己出現（`architect-first-gate`、`angular-dev-core-rules`、`zyxel-i18n-write`、`angular-code-review`）。
 
 ---
 

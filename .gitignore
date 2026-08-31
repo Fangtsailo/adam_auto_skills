@@ -16,3 +16,7 @@ tmp/
 
 # External agent skills (npx skills)
 .agents/
+
+# Glossary SSOT. Un-ignore so a global CONTEXT.md rule cannot drop it.
+!CONTEXT.md
+!skills/*/CONTEXT.md

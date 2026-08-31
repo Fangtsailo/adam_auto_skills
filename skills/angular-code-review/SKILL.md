@@ -10,66 +10,19 @@ description: >-
 
 # Angular Code Review
 
-## Scope & related skills
+## Scope
 
-- **This skill:** PR/MR checklist, severity (Critical / Suggestions / Positive), output format, and team-wide gates (TypeScript, style, security, performance).
-- **`zyxel-i18n-write`:** Authoritative i18n write path. Use it when reviewing added or changed UI strings.
-- **`angular-dev-core-rules`:** Source of truth for i18n **runtime**, functional style, comments, and declarative UI/data flow. Do not duplicate or contradict those rules here — reference them when flagging issues.
-- **`angular-developer`:** Official Angular API and architecture guidance (Signals, Forms, Routing, etc.). Use for framework-level review questions; team gates still follow `angular-dev-core-rules`.
-- For reviews touching templates, NGXS, RxJS, or translations, apply `zyxel-i18n-write`, `angular-dev-core-rules`, and this skill together; consult `angular-developer` for Angular API best practices.
+This skill owns the review **steps**, **severity**, **output format**, and **team gates** below.
 
-## Review Checklist
+Read the matching skill when the diff hits that branch.
 
-Use **`angular-dev-core-rules`** for the core sections below; use **this skill** for team gates in the following subsections.
+| Diff touches | Read |
+|---|---|
+| User-visible strings | [zyxel-i18n-write](../zyxel-i18n-write/SKILL.md) |
+| NGXS, RxJS, subscriptions, template binding, comments, i18n runtime | [angular-dev-core-rules](../angular-dev-core-rules/SKILL.md) |
+| Angular API shape (Signals, Forms, Routing, DI mechanics) | [angular-developer](../angular-developer/SKILL.md); team gates in this skill still win |
 
-**Authoritative source:** bullets under Core dev rules are review shorthand only. If anything conflicts with `angular-dev-core-rules`, follow dev-core. If anything conflicts with `zyxel-i18n-write` on how strings are written, follow **`zyxel-i18n-write`**.
-
-### Core dev rules (angular-dev-core-rules)
-
-#### i18n (see `zyxel-i18n-write` + `angular-dev-core-rules` runtime + `apps/gui3/src/i18n/readme.md`)
-- Write path matches `zyxel-i18n-write` (Dedupe bind vs YAML + Crowdin reuse vs YAML-only). Hand-editing Crowdin JSON is required on reuse; do **not** flag that as an error.
-- No **runtime** fallback: no `instant` default text, inline English, or hidden locale switch when a key is missing. Build-time `en-us` fill in `translation.build.cjs` is project-standard — do not add a second app-level fallback.
-- Flag template/service keys that are not Dedupe Terms and are missing from YAML. Do not require `npm run i18n:extract` in the PR.
-
-#### Functional style & state
-- Prefer immutability for NGXS/shared state (`patchState` with new collections; avoid in-place mutation of `ctx.getState()`).
-- Side effects at service/NGXS/effect boundaries; extract pure transforms when logic is non-trivial or reused.
-- RxJS: composed `pipe`; errors handled explicitly — not swallowed without clear UX intent.
-
-#### Declarative UI
-- View data via `select` + `async` pipe, template-friendly streams, or documented local Signals — not `subscribe` only to copy into template fields (in **touched** code).
-- Component `subscribe` only when imperative (telemetry, legacy APIs, etc.) with `takeUntil` / `DestroyRef` and a brief **why** when non-obvious. Legacy `takeUntil` patterns in untouched lines: note only or omit.
-- DOM/`ElementRef`/`Renderer2` as last resort; prefer CDK or project abstractions.
-
-#### Comments
-- Comments explain **why**, trade-offs, or edge cases — not restated obvious control flow.
-
-### Architecture & state (team gates)
-- Primary state: NGXS + RxJS (`takeUntil`, `async` pipe)
-- Local-only Signals are acceptable; do not break existing NGXS patterns
-- Prefer component composition over inheritance
-- Use `inject()` for dependency injection on new or touched code (avoid constructor injection for new code)
-
-### TypeScript
-- Strict typing; no `any`
-- Use interfaces for all data models
-- Optional chaining (`?.`) and nullish coalescing (`??`)
-
-### Performance
-- `track` in `@for` / `trackBy` for `*ngFor`
-- Consider `NgOptimizedImage` for images
-- Use `@defer` for non-critical views
-
-### Security
-- No unsafe `innerHTML`; rely on Angular sanitization
-- Validate user input at boundaries
-
-### Style & structure
-- File naming: kebab-case with suffixes (e.g. `user.component.ts`)
-- Imports sorted per `@ianvs/prettier-plugin-sort-imports`; follow `.vscode/code_style_guide.md` when present in the target repo
-- 4-space indent, 120 char width (`.prettierrc.yaml`); single quotes (TS/JS), double quotes (SASS/SCSS)
-- Semantic HTML and ARIA for new or changed interactive UI
-- Default to Module-based components unless Standalone is required by the project
+String write path: **zyxel-i18n-write**. Implementation direction: **angular-dev-core-rules**.
 
 ## Review approach
 
@@ -77,7 +30,40 @@ Use **`angular-dev-core-rules`** for the core sections below; use **this skill**
 2. **Most serious concerns only** — After intent, report **only Critical-level issues** (see table below). Do **not** include Suggestions, Positive notes, style nits, or legacy patterns in untouched lines unless the user explicitly asks for a full review.
 3. **Nothing critical?** — Say so in one sentence (e.g. "No critical concerns found.") and stop. Do not pad with minor feedback.
 
-Align with dev-core **prefer, not dogma** — do not demand drive-by rewrites outside the PR scope unless the user asks.
+Align with angular-dev-core-rules **prefer, not dogma** — do not demand drive-by rewrites outside the PR scope unless the user asks.
+
+## Team gates
+
+### Architecture & state
+
+- Primary store is NGXS; local Signals must not replace it. Details: `angular-dev-core-rules`.
+- Prefer component composition over inheritance.
+- Use `inject()` on new or touched code (see [reference.md](reference.md)).
+
+### TypeScript
+
+- Strict typing; no `any`
+- Use interfaces for all data models
+- Optional chaining (`?.`) and nullish coalescing (`??`)
+
+### Performance
+
+- `track` in `@for` / `trackBy` for `*ngFor`
+- Consider `NgOptimizedImage` for images
+- Use `@defer` for non-critical views
+
+### Security
+
+- No unsafe `innerHTML`; rely on Angular sanitization
+- Validate user input at boundaries
+
+### Style & structure
+
+- File naming: kebab-case with suffixes (e.g. `user.component.ts`)
+- Imports sorted per `@ianvs/prettier-plugin-sort-imports`; follow `.vscode/code_style_guide.md` when present in the target repo
+- 4-space indent, 120 char width (`.prettierrc.yaml`); single quotes (TS/JS), double quotes (SASS/SCSS)
+- Semantic HTML and ARIA for new or changed interactive UI
+- Default to Module-based components unless Standalone is required by the project
 
 ## Severity guidance
 
@@ -93,6 +79,8 @@ Align with dev-core **prefer, not dogma** — do not demand drive-by rewrites ou
 | Imperative DOM without documented justification | Suggestions |
 | Style / import formatting | Suggestions |
 | Legacy patterns in **untouched** lines | Note only or omit |
+
+**Not a finding:** Crowdin JSON edits required by zyxel-i18n-write Rule 2. Do not require `npm run i18n:extract` in the PR.
 
 ## Output Format
 
@@ -114,6 +102,5 @@ Do **not** output Suggestions or Positive sections unless the user asks for a fu
 
 ## Additional resources
 
-- Review examples and NGXS notes: [reference.md](reference.md)
-- i18n write path: [../zyxel-i18n-write/SKILL.md](../zyxel-i18n-write/SKILL.md)
-- i18n, FP, declarative UI depth: [../angular-dev-core-rules/reference.md](../angular-dev-core-rules/reference.md)
+- Team-gate examples (`inject()`): [reference.md](reference.md)
+- Implementation examples: [../angular-dev-core-rules/reference.md](../angular-dev-core-rules/reference.md)
