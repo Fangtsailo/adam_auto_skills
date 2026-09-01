@@ -11,7 +11,7 @@ A document for people who do not write the code in scope. It uses only words vis
 _Avoid_: 需求規格, API spec, TD 描述, Epic 描述, 用途說明, 測試項目
 
 **測試項目**:
-A document the testing department executes against a 指定分支's 畫面改動. It uses only 畫面用詞. The `##` heading is one 畫面摘要. Body is grouped by 獨立路徑. 使用者操作目的 is the 畫面後置條件: what must hold on screen after that 獨立路徑 finishes.
+A document the testing department executes against a 指定分支's 畫面改動. It uses only 畫面用詞. The `##` heading is one 畫面摘要. Body is grouped by 獨立路徑. 使用者操作目的 is the 畫面後置條件: what must hold on screen after that 獨立路徑 finishes. Each 畫面後置條件 names its **畫面位置**.
 _Avoid_: 畫面操作說明, UI 測試, 測試案例
 
 **需求規格（給後端）**:
@@ -72,6 +72,16 @@ A screen name is the screen; objects on it are objects. Locate a screen as「{�
 | {畫面} 顯示一列 | {畫面} 分頁的表格顯示一列 |
 
 _Avoid_: {畫面} 的
+
+**畫面位置**:
+Used by 測試項目. The named chrome a tester inspects to confirm a 畫面後置條件, taken from how the 畫面改動 actually renders. Copy without chrome is incomplete: testers cannot tell which control to inspect.
+
+| 草稿 | 正文 |
+|---|---|
+| 畫面不顯示 Limited-Time CNP/CNP+ Promotion | 不顯示標題為 Limited-Time CNP/CNP+ Promotion 的對話框 |
+| 不顯示警告 | banner 不顯示該警告文案 |
+
+_Avoid_: 畫面不顯示 {文案}
 
 **相關聯的畫面**:
 The screens or tabs the operations actually land on, observed from the specified code. There is no predefined closed list. Used by 畫面操作說明, not by 測試項目.

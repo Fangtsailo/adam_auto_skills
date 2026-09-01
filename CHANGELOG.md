@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- `test-item` (1.0.1): 後置條件必須標 畫面位置
 - Hand-fired skills (`generate-mr-content`, `git-commit`, `fe-code-to-api-requirement`, `ui-operation-desc`, `test-item`, `td-detail-fillin`, `write-implementation-plan`, `knowledge-implementation-guideline`, `ask-adam`): `disable-model-invocation: true` and one-line descriptions
 - `angular-code-review`: stop duplicating i18n / NGXS / subscribe rules; read `zyxel-i18n-write` and `angular-dev-core-rules` from the diff
 - Document skills: 去實作化 rewrite table, 清單寫完整, 畫面動詞, and 畫面名不是所有格 live only in `CONTEXT.md`

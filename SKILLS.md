@@ -2,7 +2,7 @@
 
 Auto-generated from `skills/manifest.json`. Do not edit manually.
 
-*Generated at: 2026-09-01 01:08:18 UTC*
+*Generated at: 2026-09-01 02:38:07 UTC*
 
 | Skill | Version | Tags | Description |
 |-------|---------|------|-------------|
@@ -17,7 +17,7 @@ Auto-generated from `skills/manifest.json`. Do not edit manually.
 | `i-have-adhd` | 1.0.0 | imported, i-have-adhd | Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible. Invoke with /i-have-adhd; stays on until "stop adhd mode". |
 | `knowledge-implementation-guideline` | 1.1.1 | architecture, frontend-backend, decision-tree, documentation | Decide FE/BE/Shared ownership for a Business Rule with the Q1/Q2/Q3 tree and produce the standard writeup. |
 | `td-detail-fillin` | 1.0.0 | workflow, documentation, inventory, tech-debt | Fill or rewrite the 給 BE RD Detail block of an Inventory tech-debt entry. |
-| `test-item` | 1.0.0 | documentation, workflow, handoff, testing | Write a Traditional Chinese 測試項目 from a specified branch's 畫面改動 for the testing department. |
+| `test-item` | 1.0.1 | documentation, workflow, handoff, testing | Write a Traditional Chinese 測試項目 from a specified branch's 畫面改動 for the testing department. |
 | `ui-operation-desc` | 1.0.0 | documentation, requirements, workflow, handoff | Write a Traditional Chinese UI-operation description from specified code for readers who do not write that code. |
 | `write-implementation-plan` | 1.3.0 | planning, workflow, documentation, mermaid | Write a structured implementation plan to a user-specified markdown file, split by Phase or by PR. |
 | `zyxel-i18n-write` | 1.0.0 | angular, i18n, gui3 | Writes gui3 user-visible strings via Dedupe Terms, Crowdin translation reuse, or YAML-only. Use whenever adding or changing UI copy in templates, YAML, menus, placeholders, aria, toasts, or dialogs — including i18n, translate, Crowdin, I18N_DEDUPE_TERMS, or apps/gui3/src/i18n. |
