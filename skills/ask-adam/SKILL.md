@@ -18,11 +18,12 @@ Match one skill, then **read that SKILL.md and follow it** (file pointer). Do no
 
 ## Documents
 
-Handoff documents (畫面操作說明 / 需求規格（給後端） / TD Detail): read [CONTEXT.md](CONTEXT.md) **Which document**, then follow:
+Handoff documents (畫面操作說明 / 測試項目 / 需求規格（給後端） / TD Detail): read [CONTEXT.md](CONTEXT.md) **Which document**, then follow:
 
 | Document | Read |
 |---|---|
 | 畫面操作說明 | [ui-operation-desc](../ui-operation-desc/SKILL.md) |
+| 測試項目 | [test-item](../test-item/SKILL.md) |
 | 需求規格（給後端） | [fe-code-to-api-requirement](../fe-code-to-api-requirement/SKILL.md) |
 | TD Detail | [td-detail-fillin](../td-detail-fillin/SKILL.md) |
 

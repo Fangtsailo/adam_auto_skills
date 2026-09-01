@@ -6,8 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Skill `test-item`: 測試項目 — from a specified branch's 畫面改動, write grouped UI verification steps for the testing department; default output `TEST_ITEM.md`
+- `ask-adam`: route 測試項目 → `test-item`
 - Skill `ask-adam`: hand-fired skill router — match one skill, read its SKILL.md, run to that skill's completion criterion
-- `CONTEXT.md` glossary SSOT; `ui-operation-desc`, `fe-code-to-api-requirement`, `td-detail-fillin`, and `ask-adam` each ship a sibling symlink so the glossary still resolves after install
+- `CONTEXT.md` glossary SSOT; `ui-operation-desc`, `test-item`, `fe-code-to-api-requirement`, `td-detail-fillin`, and `ask-adam` each ship a sibling symlink so the glossary still resolves after install
 - Skill `ui-operation-desc`: 畫面操作說明 — from user-specified code, write de-implemented UI purpose / flow / related screens for cross-team readers (PM, QA, other units); documents only mark which code to read
 - Skill `i-have-adhd` (imported from [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd)): ADHD-friendly output — lead with next action, numbered steps, no preamble/tangents
 - Skill `architect-first-gate`: system-architect role before coding; macro component communication design with mermaid; hard gate waits for explicit user approval before writing code
@@ -15,9 +17,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Hand-fired skills (`generate-mr-content`, `git-commit`, `fe-code-to-api-requirement`, `ui-operation-desc`, `td-detail-fillin`, `write-implementation-plan`, `knowledge-implementation-guideline`, `ask-adam`): `disable-model-invocation: true` and one-line descriptions
+- Hand-fired skills (`generate-mr-content`, `git-commit`, `fe-code-to-api-requirement`, `ui-operation-desc`, `test-item`, `td-detail-fillin`, `write-implementation-plan`, `knowledge-implementation-guideline`, `ask-adam`): `disable-model-invocation: true` and one-line descriptions
 - `angular-code-review`: stop duplicating i18n / NGXS / subscribe rules; read `zyxel-i18n-write` and `angular-dev-core-rules` from the diff
-- Document skills: 去實作化 rewrite table lives only in `CONTEXT.md`
+- Document skills: 去實作化 rewrite table, 清單寫完整, 畫面動詞, and 畫面名不是所有格 live only in `CONTEXT.md`
 - Copy install materializes in-tree file symlinks so shipped `CONTEXT.md` is a real file at the target
 - `validate`: fail if SKILL.md points at `CONTEXT.md` but the skill directory has no sibling file
 - `knowledge-implementation-guideline` (1.0.1): slim `SKILL.md`—Q3①②③ detailed criteria live only in `reference.md`; SKILL keeps decision tree, Q1/Q2, and Q3 one-line summary

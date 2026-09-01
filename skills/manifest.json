@@ -131,6 +131,17 @@
             "version": "1.0.0"
         },
         {
+            "name": "test-item",
+            "description": "Write a Traditional Chinese \u6e2c\u8a66\u9805\u76ee from a specified branch's \u756b\u9762\u6539\u52d5 for the testing department.",
+            "tags": [
+                "documentation",
+                "workflow",
+                "handoff",
+                "testing"
+            ],
+            "version": "1.0.0"
+        },
+        {
             "name": "ui-operation-desc",
             "description": "Write a Traditional Chinese UI-operation description from specified code for readers who do not write that code.",
             "tags": [
