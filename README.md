@@ -67,7 +67,7 @@ cd /path/to/adam_auto_skill
 
 手打的 skill 只記一個：`/ask-adam`。Catalog 菜單對上就走 adam；否則 Wrap `ask-matt`。
 
-完整列表：[`SKILLS.md`](SKILLS.md)。Angular 寫碼／審查仍會自己出現（`architect-first-gate`、`angular-dev-core-rules`、`zyxel-i18n-write`、`angular-code-review`）。
+完整列表：[`SKILLS.md`](SKILLS.md)。Angular 寫碼／審查仍會自己出現（`architect-first-gate`、`angular-dev-core-rules`、`zyxel-i18n-write`、`angular-code-review`）。`zyxel-rm-analyze` 亦然（`讀 RM` / `RM-#####`）。
 
 ---
 

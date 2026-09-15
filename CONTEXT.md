@@ -4,7 +4,7 @@ This context's skills produce different kinds of handoff documents. These terms 
 
 This file is the SSOT for those document names. `ui-operation-desc`, `test-item`, `fe-code-to-api-requirement`, `td-detail-fillin`, and `ask-adam` each ship a sibling `CONTEXT.md` (symlink to here) so the glossary still resolves after install.
 
-Router, Catalog skill, Agent skill, Wrap: [Skill distribution](./docs/skill-distribution/CONTEXT.md). Index: [CONTEXT-MAP.md](./CONTEXT-MAP.md).
+Router, Catalog skill, Agent skill, Wrap: [Skill distribution](./docs/skill-distribution/CONTEXT.md). RM / Scratch issue / Implement gate: [RM analyze](./docs/rm-analyze/CONTEXT.md). Index: [CONTEXT-MAP.md](./CONTEXT-MAP.md).
 
 ## Language
 

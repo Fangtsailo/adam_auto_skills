@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Skill `zyxel-rm-analyze`: fetch one RM via Sibling exec, write `.scratch/RM-#####/issues/01-analyze.md`, stop at the Implement gate
+- `docs/rm-analyze/CONTEXT.md`, `docs/adr/0002-sibling-exec-redmine.md`: RM / Scratch issue / Implement gate / Sibling exec
+- `ask-adam` RM table: 讀一張 RM 並分析（不改碼） → `zyxel-rm-analyze`
 - `CONTEXT-MAP.md`, `docs/skill-distribution/CONTEXT.md`, `docs/adr/0001-ask-adam-wraps-ask-matt.md`: Catalog vs Agent skills; `/ask-adam` Wraps `ask-matt`; Agent skills stay on `npx skills` per target project
 - Skill `test-item`: 測試項目 — from a specified branch's 畫面改動, write grouped UI verification steps for the testing department; default output `TEST_ITEM.md`
 - `ask-adam`: route 測試項目 → `test-item`
@@ -18,6 +21,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- `zyxel-rm-analyze` (1.0.1): description front-loads **RM**; steps own completion criteria; Implement gate is step 5
+- `ask-adam` (1.3.1): RM row is `讀 RM`; `zyxel-rm-analyze` is table-only, not in the fire-on-their-own list
+- `ask-adam` (1.3.0): RM table routes 讀 RM → `zyxel-rm-analyze`; `zyxel-rm-analyze` fires on its own
 - `ask-adam` (1.2.1): slim `SKILL.md` — Match/Wrap/Follow once; Review exception lives on the Review table
 - `ask-adam` (1.2.0): review of a commit, branch, PR, or diff Matches `angular-code-review` by default; Wrap to matt `code-review` only when named
 - `ask-adam` (1.1.0): Menu-first Catalog tables, else Wrap `ask-matt` (read `.agents/skills/ask-matt/SKILL.md`; do not edit it)

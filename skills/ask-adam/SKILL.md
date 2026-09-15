@@ -48,3 +48,9 @@ A commit, branch, PR, or diff is this row with no question. Named `code-review` 
 |---|---|
 | Implementation plan to a markdown file | [write-implementation-plan](../write-implementation-plan/SKILL.md) |
 | FE/BE/Shared ownership of a Business Rule | [knowledge-implementation-guideline](../knowledge-implementation-guideline/SKILL.md) |
+
+## RM
+
+| Need | Read |
+|---|---|
+| 讀 RM | [zyxel-rm-analyze](../zyxel-rm-analyze/SKILL.md) |
