@@ -57,7 +57,7 @@
                 "workflow",
                 "router"
             ],
-            "version": "1.1.0"
+            "version": "1.2.0"
         },
         {
             "name": "fe-code-to-api-requirement",

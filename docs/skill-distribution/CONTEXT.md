@@ -21,7 +21,7 @@ The Router reads another skill's `SKILL.md` and follows it, without editing that
 _Avoid_: merge, fork, 合成一份, 整合進 SKILL.md
 
 **Menu-first**:
-The Router's Catalog tables (Documents / Git / Plan) win when they match. Anything else follows the Wrapped `ask-matt`. One sentence that could be either → one question.
+The Router's Catalog tables (Documents / Git / Review / Plan) win when they match. Review defaults to `angular-code-review` with no question. Anything else follows the Wrapped `ask-matt`. One sentence that could be a Catalog plan or idea-to-ship → one question.
 _Avoid_: 地圖優先, 永遠先問
 
 **Target project**:
