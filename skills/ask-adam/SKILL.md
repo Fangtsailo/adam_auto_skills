@@ -1,28 +1,24 @@
 ---
 name: ask-adam
-description: Router: Catalog menu first, else Wrap ask-matt.
+description: Catalog menu first, else Wrap ask-matt.
 disable-model-invocation: true
 ---
 
 # Ask Adam
 
-You don't remember every skill, so ask.
-
-**Menu-first.** Match one row in the tables below. No table matches → **Wrap** `ask-matt`: read `.agents/skills/ask-matt/SKILL.md` from the project root and follow it to **that** skill's completion criterion. Do not edit `ask-matt`. Do not ask the user to type another `/` name when the match is clear.
-
-A Catalog row and a Matt flow could both fit (e.g. "寫實作計畫") → ask **one** question: the Catalog markdown template, or idea-to-ship via `ask-matt`. **Review is not that case:** a review of a commit, branch, PR, or diff Matches `angular-code-review` with no question. Wrap to `ask-matt`'s `code-review` only when the user names that skill or a two-axis Standards + Spec review.
-
-If Wrap is chosen and `.agents/skills/ask-matt/SKILL.md` is missing, say so and stop. The fix is `npx skills add mattpocock/skills` in this project.
-
 ## Workflow
 
-1. **Match** — pick exactly one Catalog row, or Wrap. Two Catalog rows could fit → ask **one** question. Done when one skill is named (Catalog or `ask-matt`).
-2. **Which-only** — if the user only asked which skill to use, name it and stop.
-3. **Follow** — read that skill's `SKILL.md` and run it to **that** skill's completion criterion.
+1. **Match** — pick exactly one row in the tables below, or **Wrap**. Two table rows fit → ask **one** question. A table row and a Matt flow fit (e.g. "寫實作計畫") → ask **one** question: the Catalog file, or idea-to-ship via `ask-matt`. Done when one skill is named.
+2. **Which-only** — the user only asked which skill → name it. Stop.
+3. **Follow** — read that skill's `SKILL.md` and run it to **that** skill's completion criterion. Output shape: `/i-have-adhd`.
+
+**Wrap:** read `.agents/skills/ask-matt/SKILL.md` from the project root and Follow it. That file is upstream. Missing → say so and stop (`npx skills add mattpocock/skills` in this project).
+
+Match only the tables. `architect-first-gate` and `angular-dev-core-rules` / `zyxel-i18n-write` / `angular-developer` fire on their own.
 
 ## Documents
 
-Handoff documents (畫面操作說明 / 測試項目 / 需求規格（給後端） / TD Detail): read [CONTEXT.md](CONTEXT.md) **Which document**, then follow:
+Read [CONTEXT.md](CONTEXT.md) **Which document**, then Follow:
 
 | Document | Read |
 |---|---|
@@ -40,6 +36,8 @@ Handoff documents (畫面操作說明 / 測試項目 / 需求規格（給後端�
 
 ## Review
 
+A commit, branch, PR, or diff is this row with no question. Named `code-review` or two-axis Standards + Spec → Wrap.
+
 | Need | Read |
 |---|---|
 | Review a commit, branch, PR, or diff | [angular-code-review](../angular-code-review/SKILL.md) |
@@ -50,12 +48,3 @@ Handoff documents (畫面操作說明 / 測試項目 / 需求規格（給後端�
 |---|---|
 | Implementation plan to a markdown file | [write-implementation-plan](../write-implementation-plan/SKILL.md) |
 | FE/BE/Shared ownership of a Business Rule | [knowledge-implementation-guideline](../knowledge-implementation-guideline/SKILL.md) |
-
-## Not this router
-
-These fire on their own. Do not Match them here:
-
-- `architect-first-gate` — before writing application code
-- `angular-dev-core-rules` / `zyxel-i18n-write` / `angular-developer` — while coding Angular
-
-Output shape: `/i-have-adhd`.

@@ -2,7 +2,7 @@
 
 Auto-generated from `skills/manifest.json`. Do not edit manually.
 
-*Generated at: 2026-09-15 02:23:04 UTC*
+*Generated at: 2026-09-15 02:30:01 UTC*
 
 | Skill | Version | Tags | Description |
 |-------|---------|------|-------------|
@@ -10,7 +10,7 @@ Auto-generated from `skills/manifest.json`. Do not edit manually.
 | `angular-dev-core-rules` | 1.2.0 | angular, ngxs, rxjs, i18n, typescript | Guides Angular implementation toward FP, declarative UI/data flow, purposeful comments, and i18n runtime rules. String write path is zyxel-i18n-write. Use for dev/refactor; use angular-code-review for PR review. |
 | `angular-developer` | 1.0.0 | imported, angular | Generates Angular code and provides architectural guidance. Trigger when creating projects, components, or services, or for best practices on reactivity (signals, linkedSignal, resource), forms, dependency injection, routing, SSR, accessibility (ARIA), animations, styling (component styles, Tailwind CSS), testing, or CLI tooling. |
 | `architect-first-gate` | 1.0.0 | architecture, workflow, gate, mermaid | Assumes system-architect role before coding: designs macro component communication (participants, data flow, NGXS/IO/service/API), confirms existing architecture with mermaid, then waits for explicit user approval (gate) before writing code. Use when fixing bugs, implementing features, refactoring cross-component flows, or when the user mentions 宏觀組件溝通, 架構設計, or 閘門. |
-| `ask-adam` | 1.2.0 | workflow, router | Router: Catalog menu first, else Wrap ask-matt. |
+| `ask-adam` | 1.2.1 | workflow, router | Catalog menu first, else Wrap ask-matt. |
 | `fe-code-to-api-requirement` | 1.0.0 | requirements, backend-handoff, api-design, documentation | Convert frontend code into a Traditional Chinese backend-facing requirement spec that does not design the API. |
 | `generate-mr-content` | 1.0.0 | merge-request, mr, workflow, documentation | Generate an English MR description (Title, Root Cause, How to Fix) from git staged changes. |
 | `git-commit` | 1.0.0 | git, commit, workflow, cocogitto | Commit staged changes with Cocogitto via mise, after showing the MR block and waiting for confirmation. |

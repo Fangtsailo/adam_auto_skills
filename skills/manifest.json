@@ -52,12 +52,12 @@
         },
         {
             "name": "ask-adam",
-            "description": "Router: Catalog menu first, else Wrap ask-matt.",
+            "description": "Catalog menu first, else Wrap ask-matt.",
             "tags": [
                 "workflow",
                 "router"
             ],
-            "version": "1.2.0"
+            "version": "1.2.1"
         },
         {
             "name": "fe-code-to-api-requirement",

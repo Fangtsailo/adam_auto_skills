@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- `ask-adam` (1.2.1): slim `SKILL.md` — Match/Wrap/Follow once; Review exception lives on the Review table
 - `ask-adam` (1.2.0): review of a commit, branch, PR, or diff Matches `angular-code-review` by default; Wrap to matt `code-review` only when named
 - `ask-adam` (1.1.0): Menu-first Catalog tables, else Wrap `ask-matt` (read `.agents/skills/ask-matt/SKILL.md`; do not edit it)
 - `README.md`: two commands to give a target project both Catalog skills and updatable Agent skills
