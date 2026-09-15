@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- `CONTEXT-MAP.md`, `docs/skill-distribution/CONTEXT.md`, `docs/adr/0001-ask-adam-wraps-ask-matt.md`: Catalog vs Agent skills; `/ask-adam` Wraps `ask-matt`; Agent skills stay on `npx skills` per target project
 - Skill `test-item`: 測試項目 — from a specified branch's 畫面改動, write grouped UI verification steps for the testing department; default output `TEST_ITEM.md`
 - `ask-adam`: route 測試項目 → `test-item`
 - Skill `ask-adam`: hand-fired skill router — match one skill, read its SKILL.md, run to that skill's completion criterion
@@ -17,6 +18,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- `ask-adam` (1.1.0): Menu-first Catalog tables, else Wrap `ask-matt` (read `.agents/skills/ask-matt/SKILL.md`; do not edit it)
+- `README.md`: two commands to give a target project both Catalog skills and updatable Agent skills
 - `test-item` (1.0.1): 後置條件必須標 畫面位置
 - Hand-fired skills (`generate-mr-content`, `git-commit`, `fe-code-to-api-requirement`, `ui-operation-desc`, `test-item`, `td-detail-fillin`, `write-implementation-plan`, `knowledge-implementation-guideline`, `ask-adam`): `disable-model-invocation: true` and one-line descriptions
 - `angular-code-review`: stop duplicating i18n / NGXS / subscribe rules; read `zyxel-i18n-write` and `angular-dev-core-rules` from the diff

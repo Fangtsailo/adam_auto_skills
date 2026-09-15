@@ -19,4 +19,6 @@ tmp/
 
 # Glossary SSOT. Un-ignore so a global CONTEXT.md rule cannot drop it.
 !CONTEXT.md
+!CONTEXT-MAP.md
 !skills/*/CONTEXT.md
+!docs/**/CONTEXT.md

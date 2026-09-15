@@ -1,8 +1,10 @@
-# Adam Auto Skill
+# Handoff documents
 
-This repo's skills produce different kinds of handoff documents. These terms name the documents, their readers, and the shared writing rules those documents use, not the install tooling.
+This context's skills produce different kinds of handoff documents. These terms name the documents, their readers, and the shared writing rules those documents use, not the install tooling.
 
-This file is the SSOT. `ui-operation-desc`, `test-item`, `fe-code-to-api-requirement`, `td-detail-fillin`, and `ask-adam` each ship a sibling `CONTEXT.md` (symlink to here) so the glossary still resolves after install.
+This file is the SSOT for those document names. `ui-operation-desc`, `test-item`, `fe-code-to-api-requirement`, `td-detail-fillin`, and `ask-adam` each ship a sibling `CONTEXT.md` (symlink to here) so the glossary still resolves after install.
+
+Router, Catalog skill, Agent skill, Wrap: [Skill distribution](./docs/skill-distribution/CONTEXT.md). Index: [CONTEXT-MAP.md](./CONTEXT-MAP.md).
 
 ## Language
 

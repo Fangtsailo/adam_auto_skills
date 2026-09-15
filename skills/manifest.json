@@ -52,12 +52,12 @@
         },
         {
             "name": "ask-adam",
-            "description": "Pick which hand-fired skill to follow, then do that work.",
+            "description": "Router: Catalog menu first, else Wrap ask-matt.",
             "tags": [
                 "workflow",
                 "router"
             ],
-            "version": "1.0.0"
+            "version": "1.1.0"
         },
         {
             "name": "fe-code-to-api-requirement",

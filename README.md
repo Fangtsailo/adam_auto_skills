@@ -25,6 +25,19 @@ chmod +x bin/skill scripts/*.sh
 ./bin/skill install --project ~/projects/my-app angular-code-review --copy
 ```
 
+目標專案要讓 `/ask-adam` 能 Wrap `ask-matt`，在**那個 repo** 做這兩步（約 1 分鐘）：
+
+```bash
+# 1. Agent skills（mattpocock）— 在目標專案
+cd /path/to/web-fe-next
+npx skills add mattpocock/skills
+# 之後更新：npx skills update
+
+# 2. Catalog skills（含 wrap 過的 ask-adam）— 從這個 repo
+cd /path/to/adam_auto_skill
+./bin/skill install --all --project /path/to/web-fe-next --copy
+```
+
 ---
 
 ## 常用指令
@@ -52,7 +65,7 @@ chmod +x bin/skill scripts/*.sh
 
 ## 內建 Skills
 
-手打的 skill 只記一個：`/ask-adam`。它會選對的 SKILL.md 並做完。
+手打的 skill 只記一個：`/ask-adam`。Catalog 菜單對上就走 adam；否則 Wrap `ask-matt`。
 
 完整列表：[`SKILLS.md`](SKILLS.md)。Angular 寫碼／審查仍會自己出現（`architect-first-gate`、`angular-dev-core-rules`、`zyxel-i18n-write`、`angular-code-review`）。
 
@@ -75,6 +88,7 @@ chmod +x bin/skill scripts/*.sh
 | 文件 | 用途 |
 |------|------|
 | [`PROJECT_PLAN.md`](PROJECT_PLAN.md) | 完整規格、CLI、擴充與貢獻手冊 |
+| [`CONTEXT-MAP.md`](CONTEXT-MAP.md) | 兩個 context：交件文件 vs 安裝／Router |
 | [`docs/automations.md`](docs/automations.md) | 外部專案 / CI / SDK 安裝 |
 | [`CHANGELOG.md`](CHANGELOG.md) | 版本紀錄 |
 
