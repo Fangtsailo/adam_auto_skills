@@ -7,7 +7,8 @@ description: >-
 
 # Zyxel RM Analyze
 
-Read [CONTEXT.md](CONTEXT.md) for **RM**, **Scratch issue**, **Implement gate**, **Sibling exec**.
+Read [CONTEXT.md](CONTEXT.md) for **RM**, **Scratch issue**, **Implement gate**.
+Read [automation.md](automation.md) for **Sibling exec**, **Combo**.
 
 Scratch issue and chat: Traditional Chinese. Identifiers: English.
 

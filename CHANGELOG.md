@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Skill `zyxel-automation`: Sibling-exec `pjm-*` and `ext-*` except `ext-mise-file-task`; Present in the Target chat
+- `docs/adr/0003-two-pipes-to-automation-repo.md`, `docs/adr/0004-zyxel-automation-wraps-pjm.md`
 - Skill `zyxel-rm-analyze`: fetch one RM via Sibling exec, write `.scratch/RM-#####/issues/01-analyze.md`, stop at the Implement gate
 - `docs/rm-analyze/CONTEXT.md`, `docs/adr/0002-sibling-exec-redmine.md`: RM / Scratch issue / Implement gate / Sibling exec
 - `ask-adam` RM table: 讀一張 RM 並分析（不改碼） → `zyxel-rm-analyze`
@@ -21,6 +23,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- `ask-adam` (1.4.0): Automation table → `zyxel-automation`; RM table stays Combo `讀 RM`
+- `zyxel-automation`: description is GitLab / Outline / Teams / Grafana / to-be-pulled only; pipe glossary lives in `docs/target-automation/CONTEXT.md`
+- `zyxel-rm-analyze`: Sibling exec / Combo glossary is `automation.md`, not the RM CONTEXT
 - `zyxel-rm-analyze` (1.0.1): description front-loads **RM**; steps own completion criteria; Implement gate is step 5
 - `ask-adam` (1.3.1): RM row is `讀 RM`; `zyxel-rm-analyze` is table-only, not in the fire-on-their-own list
 - `ask-adam` (1.3.0): RM table routes 讀 RM → `zyxel-rm-analyze`; `zyxel-rm-analyze` fires on its own

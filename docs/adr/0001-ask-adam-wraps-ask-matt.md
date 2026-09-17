@@ -15,5 +15,5 @@ A target project needs one Router and always-fresh mattpocock skills. Merging `a
 ## Consequences
 
 - A new target needs two commands: `npx skills add mattpocock/skills`, then `./bin/skill install --project <path> --copy`
-- `ask-matt` stays untouched; Wrap lives only in `ask-adam`
+- `ask-matt` stays untouched; the typed door is still only `/ask-adam`. Wrap as a verb is also used by Combos and `zyxel-automation` (glossary); this ADR forbids merging `ask-matt` into the Catalog, not forbidding Wrap elsewhere
 - After Wrap ships, `/ask-adam` in a target project is a no-op for Agent flows unless that project has `.agents/skills/ask-matt`

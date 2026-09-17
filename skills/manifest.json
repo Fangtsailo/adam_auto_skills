@@ -57,7 +57,7 @@
                 "workflow",
                 "router"
             ],
-            "version": "1.3.1"
+            "version": "1.4.0"
         },
         {
             "name": "fe-code-to-api-requirement",
@@ -162,6 +162,16 @@
                 "mermaid"
             ],
             "version": "1.3.0"
+        },
+        {
+            "name": "zyxel-automation",
+            "description": "Automation: Sibling-exec GitLab, Outline, Teams, Grafana, to-be-pulled.",
+            "tags": [
+                "workflow",
+                "redmine",
+                "gitlab"
+            ],
+            "version": "1.0.0"
         },
         {
             "name": "zyxel-i18n-write",

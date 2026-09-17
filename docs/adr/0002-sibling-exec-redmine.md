@@ -17,4 +17,4 @@ status: accepted
 
 - The automation repo must be on disk next to the Target project, or `SWPM_AUTOMATION_ROOT` must be set
 - Attachments download into the Target project's `tmp/RM-<digits>/`, not the automation `tmp/`
-- `pjm-redmine-custom` stays in the automation repo; this skill does not Wrap it
+- `pjm-redmine-custom` stays in the automation repo; **this skill** (`zyxel-rm-analyze`) does not Wrap it. Other Catalog skills may; see [ADR 0004](./0004-zyxel-automation-wraps-pjm.md)

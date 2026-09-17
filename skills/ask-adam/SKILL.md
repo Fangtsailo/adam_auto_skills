@@ -54,3 +54,9 @@ A commit, branch, PR, or diff is this row with no question. Named `code-review` 
 | Need | Read |
 |---|---|
 | 讀 RM | [zyxel-rm-analyze](../zyxel-rm-analyze/SKILL.md) |
+
+## Automation
+
+| Need | Read |
+|---|---|
+| GitLab, Outline, Teams, Grafana, to-be-pulled | [zyxel-automation](../zyxel-automation/SKILL.md) |
